@@ -1,0 +1,144 @@
+:root{
+  --paper:#F6F6F9; --ink:#12122B; --blue:#3D3DF0; --lilac:#E4E4FF;
+  --mute:#5A5A78; --line:#D9D9E8; --white:#fff;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'Source Sans 3','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.55 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(28px,4vw,42px);font-weight:800}
+p{margin:0}
+
+/* topo */
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.logo{font:800 22px var(--display);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{display:flex;align-items:center;gap:2px;height:22px}
+.logo i b{display:block;width:3px;background:var(--blue);border-radius:2px}
+nav{display:flex;gap:24px;font-weight:600;font-size:16px}
+nav a{text-decoration:none;color:var(--mute)}
+nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center;padding:40px 0 72px}
+.hero h1{font-size:clamp(40px,6vw,72px);font-weight:800}
+.hero p.lead{margin-top:20px;font-size:20px;color:var(--mute);max-width:34ch}
+.facts{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:8px;font-weight:600;font-size:16px}
+.facts li::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--blue);margin-right:10px}
+
+/* a ferramenta: o elemento marcante */
+.tool{background:var(--white);border:2px solid var(--ink);border-radius:20px;padding:20px;box-shadow:8px 8px 0 var(--blue)}
+.wave{display:flex;align-items:center;justify-content:center;gap:3px;height:64px;background:var(--lilac);border-radius:12px;margin-bottom:16px;padding:0 14px;overflow:hidden}
+.wave b{flex:1;max-width:6px;background:var(--blue);border-radius:3px;transform-origin:center;transition:transform .2s}
+.wave.on b{animation:beat .9s ease-in-out infinite alternate;animation-delay:calc(var(--i)*40ms)}
+@keyframes beat{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+textarea{width:100%;min-height:170px;resize:vertical;border:2px solid var(--line);border-radius:12px;padding:14px;font:400 18px/1.5 var(--body);color:var(--ink);background:var(--paper)}
+textarea:focus{border-color:var(--blue);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{font:600 15px var(--body);border:1.5px solid var(--line);background:var(--white);color:var(--ink);padding:6px 14px;border-radius:99px;cursor:pointer}
+.chip:hover{border-color:var(--blue);color:var(--blue)}
+.row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{font:800 18px var(--display);background:var(--blue);color:#fff;border:0;border-radius:12px;padding:14px 26px;cursor:pointer}
+.btn:hover{background:#2B2BD0}
+.status{font-size:15px;color:var(--mute);flex:1;min-width:200px}
+.note{margin-top:12px;font-size:14px;color:var(--mute)}
+
+/* experiência "não me faça pensar" */
+.stage{padding:32px 0 72px;text-align:center}
+.stage h1{font-size:clamp(36px,6vw,64px);font-weight:800;max-width:16ch;margin:0 auto}
+.stage .lead{margin:16px auto 0;font-size:20px;color:var(--mute);max-width:38ch}
+.path{list-style:none;display:flex;justify-content:center;gap:8px;padding:0;margin:28px 0 24px;flex-wrap:wrap}
+.path li{display:flex;align-items:center;gap:8px;font:600 15px var(--body);color:var(--mute);padding:6px 16px 6px 6px;border-radius:99px;border:1.5px solid var(--line);background:#fff;transition:border-color .2s,color .2s}
+.path li b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lilac);color:var(--blue);font:800 14px var(--display)}
+.path li.on{border-color:var(--blue);color:var(--ink)}
+.path li.on b{background:var(--blue);color:#fff}
+.path li.done{color:var(--ink)}
+.path li.done b{background:var(--ink);color:#fff}
+.stage .tool{max-width:760px;margin:0 auto;text-align:left}
+label.big{font:800 20px var(--display);display:block;margin-bottom:10px}
+.stage textarea{min-height:200px;font-size:19px}
+.aux{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 20px;font-size:15px;color:var(--mute)}
+.aux .chip{min-height:44px;padding:8px 16px}
+.btn.go{font-size:20px;padding:0 34px;min-height:56px}
+.btn:disabled{opacity:.6;cursor:progress}
+.result{margin-top:24px;padding-top:24px;border-top:2px solid var(--line)}
+.result h2{font-size:26px;margin-bottom:14px}
+.rrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn.play{min-height:56px;padding:0 28px}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.btn.ghost:hover{background:var(--lilac)}
+.speeds{display:flex;gap:6px;flex-wrap:wrap}
+.speeds button{min-height:44px;padding:0 14px;border-radius:99px;border:1.5px solid var(--line);background:#fff;font:600 15px var(--body);color:var(--ink);cursor:pointer}
+.speeds button.on{border-color:var(--blue);background:var(--lilac);color:var(--blue)}
+.link{background:none;border:0;padding:8px 0;font:600 16px var(--body);color:var(--blue);text-decoration:underline;cursor:pointer;min-height:44px}
+.result .link{margin-top:8px}
+
+/* seções */
+section{padding:72px 0;border-top:1px solid var(--line)}
+section > .wrap > p.sub{margin-top:12px;color:var(--mute);max-width:56ch}
+
+/* exemplos de áudio */
+.samples{margin-top:32px;display:grid;gap:0}
+.sample{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.sample:first-child{border-top:1px solid var(--line)}
+.sample strong{font:800 20px var(--display)}
+.sample span{display:block;font-size:15px;color:var(--mute)}
+audio{width:100%}
+
+/* passos (aqui a numeração é uma sequência real) */
+.steps{margin:32px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
+.steps li{counter-increment:s;border-top:4px solid var(--blue);padding-top:16px}
+.steps li::before{content:counter(s);font:800 40px var(--display);color:var(--blue);display:block;line-height:1}
+.steps h3{font-size:22px;margin:10px 0 6px}
+.steps p{color:var(--mute);font-size:17px}
+
+/* diferenciais */
+.why{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.why div{padding:20px 0;border-top:1px solid var(--line)}
+.why h3{font-size:22px;margin-bottom:6px}
+.why p{color:var(--mute);font-size:17px}
+
+/* planos */
+.plans{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+.plan{border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px}
+.plan.free{border:2px solid var(--ink);background:var(--white)}
+.plan.pro{background:var(--ink);color:#fff}
+.plan h3{font-size:28px}
+.price{font:800 44px var(--display)}
+.price small{font:400 17px var(--body);opacity:.7}
+.plan ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;flex:1}
+.plan li::before{content:"✓";font-weight:800;margin-right:10px;color:var(--blue)}
+.plan.pro li::before{color:#9C9CFF}
+.plan .btn{align-self:flex-start;text-decoration:none;display:inline-block}
+.plan.pro .btn{background:#fff;color:var(--ink)}
+.plan.pro .btn:hover{background:var(--lilac)}
+
+/* perguntas */
+details{border-top:1px solid var(--line);padding:18px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{font:800 20px var(--display);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--blue);font-size:26px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px;color:var(--mute);max-width:64ch}
+.faq{margin-top:32px}
+
+footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--mute);font-size:15px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:32px;padding-top:16px}
+  .steps,.why,.plans{grid-template-columns:1fr}
+  .sample{grid-template-columns:1fr;gap:10px}
+  nav{gap:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .wave.on b{animation:none;transform:scaleY(.7)}
+}
+.soon{display:inline-block;align-self:flex-start;font:600 16px var(--body);color:#C9C9F5;padding:14px 0}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.ghost{min-height:56px;padding:0 26px}

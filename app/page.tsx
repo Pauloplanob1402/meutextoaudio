@@ -14,7 +14,7 @@ export default function Home() {
         </header>
         <main id="topo">
           <Tool />
-          <p className="more">Precisa de mais? Veja as <Link href="/ferramentas">ferramentas grátis</Link> para título, capítulos, legendas, miniatura e outras coisas.</p>
+          <p className="more">Cria vídeos? Veja as <Link href="/ferramentas">ferramentas grátis para criadores</Link>: capítulos, legendas, miniatura e mais.</p>
         </main>
       </div>
 <section>
@@ -86,7 +86,7 @@ export default function Home() {
 <div className="wrap">
   <footer>
     <span>© 2026 texto-áudio</span>
-    <Link href="/ferramentas">Ferramentas</Link>
+    <Link href="/ferramentas">Ferramentas para criadores</Link>
     </footer>
 </div>
     </>

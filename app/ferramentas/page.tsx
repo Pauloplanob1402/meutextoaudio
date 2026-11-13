@@ -4,16 +4,16 @@ import Shell from "@/components/Shell";
 import { GROUPS, TOOLS } from "@/lib/tools";
 
 export const metadata: Metadata = {
-  title: "Ferramentas grátis · texto-áudio",
-  description: "Ferramentas simples e grátis para vídeos e textos: tempo de fala, capítulos, legendas, miniatura e mais. Tudo no seu navegador.",
+  title: "Ferramentas grátis para criadores · texto-áudio",
+  description: "Calculadora de tempo de fala, gerador de capítulos e legendas, criador de miniatura e mais. Grátis, sem cadastro e direto no navegador.",
 };
 
 export default function Ferramentas() {
   return (
     <Shell>
       <div className="tp">
-        <h1>Ferramentas</h1>
-        <p className="lead">Grátis e sem cadastro. Tudo funciona no seu navegador. Escolha só o que precisar.</p>
+        <h1>Ferramentas para criadores</h1>
+        <p className="lead">Grátis, sem cadastro e sem enviar seus arquivos: tudo roda no seu navegador. Escolha só o que precisar.</p>
         {GROUPS.map((g) => (
           <div className="group" key={g.id}>
             <h2>{g.title}</h2>

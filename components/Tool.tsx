@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { SAMPLE_TEXT, VOICE_ID, mergeParts, parseScript } from "@/lib/tts";
 import { redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
+import { stretchWav } from "@/lib/stretch";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -17,6 +18,8 @@ export default function Tool() {
   const [busy, setBusy] = useState(false);
   const [url, setUrl] = useState<string | null>(null);
   const [speed, setSpeed] = useState(0.85);
+  const [dlBusy, setDlBusy] = useState(false);
+  const original = useRef<Blob | null>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
   const au = useRef<HTMLAudioElement>(null);
   const res = useRef<HTMLDivElement>(null);
@@ -84,7 +87,9 @@ export default function Tool() {
       if (!out.some((x) => typeof x !== "number")) throw new Error("nenhum trecho");
 
       setStatus("Montando o áudio final…");
-      setUrl(URL.createObjectURL(await mergeParts(out)));
+      const merged = await mergeParts(out);
+      original.current = merged;
+      setUrl(URL.createObjectURL(merged));
       setStatus(
         skipped.length
           ? `Pronto, mas ${skipped.length} trecho(s) não puderam ser lidos. Tente dividir o texto em partes menores.`
@@ -97,6 +102,31 @@ export default function Tool() {
     } finally {
       setBusy(false);
     }
+  }
+
+  // Baixa na velocidade escolhida (ajuste feito no navegador, sem mudar o tom)
+  async function download() {
+    const src = original.current;
+    if (!src || dlBusy) return;
+    let out = src;
+    if (speed !== 1) {
+      setDlBusy(true);
+      try {
+        out = await stretchWav(src, speed);
+      } catch (e) {
+        console.error(e);
+        setStatus("Não consegui ajustar a velocidade do arquivo, então baixei o original.");
+        out = src;
+      } finally {
+        setDlBusy(false);
+      }
+    }
+    const a = document.createElement("a");
+    const u = URL.createObjectURL(out);
+    a.href = u;
+    a.download = out === src ? "audio.wav" : `audio-${speed}x.wav`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(u), 10000);
   }
 
   function insertPause() {
@@ -169,9 +199,10 @@ export default function Tool() {
                   <button key={s.v} type="button" className={speed === s.v ? "on" : ""} onClick={() => setSpeed(s.v)}>{s.label}</button>
                 ))}
               </div>
-              <a className="btn ghost" href={url} download="audio.wav">Baixar áudio</a>
+              <button className="btn ghost" type="button" onClick={download} disabled={dlBusy}>{dlBusy ? "Preparando…" : "Baixar áudio"}</button>
             </div>
-            <p className="note">A velocidade vale só para ouvir aqui. O arquivo baixado mantém a velocidade original, já com as pausas.</p>
+            <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
+            {speed !== 1 && <a className="link" href={url} download="audio.wav">Baixar na velocidade original</a>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
           </div>
         )}

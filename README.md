@@ -49,6 +49,7 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 - `app/page.tsx`: página (cabeçalho, seções, planos, perguntas)
 - `components/Tool.tsx`: a ferramenta (texto, geração, player, download)
 - `lib/tts.ts`: limpeza do texto, pausas `[PAUSA - X segundos]` e montagem do WAV
+- `lib/stretch.ts`: ajuste de velocidade do arquivo baixado sem mudar o tom
 - `app/globals.css`: todo o visual
 - `next.config.ts` e `empty.ts`: necessários, porque a biblioteca de voz tem um trecho para Node (`fs`, `path`) que não roda no navegador
 
@@ -64,4 +65,4 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 ## Limites conhecidos
 
 - A geração roda no aparelho. Celulares mais fracos podem falhar com textos muito longos. O app pula o trecho que falhar e avisa.
-- O arquivo baixado é WAV, na velocidade original. Os botões de velocidade valem só para ouvir na página.
+- O arquivo baixado é WAV, na velocidade escolhida (ajuste feito no navegador por `lib/stretch.ts`, sem mudar o tom). Para mudanças pequenas costuma soar bem, mas ajustes grandes podem deixar a voz menos natural. Há também o link "Baixar na velocidade original".

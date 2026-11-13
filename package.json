@@ -1,0 +1,25 @@
+{
+  "name": "texto-audio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "self-host": "node scripts/self-host.mjs"
+  },
+  "dependencies": {
+    "@mintplex-labs/piper-tts-web": "^1.0.5",
+    "next": "^16.4.6",
+    "onnxruntime-web": "1.18.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@diffusionstudio/piper-wasm": "^1.0.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}

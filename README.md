@@ -52,6 +52,11 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 - `lib/stretch.ts`: ajuste de velocidade do arquivo baixado sem mudar o tom
 - `lib/mp3.ts`: converte o WAV em MP3 no navegador (biblioteca `@breezystack/lamejs`). A qualidade fica em `MP3_KBPS` (96 por padrão)
 - `app/globals.css`: todo o visual
+- `app/ferramentas.css`: o visual das páginas de ferramentas
+- `app/ferramentas/`: a página com todas as ferramentas e uma página para cada uma
+- `components/tools/`: uma tela por ferramenta (e `ToolView.tsx`, que liga cada endereço à sua tela)
+- `lib/tools.ts`: a lista das ferramentas (nome, frase, grupo)
+- `lib/toolkit.ts`: os cálculos das ferramentas (hashtags, capítulos, legendas, remover silêncio)
 - `next.config.ts` e `empty.ts`: necessários, porque a biblioteca de voz tem um trecho para Node (`fs`, `path`) que não roda no navegador
 
 ## O que ainda NÃO está feito
@@ -68,3 +73,17 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 - A geração roda no aparelho. Celulares mais fracos podem falhar com textos muito longos. O app pula o trecho que falhar e avisa.
 - O arquivo baixado é MP3 (padrão) ou WAV, na velocidade escolhida (ajuste feito no navegador por `lib/stretch.ts`, sem mudar o tom). Para mudanças pequenas costuma soar bem, mas ajustes grandes podem deixar a voz menos natural. Há também o link "Baixar na velocidade original". Se a conversão para MP3 falhar, o app baixa o WAV e avisa.
 - A duração mostrada abaixo da caixa de texto é uma **estimativa** (palavras por minuto mais as pausas). Depois de testar com um texto real, compare com o áudio gerado e ajuste `WORDS_PER_MINUTE` em `lib/tts.ts` se precisar.
+
+## Ferramentas extras
+
+Ficam em `/ferramentas`, com um link discreto no menu, abaixo da caixa de texto e no rodapé da página inicial. Todas rodam no navegador, sem servidor e sem custo por uso:
+
+tempo de fala, dividir texto em blocos, remover silêncio do áudio, título e descrição, hashtags e tags, capítulos, legendas (.srt), checklist de publicação, redimensionar imagem, criar miniatura, calendário semanal e calculadora de ganhos.
+
+Para adicionar uma ferramenta nova:
+
+1. Crie a tela em `components/tools/NomeDaFerramenta.tsx`.
+2. Registre o endereço em `components/tools/ToolView.tsx`.
+3. Inclua o nome e a frase em `lib/tools.ts`. O cartão aparece sozinho na página de ferramentas.
+
+Checklist e calendário salvam no `localStorage` do navegador de cada pessoa. A calculadora de ganhos usa valores de exemplo (RPM 2, 5 e 10): troque pelos valores reais do seu YouTube Studio.

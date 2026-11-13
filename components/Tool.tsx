@@ -21,6 +21,8 @@ export default function Tool() {
   const [speed, setSpeed] = useState(0.85);
   const [dlBusy, setDlBusy] = useState(false);
   const [fmt, setFmt] = useState<"mp3" | "wav">("mp3");
+  const [site, setSite] = useState("");
+  const [copied, setCopied] = useState(false);
   const original = useRef<Blob | null>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
   const au = useRef<HTMLAudioElement>(null);
@@ -34,6 +36,7 @@ export default function Tool() {
     try { localStorage.setItem("draft", v); } catch {}
   }
   useEffect(() => {
+    setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
     if (window.matchMedia("(min-width:861px)").matches) ta.current?.focus();
   }, []);
@@ -153,6 +156,22 @@ export default function Tool() {
     }
   }
 
+  // Convite para um amigo (aparece depois que o áudio fica pronto)
+  const SHARE_MSG = "Testa esse site que transforma texto em áudio em português, grátis e sem cadastro:";
+  function shareWhatsApp() {
+    const link = site || window.location.origin;
+    window.open(`https://wa.me/?text=${encodeURIComponent(`${SHARE_MSG} ${link}`)}`, "_blank", "noopener");
+  }
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(site || window.location.origin);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setStatus("Não consegui copiar. Copie o endereço direto da barra do navegador.");
+    }
+  }
+
   function insertPause() {
     const el = ta.current;
     const t = "\n\n[PAUSA - 2 segundos]\n\n";
@@ -238,6 +257,13 @@ export default function Tool() {
             <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. O MP3 é bem menor e abre em qualquer editor de vídeo. O WAV mantém a qualidade máxima, mas o arquivo é bem maior. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
+            <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
+              <p style={{ fontWeight: 600 }}>Gostou? Mande para um amigo.</p>
+              <div className="rrow" style={{ marginTop: 10 }}>
+                <button className="btn ghost" type="button" onClick={shareWhatsApp}>Enviar pelo WhatsApp</button>
+                <button className="btn ghost" type="button" onClick={copyLink}>{copied ? "Link copiado!" : "Copiar link"}</button>
+              </div>
+            </div>
           </div>
         )}
         <p className="note">Na primeira vez, baixamos a voz (uns 60 MB). Depois fica instantâneo.</p>

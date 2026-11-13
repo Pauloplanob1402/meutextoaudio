@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Tool from "@/components/Tool";
 
 export default function Home() {
@@ -9,9 +10,12 @@ export default function Home() {
             <i aria-hidden="true">{[8, 20, 12, 22, 9].map((h, i) => <b key={i} style={{ height: h }} />)}</i>
             texto-áudio
           </a>
-          <nav aria-label="Principal"><a href="#planos">Planos</a><a href="#perguntas">Perguntas</a></nav>
+          <nav aria-label="Principal"><Link href="/ferramentas">Ferramentas</Link><a href="#planos">Planos</a><a href="#perguntas">Perguntas</a></nav>
         </header>
-        <main id="topo"><Tool /></main>
+        <main id="topo">
+          <Tool />
+          <p className="more">Precisa de mais? Veja as <Link href="/ferramentas">ferramentas grátis</Link> para título, capítulos, legendas, miniatura e outras coisas.</p>
+        </main>
       </div>
 <section>
   <div className="wrap">
@@ -49,7 +53,7 @@ export default function Home() {
           <li>Geração no seu navegador</li>
           <li>Voz em português do Brasil</li>
           <li>Pausas e controle de velocidade</li>
-          <li>Download em WAV</li>
+          <li>Download em MP3 ou WAV</li>
         </ul>
         <a className="btn" href="#topo">Gerar meu áudio grátis</a>
       </div>
@@ -82,6 +86,7 @@ export default function Home() {
 <div className="wrap">
   <footer>
     <span>© 2026 texto-áudio</span>
+    <Link href="/ferramentas">Ferramentas</Link>
     </footer>
 </div>
     </>

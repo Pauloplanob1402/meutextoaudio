@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./ferramentas.css";
 
 export const metadata: Metadata = {
   title: "texto-áudio: cole o texto, ouça em segundos",

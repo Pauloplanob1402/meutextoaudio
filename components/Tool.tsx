@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { SAMPLE_TEXT, VOICE_ID, mergeParts, parseScript } from "@/lib/tts";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { SAMPLE_TEXT, VOICE_ID, estimateSeconds, formatDuration, mergeParts, parseScript } from "@/lib/tts";
 import { redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
+import { wavToMp3 } from "@/lib/mp3";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -19,11 +20,13 @@ export default function Tool() {
   const [url, setUrl] = useState<string | null>(null);
   const [speed, setSpeed] = useState(0.85);
   const [dlBusy, setDlBusy] = useState(false);
+  const [fmt, setFmt] = useState<"mp3" | "wav">("mp3");
   const original = useRef<Blob | null>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
   const au = useRef<HTMLAudioElement>(null);
   const res = useRef<HTMLDivElement>(null);
   const step = url ? 3 : text.trim() ? 2 : 1;
+  const est = useMemo(() => estimateSeconds(text, speed), [text, speed]);
 
   // rascunho salvo só no navegador
   function update(v: string) {
@@ -104,29 +107,50 @@ export default function Tool() {
     }
   }
 
-  // Baixa na velocidade escolhida (ajuste feito no navegador, sem mudar o tom)
-  async function download() {
+  // Baixa na velocidade escolhida (ajuste feito no navegador, sem mudar o tom), em MP3 ou WAV
+  async function download(originalSpeed = false) {
     const src = original.current;
     if (!src || dlBusy) return;
+    const sp = originalSpeed ? 1 : speed;
+    setDlBusy(true);
     let out = src;
-    if (speed !== 1) {
-      setDlBusy(true);
-      try {
-        out = await stretchWav(src, speed);
-      } catch (e) {
-        console.error(e);
-        setStatus("Não consegui ajustar a velocidade do arquivo, então baixei o original.");
-        out = src;
-      } finally {
-        setDlBusy(false);
+    let stretched = false;
+    let warn = "";
+    try {
+      if (sp !== 1) {
+        try {
+          setStatus("Ajustando a velocidade…");
+          out = await stretchWav(src, sp);
+          stretched = true;
+        } catch (e) {
+          console.error(e);
+          warn = "Não consegui ajustar a velocidade do arquivo, então baixei na velocidade original. ";
+          out = src;
+        }
       }
+
+      let ext = "wav";
+      if (fmt === "mp3") {
+        try {
+          setStatus("Convertendo para MP3…");
+          out = await wavToMp3(out);
+          ext = "mp3";
+        } catch (e) {
+          console.error(e);
+          warn += "Não consegui converter para MP3, então baixei em WAV.";
+        }
+      }
+
+      const a = document.createElement("a");
+      const u = URL.createObjectURL(out);
+      a.href = u;
+      a.download = stretched ? `audio-${sp}x.${ext}` : `audio.${ext}`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(u), 10000);
+      setStatus(warn.trim() || "Pronto! Download iniciado.");
+    } finally {
+      setDlBusy(false);
     }
-    const a = document.createElement("a");
-    const u = URL.createObjectURL(out);
-    a.href = u;
-    a.download = out === src ? "audio.wav" : `audio-${speed}x.wav`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(u), 10000);
   }
 
   function insertPause() {
@@ -178,6 +202,11 @@ export default function Tool() {
           <button className="chip" type="button" onClick={insertPause}>Inserir pausa de 2 segundos</button>
           {text && <button className="chip" type="button" onClick={clear}>Limpar</button>}
         </div>
+        {est > 0 && (
+          <p className="note" style={{ margin: "-8px 0 16px" }}>
+            Duração estimada do áudio: cerca de <b>{formatDuration(est)}</b>
+          </p>
+        )}
         <div className="row">
           <button className="btn go" type="button" onClick={generate} disabled={busy}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
           <p className="status" role="status" aria-live="polite">{status}</p>
@@ -199,10 +228,15 @@ export default function Tool() {
                   <button key={s.v} type="button" className={speed === s.v ? "on" : ""} onClick={() => setSpeed(s.v)}>{s.label}</button>
                 ))}
               </div>
-              <button className="btn ghost" type="button" onClick={download} disabled={dlBusy}>{dlBusy ? "Preparando…" : "Baixar áudio"}</button>
+              <div className="speeds" role="group" aria-label="Formato do arquivo">
+                {(["mp3", "wav"] as const).map((f) => (
+                  <button key={f} type="button" className={fmt === f ? "on" : ""} onClick={() => setFmt(f)}>{f.toUpperCase()}</button>
+                ))}
+              </div>
+              <button className="btn ghost" type="button" onClick={() => download()} disabled={dlBusy}>{dlBusy ? "Preparando…" : `Baixar ${fmt.toUpperCase()}`}</button>
             </div>
-            <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
-            {speed !== 1 && <a className="link" href={url} download="audio.wav">Baixar na velocidade original</a>}
+            <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. O MP3 é bem menor e abre em qualquer editor de vídeo. O WAV mantém a qualidade máxima, mas o arquivo é bem maior. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
+            {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
           </div>
         )}

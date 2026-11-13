@@ -3,6 +3,7 @@ export const PARAGRAPH_PAUSE = 0.7; // segundos de silêncio entre parágrafos
 export const CHUNK_PAUSE = 0.15; // segundos entre trechos da mesma frase longa
 export const DEFAULT_PAUSE = 1.5; // usado se [PAUSA] vier sem número
 export const MAX_PAUSE = 30; // limite de segurança por pausa
+export const WORDS_PER_MINUTE = 150; // ritmo da voz, só para a estimativa de duração (ajuste depois de testar)
 
 // Voz usada pelo app (Piper, português do Brasil)
 export const VOICE_ID = "pt_BR-faber-medium";
@@ -89,6 +90,26 @@ export function parseScript(raw: string): Part[] {
   pushText(raw.slice(last));
 
   return parts;
+}
+
+// Estimativa da duração do áudio final (palavras / ritmo + pausas), na velocidade escolhida.
+// É só uma estimativa: a duração real depende da voz.
+export function estimateSeconds(raw: string, speed = 1): number {
+  let sec = 0;
+  for (const p of parseScript(raw)) {
+    if (p.kind === "pause") sec += p.seconds;
+    else sec += (p.text.split(/\s+/).filter(Boolean).length / WORDS_PER_MINUTE) * 60;
+  }
+  return sec / speed;
+}
+
+// 200 -> "3 min 20 s", 45 -> "45 s"
+export function formatDuration(sec: number): string {
+  const s = sec < 10 ? Math.max(1, Math.round(sec)) : Math.round(sec / 5) * 5;
+  if (s < 60) return `${s} s`;
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return r ? `${m} min ${r} s` : `${m} min`;
 }
 
 // Junta WAVs e silêncios (números = segundos) em um único WAV

@@ -11,10 +11,13 @@
   "dependencies": {
     "@breezystack/lamejs": "^1.2.7",
     "@mintplex-labs/piper-tts-web": "^1.0.5",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
     "next": "^16.4.6",
     "onnxruntime-web": "1.18.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@diffusionstudio/piper-wasm": "^1.0.0",

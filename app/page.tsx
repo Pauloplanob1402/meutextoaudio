@@ -2,6 +2,8 @@ import Link from "next/link";
 import Tool from "@/components/Tool";
 
 export default function Home() {
+  const price = Number(process.env.PRO_PRICE_BRL);
+  const billing = Boolean(process.env.MP_ACCESS_TOKEN && process.env.MP_WEBHOOK_SECRET && price > 0);
   return (
     <>
       <div className="wrap">
@@ -10,7 +12,7 @@ export default function Home() {
             <i aria-hidden="true">{[8, 20, 12, 22, 9].map((h, i) => <b key={i} style={{ height: h }} />)}</i>
             texto-áudio
           </a>
-          <nav aria-label="Principal"><Link href="/ferramentas">Ferramentas</Link><a href="#planos">Planos</a><a href="#perguntas">Perguntas</a></nav>
+          <nav aria-label="Principal"><Link href="/ferramentas">Ferramentas</Link><a href="#planos">Planos</a><a href="#perguntas">Perguntas</a><Link href="/conta">Conta</Link></nav>
         </header>
         <main id="topo">
           <Tool />
@@ -59,14 +61,14 @@ export default function Home() {
       </div>
       <div className="plan pro">
         <h3>Pro</h3>
-        <div className="price">Em breve</div>
+        <div className="price">{billing ? <>R$ {price.toLocaleString("pt-BR")} <small>por mês</small></> : "Em breve"}</div>
         <ul>
           <li>Tudo do plano Grátis</li>
           <li>Histórico salvo na nuvem</li>
           <li>Textos mais longos e projetos</li>
           <li>Vozes premium</li>
         </ul>
-        <span className="soon">Ainda não disponível</span>
+        {billing ? <Link className="btn" href="/conta">Assinar o Pro</Link> : <span className="soon">Ainda não disponível</span>}
       </div>
     </div>
   </div>

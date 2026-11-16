@@ -13,6 +13,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         <nav aria-label="Principal">
           <Link href="/">Início</Link>
           <Link href="/ferramentas">Ferramentas</Link>
+          <Link href="/conta">Conta</Link>
         </nav>
       </header>
       <main>{children}</main>

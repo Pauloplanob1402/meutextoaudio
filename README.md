@@ -44,6 +44,65 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 
 **Versão do onnxruntime-web**: o `package.json` fixa `onnxruntime-web` em `1.18.0` de propósito. A biblioteca de voz carrega arquivos dessa versão, e uma versão mais nova do pacote pode não combinar com eles. Não atualize sem testar.
 
+## Login e assinatura (Supabase + Mercado Pago)
+
+A base está pronta: login por link no e-mail, página de conta, assinatura mensal e controle do plano. O texto para áudio e as ferramentas continuam grátis e sem cadastro. Só `/conta`, `/login` e as rotas de cobrança usam login.
+
+**Como funciona**: a pessoa entra em `/login` (recebe um link no e-mail), vai para `/conta`, clica em **Assinar o Pro**, paga no Mercado Pago e volta para `/conta`. O Mercado Pago avisa o site por webhook, e o plano muda para Pro quando a assinatura fica `authorized`. O cancelamento também é feito em `/conta`.
+
+### 1. Supabase
+
+1. Crie um projeto em supabase.com.
+2. **SQL Editor, New query**: cole o conteúdo de `supabase/schema.sql` e clique em **Run**. Isso cria a tabela `subscriptions` com regras de acesso (cada pessoa só vê a própria assinatura; só o servidor grava). Também inclui as permissões explícitas (`grant`) que projetos novos do Supabase exigem: sem elas, a API recusa a tabela com o erro `permission denied`.
+3. **Authentication, URL Configuration**: em *Site URL* coloque o endereço do site (`https://seudominio.com.br`) e, em *Redirect URLs*, adicione `https://seudominio.com.br/auth/callback` e `http://localhost:3000/auth/callback`.
+4. **Authentication, e-mail (SMTP)**: configure um serviço de envio próprio. O envio padrão do Supabase serve só para testes e tem limite baixo de mensagens, então não use em produção.
+5. **Project Settings, API**: copie a URL, a chave *publishable* e a chave *secret*.
+
+### 2. Mercado Pago
+
+1. Em **Suas integrações**, crie uma aplicação e pegue o **Access Token**. Comece pelas credenciais de teste e as contas de teste do Mercado Pago; só depois use as de produção.
+2. Em **Webhooks, Configurar notificações**, informe a URL `https://seudominio.com.br/api/mercadopago/webhook` e marque o evento de **Planos e assinaturas** (`subscription_preapproval`). Ao salvar, o Mercado Pago mostra a **assinatura secreta**: copie.
+
+### 3. Variáveis de ambiente
+
+Copie `.env.example` para `.env.local` (no seu computador) e preencha. Na Vercel, cadastre as mesmas variáveis em **Settings, Environment Variables** e faça um novo deploy (as variáveis `NEXT_PUBLIC_*` e `PRO_PRICE_BRL` entram no site durante o build). Se `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET` e `PRO_PRICE_BRL` não estiverem definidas, o plano Pro continua aparecendo como "Em breve" e a cobrança fica desligada.
+
+A `SUPABASE_SECRET_KEY` e o `MP_ACCESS_TOKEN` são segredos: nunca coloque no código, no GitHub nem em variáveis com `NEXT_PUBLIC_`.
+
+### 4. Liberar um recurso só para assinantes
+
+No servidor (rota de API ou página), use:
+
+```ts
+import { getAccount } from "@/lib/entitlements";
+
+const account = await getAccount();
+if (account?.plan !== "pro") return new Response("Só para assinantes", { status: 403 });
+```
+
+Não confie em nenhuma checagem feita só no navegador.
+
+### Arquivos novos
+
+- `proxy.ts` e `lib/supabase/`: sessão de login (no Next.js 16 o antigo `middleware.ts` chama `proxy.ts`; ele só roda em `/conta`, `/login`, `/auth` e nas rotas de cobrança)
+- `lib/billing.ts`: Mercado Pago (criar, consultar e cancelar assinatura; conferir a assinatura do webhook)
+- `lib/entitlements.ts`: quem é a pessoa e qual é o plano
+- `app/login`, `app/conta`, `app/auth/*`: telas e rotas de entrada e saída
+- `app/api/checkout`, `app/api/cancelar`, `app/api/mercadopago/webhook`: cobrança
+- `components/LoginForm.tsx`, `components/AccountActions.tsx`
+- `supabase/schema.sql` e `.env.example`
+
+### Limites e o que NÃO foi testado
+
+- **Nada foi testado com o Supabase e o Mercado Pago de verdade.** O projeto compila e, com variáveis falsas, conferi que o webhook recusa notificações sem assinatura válida, que checkout e cancelamento exigem login e que `/conta` leva para `/login`. O envio do link por e-mail, a gravação no banco, o checkout e a chegada do webhook precisam ser testados por você, com contas de teste.
+- **E-mail do pagador**: a assinatura é criada com o e-mail do login. A documentação do Mercado Pago diz que, em assinaturas sem plano, o checkout valida o e-mail do pagador, mas não consegui ler o trecho completo. Se o pagamento recusar quando o e-mail do login for diferente do e-mail da conta Mercado Pago da pessoa, será preciso ajustar o fluxo.
+- **Só cartão por enquanto.** Pix Automático não foi implementado.
+- **Cobrança que falha**: o site só segue o status da assinatura (`authorized`, `paused`, `cancelled`). Não trata os avisos de cada cobrança (`subscription_authorized_payment`).
+- **Cancelar encerra o acesso na hora**, sem manter o Pro até o fim do período pago.
+- **Preço**: mudar `PRO_PRICE_BRL` vale só para novas assinaturas.
+- **Plano único** (mensal). Sem teste grátis, anual, cupom ou nota fiscal.
+- **Faltam** termos de uso, política de privacidade e um jeito de excluir a conta (exigências de LGPD). Crie antes de cobrar.
+
 ## Estrutura
 
 - `app/page.tsx`: página (cabeçalho, seções, planos, perguntas)
@@ -62,9 +121,8 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 
 ## O que ainda NÃO está feito
 
-- **Login (Supabase), assinatura e Mercado Pago**: não existem. O plano Pro aparece como "Em breve".
+- **Recursos exclusivos do Pro**: a base de login e cobrança existe (veja abaixo), mas ainda não há nenhum recurso liberado só para assinantes (vozes premium, histórico). Quem assina hoje paga por algo que ainda não existe, então só ligue a cobrança quando houver o que entregar.
 - **Termos de uso e Política de privacidade**: não há páginas. Crie antes de divulgar.
-- **Licença da voz**: confirme o uso comercial de `pt_BR-faber-medium` antes de cobrar por qualquer coisa.
 - **Exemplos de áudio na página**: foram retirados. Quando tiver os MP3, coloque em `public/audios` e adicione a seção.
 - **PWA** (site instalável), imagem de compartilhamento e analytics.
 - **Teste real da geração**: o projeto compila e a página abre, mas a geração de áudio não foi testada de ponta a ponta. Teste com um texto longo, em computador e celular.

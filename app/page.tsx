@@ -61,7 +61,7 @@ export default function Home() {
       </div>
       <div className="plan pro">
         <h3>Pro</h3>
-        <div className="price">{billing ? <>R$ {price.toLocaleString("pt-BR")} <small>por mês</small></> : "Em breve"}</div>
+        <div className="price">{billing ? <>R$ {price.toLocaleString("pt-BR", { minimumFractionDigits: price % 1 ? 2 : 0 })} <small>por mês</small></> : "Em breve"}</div>
         <ul>
           <li>Tudo do plano Grátis</li>
           <li>Histórico salvo na nuvem</li>

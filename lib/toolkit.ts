@@ -280,3 +280,24 @@ export function makeWavBlob(pcm: Int16Array, rate: number): Blob {
   v.setUint32(40, pcm.byteLength, true);
   return new Blob([h, pcm.buffer as ArrayBuffer], { type: "audio/wav" });
 }
+
+// ---------- calendário ----------
+// "2026-11-13" (data local, sem mudar de dia por causa de fuso horário)
+export const ymd = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+// Semanas do mês começando no domingo; dias de fora do mês completam a grade
+export function monthGrid(year: number, month: number) {
+  const last = new Date(year, month + 1, 0);
+  const cur = new Date(year, month, 1 - new Date(year, month, 1).getDay());
+  const weeks: { date: string; day: number; inMonth: boolean }[][] = [];
+  do {
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      week.push({ date: ymd(cur), day: cur.getDate(), inMonth: cur.getMonth() === month });
+      cur.setDate(cur.getDate() + 1);
+    }
+    weeks.push(week);
+  } while (cur <= last);
+  return weeks;
+}

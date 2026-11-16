@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 // O Piper (WebAssembly) tem um trecho de código para Node que usa fs e path.
 // No navegador ele nunca roda, então trocamos por um arquivo vazio.
 const nextConfig: NextConfig = {
+  // o calendário semanal virou calendário do mês: o endereço antigo continua funcionando
+  async redirects() {
+    return [{ source: "/ferramentas/calendario-semanal", destination: "/ferramentas/calendario", permanent: true }];
+  },
   turbopack: {
     resolveAlias: {
       fs: { browser: "./empty.ts" },

@@ -47,4 +47,18 @@ export function downloadBlob(blob: Blob, name: string) {
 export const downloadText = (text: string, name: string, type = "text/plain") =>
   downloadBlob(new Blob([text], { type: `${type};charset=utf-8` }), name);
 
+// Coloca uma ideia no calendário (usa o mesmo armazenamento da ferramenta Calendário de conteúdo)
+export function addToCalendar(date: string, text: string): boolean {
+  try {
+    const key = "calendario-conteudo";
+    const data = JSON.parse(localStorage.getItem(key) || "{}") as Record<string, { id: string; text: string; done: boolean }[]>;
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    data[date] = [...(data[date] ?? []), { id, text, done: false }];
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export const fmtNum = (n: number) => n.toLocaleString("pt-BR");

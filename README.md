@@ -56,6 +56,7 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 - `app/ferramentas/`: a página com todas as ferramentas e uma página para cada uma
 - `components/tools/`: uma tela por ferramenta (e `ToolView.tsx`, que liga cada endereço à sua tela)
 - `lib/tools.ts`: a lista das ferramentas (nome, frase, grupo)
+- `lib/ideas.ts`: as ideias de vídeo por assunto (edite aqui para mudar ou acrescentar)
 - `lib/toolkit.ts`: os cálculos das ferramentas (hashtags, capítulos, legendas, remover silêncio)
 - `next.config.ts` e `empty.ts`: necessários, porque a biblioteca de voz tem um trecho para Node (`fs`, `path`) que não roda no navegador
 
@@ -78,7 +79,7 @@ Antes de ligar, saiba que cada visitante novo baixa uns 60 MB do **seu** site. C
 
 Ficam em `/ferramentas`, com um link discreto no menu, abaixo da caixa de texto e no rodapé da página inicial. Todas rodam no navegador, sem servidor e sem custo por uso:
 
-tempo de fala, dividir texto em blocos, remover silêncio do áudio, título e descrição, hashtags e tags, capítulos, legendas (.srt), checklist de publicação, redimensionar imagem, criar miniatura, calendário semanal e calculadora de ganhos.
+ideias de vídeo por assunto, tempo de fala, dividir texto em blocos, remover silêncio do áudio, título e descrição, hashtags e tags, capítulos, legendas (.srt), checklist de publicação, redimensionar imagem, criar miniatura, calendário de conteúdo (do mês) e calculadora de ganhos.
 
 Para adicionar uma ferramenta nova:
 

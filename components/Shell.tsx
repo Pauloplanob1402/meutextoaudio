@@ -11,7 +11,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           texto-áudio
         </Link>
         <nav aria-label="Principal">
-          <Link href="/">Texto para áudio</Link>
+          <Link href="/">Início</Link>
           <Link href="/ferramentas">Ferramentas</Link>
         </nav>
       </header>

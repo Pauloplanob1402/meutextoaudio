@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Shell from "@/components/Shell";
@@ -20,6 +21,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
         <p className="lead">A conta só é necessária para assinar o plano Pro. O texto para áudio continua grátis e sem cadastro.</p>
         {erro && <p className="status" role="alert">Esse link não funcionou ou já expirou. Peça um novo abaixo.</p>}
         <LoginForm next={next} />
+        <p className="note">Ao continuar, você concorda com os <Link href="/termos">Termos de Uso</Link> e com a <Link href="/privacidade">Política de Privacidade</Link>.</p>
       </div>
     </Shell>
   );

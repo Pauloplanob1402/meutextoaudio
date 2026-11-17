@@ -88,7 +88,11 @@ export default function Home() {
 <div className="wrap">
   <footer>
     <span>© 2026 texto-áudio</span>
-    <Link href="/ferramentas">Ferramentas para criadores</Link>
+    <span className="legal-links">
+      <Link href="/ferramentas">Ferramentas para criadores</Link>
+      <Link href="/privacidade">Privacidade</Link>
+      <Link href="/termos">Termos</Link>
+    </span>
     </footer>
 </div>
     </>

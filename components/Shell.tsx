@@ -19,7 +19,11 @@ export default function Shell({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <footer>
         <span>© 2026 texto-áudio</span>
-        <Link href="/">Voltar ao texto para áudio</Link>
+        <span className="legal-links">
+          <Link href="/privacidade">Privacidade</Link>
+          <Link href="/termos">Termos</Link>
+          <Link href="/">Voltar ao texto para áudio</Link>
+        </span>
       </footer>
     </div>
   );

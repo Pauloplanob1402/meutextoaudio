@@ -5,10 +5,10 @@ import AccountActions from "@/components/AccountActions";
 import { getAccount } from "@/lib/entitlements";
 import { billingEnabled } from "@/lib/billing";
 
-export const metadata: Metadata = { title: "Minha conta · texto-áudio", robots: { index: false } };
+export const metadata: Metadata = { title: "Minha conta · Saium", robots: { index: false } };
 
 const LABEL: Record<string, string> = {
-  authorized: "Pro ativo",
+  authorized: "Plano Criador ativo",
   pending: "Aguardando a confirmação do pagamento",
   paused: "Assinatura pausada",
   cancelled: "Assinatura cancelada",
@@ -29,7 +29,7 @@ export default async function Conta({ searchParams }: { searchParams: Promise<{ 
           <p className="status" role="status">Estamos confirmando o seu pagamento. Pode levar alguns minutos. Atualize esta página para ver o resultado.</p>
         )}
 
-        <h2>Plano: {account.plan === "pro" ? "Pro" : "Grátis"}</h2>
+        <h2>Plano: {account.plan === "pro" ? "Criador" : "Grátis"}</h2>
         {account.status && <p className="status">{LABEL[account.status] ?? account.status}</p>}
         {account.status === "authorized" && account.nextPayment && (
           <p className="note">Próxima cobrança: {new Date(account.nextPayment).toLocaleDateString("pt-BR")}</p>

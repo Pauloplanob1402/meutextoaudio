@@ -147,7 +147,7 @@ export default function Tool() {
       const a = document.createElement("a");
       const u = URL.createObjectURL(out);
       a.href = u;
-      a.download = stretched ? `audio-${sp}x.${ext}` : `audio.${ext}`;
+      a.download = stretched ? `narracao-saium-${sp}x.${ext}` : `narracao-saium.${ext}`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(u), 10000);
       setStatus(warn.trim() || "Pronto! Download iniciado.");
@@ -157,7 +157,7 @@ export default function Tool() {
   }
 
   // Convite para um amigo (aparece depois que o áudio fica pronto)
-  const SHARE_MSG = "Testa esse site que transforma texto em áudio em português, grátis e sem cadastro:";
+  const SHARE_MSG = "Testa o Saium: texto em áudio em português, grátis e sem cadastro:";
   function shareWhatsApp() {
     const link = site || window.location.origin;
     window.open(`https://wa.me/?text=${encodeURIComponent(`${SHARE_MSG} ${link}`)}`, "_blank", "noopener");
@@ -199,8 +199,9 @@ export default function Tool() {
 
   return (
     <section className="stage" aria-labelledby="h">
-      <h1 id="h">Cole o texto. Ouça em segundos.</h1>
-      <p className="lead">Grátis, sem cadastro, e o seu texto não sai do seu aparelho.</p>
+      <p className="sa-eyebrow">Principal • direto no navegador</p>
+      <h2 id="h">Texto em Áudio</h2>
+      <p className="lead">Cole o roteiro, gere a voz e baixe em MP3 ou WAV. Grátis para testar, e o seu texto não sai do seu aparelho.</p>
 
       <ol className="path" aria-label="Passo a passo">
         {["Cole seu texto", "Gere o áudio", "Ouça e baixe"].map((t, i) => (

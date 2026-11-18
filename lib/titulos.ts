@@ -1,4 +1,4 @@
-// Gerador de títulos: modelos de estrutura escritos para o texto-áudio.
+// Gerador de títulos: modelos de estrutura escritos para o Saium.
 // Cada modelo pede só as lacunas que precisa, e cada lacuna tem um formato fixo
 // (verbo no infinitivo, substantivo, plural...) para a frase sair natural.
 import { titleFit } from "./toolkit2";

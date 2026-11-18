@@ -1,6 +1,8 @@
-# texto-áudio
+# Saium — Feito. Subiu. Postado.
 
-Site que transforma texto em áudio em português do Brasil, direto no navegador (voz Piper `pt_BR-faber-medium`).
+Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (voz Piper `pt_BR-faber-medium`).
+
+Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/saium.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.
 O texto não sai do aparelho e não há custo por uso.
 
 ## Rodar no seu computador

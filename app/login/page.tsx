@@ -6,7 +6,7 @@ import LoginForm from "@/components/LoginForm";
 import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/auth";
 
-export const metadata: Metadata = { title: "Entrar · texto-áudio", robots: { index: false } };
+export const metadata: Metadata = { title: "Entrar · Saium", robots: { index: false } };
 
 export default async function Login({ searchParams }: { searchParams: Promise<{ next?: string; erro?: string }> }) {
   const { next: rawNext, erro } = await searchParams;
@@ -18,7 +18,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
     <Shell>
       <div className="auth tool">
         <h1>Entrar</h1>
-        <p className="lead">A conta só é necessária para assinar o plano Pro. O texto para áudio continua grátis e sem cadastro.</p>
+        <p className="lead">A conta só é necessária para assinar o plano Criador. O texto para áudio continua grátis e sem cadastro.</p>
         {erro && <p className="status" role="alert">Esse link não funcionou ou já expirou. Peça um novo abaixo.</p>}
         <LoginForm next={next} />
         <p className="note">Ao continuar, você concorda com os <Link href="/termos">Termos de Uso</Link> e com a <Link href="/privacidade">Política de Privacidade</Link>.</p>

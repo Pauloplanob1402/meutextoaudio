@@ -3,13 +3,17 @@ import "./globals.css";
 import "./ferramentas.css";
 import "./ferramentas2.css";
 import "./legal.css";
+import "./saium.css";
 
 export const metadata: Metadata = {
-  title: "texto-áudio: cole o texto, ouça em segundos",
-  description: "Transforme texto em áudio em português do Brasil, direto no navegador. Sem cadastro e sem enviar seu texto para ninguém.",
+  metadataBase: new URL(process.env.SITE_URL ?? "https://saium.com.br"),
+  title: "Saium — Feito. Subiu. Postado. | Ferramentas para criadores de YouTube",
+  description: "Texto em áudio ilimitado direto no navegador e mais ferramentas para criadores de YouTube: roteiro, capítulos, legendas, miniatura e planejamento.",
   openGraph: {
-    title: "texto-áudio: cole o texto, ouça em segundos",
-    description: "Áudio em português do Brasil, grátis e privado, direto no seu navegador.",
+    title: "Saium — Feito. Subiu. Postado.",
+    description: "Criação pronta antes de abrir o YouTube Studio, upload sem atrito e seu vídeo no ar. Texto em áudio direto no navegador.",
+    siteName: "Saium",
+    locale: "pt_BR",
     type: "website",
   },
 };
@@ -21,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>

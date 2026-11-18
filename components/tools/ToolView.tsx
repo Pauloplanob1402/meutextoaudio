@@ -23,6 +23,11 @@ const VIEWS: Record<string, ComponentType> = {
   "dna-de-marca": dynamic(() => import("./BrandDNA"), { loading }),
   "simulador-de-ctr": dynamic(() => import("./CtrSimulator"), { loading }),
   "roteiro-em-blocos": dynamic(() => import("./ScriptBlocks"), { loading }),
+  "painel-do-video": dynamic(() => import("./VideoBoard"), { loading }),
+  "revisao-do-video": dynamic(() => import("./VideoReview"), { loading }),
+  "planejador-de-serie": dynamic(() => import("./SeriesPlanner"), { loading }),
+  "playbooks": dynamic(() => import("./PlaybookLibrary"), { loading }),
+  "desafio-30-dias": dynamic(() => import("./Challenge30"), { loading }),
   "calculadora-de-ganhos": dynamic(() => import("./Earnings"), { loading }),
 };
 

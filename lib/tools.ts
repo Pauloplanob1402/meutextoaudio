@@ -27,7 +27,7 @@ export const GROUPS: { id: GroupId; title: string; hint: string }[] = [
 
 export const TOOLS: ToolInfo[] = [
   { slug: "ideias-de-video", group: "ideias", start: true, title: "Ideias de vídeo por assunto", short: "Ideias de formato, título de exemplo e como começar, em 9 assuntos.", intro: "Escolha um assunto e veja ideias de vídeo com título de exemplo e uma sugestão de como começar." },
-  { slug: "cruzador-de-nicho", group: "ideias", start: true, title: "Cruzador de nicho (Paixão, Habilidade e Demanda)", short: "Cruze o que você ama, o que faz bem e o que procuram.", intro: "Escolha sua paixão, sua habilidade e o que o público procura. Veja formatos de vídeo para esse cruzamento." },
+  { slug: "gerador-de-titulos", group: "ideias", start: true, title: "Gerador de títulos", short: "Preencha as lacunas e veja títulos prontos, por tipo de gatilho.", intro: "Responda 3 perguntas e receba títulos por tipo: curiosidade, lista, passo a passo, alerta e mais. Edite, copie e guarde os melhores." },
   { slug: "validador-de-gancho", group: "roteiro", start: true, title: "Validador de gancho", short: "Marque o que o começo do vídeo faz e veja a nota de 0 a 100.", intro: "Confira se os primeiros segundos do vídeo prendem a atenção e veja o que falta." },
   { slug: "roteiro-em-blocos", group: "roteiro", start: true, title: "Roteiro em blocos com tempo", short: "Gancho, contexto, corpo, clímax e chamada final, com o tempo de cada um.", intro: "Escreva cada parte do roteiro e veja quanto tempo ela dura falada." },
   { slug: "tempo-de-fala", group: "roteiro", title: "Calculadora de tempo de fala", short: "Cole o roteiro e veja quanto tempo ele dura falado.", intro: "Cole o roteiro e descubra a duração do vídeo antes de gravar." },

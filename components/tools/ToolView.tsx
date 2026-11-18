@@ -28,6 +28,11 @@ const VIEWS: Record<string, ComponentType> = {
   "planejador-de-serie": dynamic(() => import("./SeriesPlanner"), { loading }),
   "playbooks": dynamic(() => import("./PlaybookLibrary"), { loading }),
   "desafio-30-dias": dynamic(() => import("./Challenge30"), { loading }),
+  "teleprompter": dynamic(() => import("./Teleprompter"), { loading }),
+  "testador-de-titulos": dynamic(() => import("./TitleTester"), { loading }),
+  "gerador-de-descricao": dynamic(() => import("./DescriptionBuilder"), { loading }),
+  "limpador-de-roteiro": dynamic(() => import("./SpeechCleaner"), { loading }),
+  "calculadora-de-frequencia": dynamic(() => import("./FrequencyCalc"), { loading }),
   "calculadora-de-ganhos": dynamic(() => import("./Earnings"), { loading }),
 };
 

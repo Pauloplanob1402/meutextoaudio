@@ -45,7 +45,7 @@ export default function Privacidade() {
         {RECURSOS.historicoNaNuvem && (
           <p>A única exceção é o <b>histórico na nuvem do plano Pro</b>: se você escolher salvar um texto na sua conta, ele fica guardado no nosso banco de dados até você apagá-lo ou pedir a exclusão da conta.</p>
         )}
-        <p>Alguns recursos guardam informações <b>só no seu aparelho</b>, no armazenamento local do navegador: o rascunho do texto, as marcações do checklist, as anotações do calendário e outros ajustes das ferramentas. Isso não vem para nós. Para apagar, limpe os dados do site no seu navegador.</p>
+        <p>Alguns recursos guardam informações <b>só no seu aparelho</b>, no armazenamento local do navegador: o rascunho do texto, as marcações do checklist, as anotações do calendário e as respostas e rascunhos das outras ferramentas (como o roteiro em blocos e o DNA de marca). Isso não vem para nós. Para apagar, limpe os dados do site no seu navegador.</p>
       </Sec>
 
       <Sec id="conta" n={++n} title="Quais dados guardamos na sua conta">

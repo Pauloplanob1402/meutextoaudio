@@ -27,6 +27,9 @@ export const GROUPS: { id: GroupId; title: string; hint: string }[] = [
 
 export const TOOLS: ToolInfo[] = [
   { slug: "ideias-de-video", group: "ideias", start: true, title: "Ideias de vídeo por assunto", short: "Ideias de formato, título de exemplo e como começar, em 9 assuntos.", intro: "Escolha um assunto e veja ideias de vídeo com título de exemplo e uma sugestão de como começar." },
+  { slug: "cruzador-de-nicho", group: "ideias", start: true, title: "Cruzador de nicho (Paixão, Habilidade e Demanda)", short: "Cruze o que você ama, o que faz bem e o que procuram.", intro: "Escolha sua paixão, sua habilidade e o que o público procura. Veja formatos de vídeo para esse cruzamento." },
+  { slug: "validador-de-gancho", group: "roteiro", start: true, title: "Validador de gancho", short: "Marque o que o começo do vídeo faz e veja a nota de 0 a 100.", intro: "Confira se os primeiros segundos do vídeo prendem a atenção e veja o que falta." },
+  { slug: "roteiro-em-blocos", group: "roteiro", start: true, title: "Roteiro em blocos com tempo", short: "Gancho, contexto, corpo, clímax e chamada final, com o tempo de cada um.", intro: "Escreva cada parte do roteiro e veja quanto tempo ela dura falada." },
   { slug: "tempo-de-fala", group: "roteiro", title: "Calculadora de tempo de fala", short: "Cole o roteiro e veja quanto tempo ele dura falado.", intro: "Cole o roteiro e descubra a duração do vídeo antes de gravar." },
   { slug: "dividir-texto", group: "roteiro", title: "Divisor de texto", short: "Quebre um texto longo em blocos, sem cortar frases.", intro: "Cole um texto longo e copie os blocos, um de cada vez." },
   { slug: "remover-silencio", group: "roteiro", title: "Removedor de silêncio de áudio", short: "Tire as pausas longas da sua gravação.", intro: "Envie a gravação e corte os silêncios longos. O arquivo não sai do seu aparelho." },
@@ -35,11 +38,13 @@ export const TOOLS: ToolInfo[] = [
   { slug: "hashtags-e-tags", group: "publicar", start: true, title: "Gerador de hashtags e tags", short: "Digite as palavras-chave e copie tudo pronto.", intro: "Digite as palavras-chave do vídeo e copie as hashtags e as tags prontas." },
   { slug: "capitulos", group: "publicar", start: true, title: "Gerador de capítulos para YouTube", short: "Monte os capítulos e confira se o YouTube vai aceitar.", intro: "Escreva os horários e os títulos. A ferramenta confere se está no formato certo." },
   { slug: "legendas-srt", group: "publicar", title: "Gerador de legendas (.srt)", short: "Transforme o roteiro em um arquivo de legenda.", intro: "Cole o roteiro e baixe a legenda em .srt para colocar no vídeo." },
-  { slug: "checklist-de-publicacao", group: "publicar", start: true, title: "Checklist de publicação", short: "Confira o que falta antes de apertar publicar.", intro: "Marque o que já fez. Suas marcações ficam salvas neste aparelho." },
+  { slug: "checklist-de-publicacao", group: "publicar", start: true, title: "Checklist de lançamento", short: "Confira tudo antes de publicar e suba de nível a cada item.", intro: "Marque o que já fez e veja seu nível subir. Suas marcações ficam salvas neste aparelho." },
 
   { slug: "redimensionar-imagem", group: "imagem", start: true, title: "Redimensionador de imagem", short: "Deixe a imagem no tamanho da miniatura, do banner ou da foto.", intro: "Envie uma imagem, escolha o tamanho e baixe pronta." },
   { slug: "miniatura", group: "imagem", start: true, title: "Criador de miniatura", short: "Texto grande, cores prontas, 1280×720.", intro: "Escreva o texto, escolha as cores e baixe a miniatura no tamanho do YouTube." },
 
+  { slug: "simulador-de-ctr", group: "imagem", start: true, title: "Simulador de miniatura e título", short: "Veja como miniatura e título aparecem no YouTube, no computador e no celular.", intro: "Envie a miniatura, digite até 3 títulos e compare como eles aparecem antes de publicar." },
+  { slug: "dna-de-marca", group: "planejar", title: "Construtor de DNA de marca", short: "Um passo a passo de 7 etapas para definir a identidade do canal.", intro: "Responda 7 perguntas guiadas e leve para casa o resumo da identidade do seu canal." },
   { slug: "calendario", group: "planejar", title: "Calendário de conteúdo", short: "Veja o mês inteiro e anote o que publicar em cada dia.", intro: "Clique em um dia e anote a ideia. Tudo fica salvo neste aparelho." },
   { slug: "calculadora-de-ganhos", group: "planejar", title: "Calculadora de ganhos do YouTube", short: "Estime quanto um canal pode render por mês.", intro: "Informe as visualizações e o valor por mil para ter uma ideia." },
 ];

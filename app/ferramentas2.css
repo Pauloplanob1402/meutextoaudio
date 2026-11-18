@@ -1,0 +1,51 @@
+/* Ferramentas de lógica (sem IA): gancho, nicho, DNA de marca, simulador, roteiro e checklist */
+.sub{display:block;font:400 15px var(--body);color:var(--mute);margin-top:2px}
+.tp select{appearance:auto}
+.p3{grid-template-columns:1.2fr 1fr 1fr;align-items:start}
+.score{font-size:clamp(52px,10vw,84px)}
+.score .of{font-size:.3em;color:var(--mute);font-weight:600}
+.score.fraco{color:#c4271a}.score.regular{color:#a15c00}.score.bom{color:var(--blue)}.score.forte{color:#127a3a}
+.fixes{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:17px}
+.fixes li{background:var(--lilac);border-radius:12px;padding:10px 14px}
+
+/* assistente */
+.wiz{display:flex;gap:8px;list-style:none;padding:0;margin:0 0 20px;flex-wrap:wrap}
+.wiz li{margin:0}
+.wiz button{width:44px;height:44px;border-radius:99px;border:2px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;font:800 16px var(--display)}
+.wiz button b{font-weight:800}
+.wiz li.on button{border-color:var(--blue);background:var(--blue);color:#fff}
+.wiz li.done button{border-color:#127a3a;color:#127a3a}
+.steph{font-size:24px;margin:8px 0}
+
+/* roteiro em blocos */
+.scriptblocks h3{font-size:20px}
+.scriptblocks textarea{width:100%;min-height:110px}
+
+/* simulador de CTR */
+.ytmock{display:grid;gap:20px;padding:18px;border-radius:14px;background:#fff;border:2px solid var(--line);margin-top:16px}
+.ytmock.dk{background:#0f0f0f;color:#f1f1f1;border-color:#272727}
+.ytmock.desktop{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.ytmock.celular{max-width:390px;gap:24px}
+.ytmock.small{max-width:420px;margin-top:8px}
+.ytc{min-width:0}
+.ytc-thumb{position:relative;aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,var(--lilac),#c9c9ff) center/cover no-repeat;display:grid;place-items:center;color:var(--blue);font:600 15px var(--body);overflow:hidden}
+.ytmock.celular .ytc-thumb{border-radius:0;margin:0 -18px}
+.ytc-thumb em{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.8);color:#fff;border-radius:4px;padding:1px 5px;font:600 12px var(--body);font-style:normal}
+.ytc-row{display:flex;gap:10px;margin-top:10px}
+.ytc-av{flex:none;width:36px;height:36px;border-radius:99px;background:var(--blue);color:#fff;display:grid;place-items:center;font:800 16px var(--display)}
+.ytc-info{min-width:0}
+.ytc-title{font:600 16px/1.35 var(--body);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.ytc-meta{font-size:13px;color:var(--mute);margin-top:4px}
+.ytmock.dk .ytc-meta{color:#aaa}
+.ytc.small{display:flex;gap:10px}
+.ytc.small .ytc-thumb{flex:0 0 168px;border-radius:8px;font-size:12px}
+.ytc.small .ytc-title{font-size:14px}
+
+/* checklist gamificado */
+.levelcard{border:2px solid var(--line);border-radius:16px;padding:16px;margin-bottom:24px;background:#fff}
+.levelcard .xp{font-size:18px;margin:4px 0 2px}
+.levelcard .xp b{font:800 28px var(--display);color:var(--blue)}
+.levelcard.lv4{border-color:#127a3a;background:#f1fbf4}
+.levelcard.lv4 .xp b{color:#127a3a}
+
+@media (max-width:860px){.p3{grid-template-columns:1fr}.ytmock.desktop{grid-template-columns:1fr}}

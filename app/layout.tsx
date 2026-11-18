@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./ferramentas.css";
+import "./ferramentas2.css";
 import "./legal.css";
 
 export const metadata: Metadata = {

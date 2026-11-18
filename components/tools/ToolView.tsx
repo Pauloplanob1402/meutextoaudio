@@ -18,6 +18,11 @@ const VIEWS: Record<string, ComponentType> = {
   "redimensionar-imagem": dynamic(() => import("./ImageResize"), { loading }),
   "miniatura": dynamic(() => import("./Thumbnail"), { loading }),
   "calendario": dynamic(() => import("./Calendar"), { loading }),
+  "validador-de-gancho": dynamic(() => import("./HookValidator"), { loading }),
+  "cruzador-de-nicho": dynamic(() => import("./NicheCross"), { loading }),
+  "dna-de-marca": dynamic(() => import("./BrandDNA"), { loading }),
+  "simulador-de-ctr": dynamic(() => import("./CtrSimulator"), { loading }),
+  "roteiro-em-blocos": dynamic(() => import("./ScriptBlocks"), { loading }),
   "calculadora-de-ganhos": dynamic(() => import("./Earnings"), { loading }),
 };
 

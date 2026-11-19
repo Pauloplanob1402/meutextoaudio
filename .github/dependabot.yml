@@ -1,0 +1,17 @@
+# Verifica toda semana se alguma biblioteca tem versão nova ou falha de segurança conhecida
+# e abre um pedido (Pull Request) para você revisar. Nada é alterado sem você aceitar.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      seguranca-e-patches:
+        update-types: ["patch", "minor"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"

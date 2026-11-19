@@ -3,17 +3,23 @@ import { randomUUID } from "node:crypto";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { billingEnabled, createPreapproval } from "@/lib/billing";
+import { forbidden, sameOrigin } from "@/lib/origin";
 
 // Cria a assinatura no Mercado Pago e devolve o link de pagamento.
 export async function POST(request: Request) {
+  if (!sameOrigin(request)) return forbidden();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user?.email) return NextResponse.json({ error: "Entre na sua conta para assinar." }, { status: 401 });
   if (!billingEnabled()) return NextResponse.json({ error: "A assinatura ainda não está disponível." }, { status: 503 });
 
   const admin = createAdminClient();
-  const { data: current } = await admin.from("subscriptions").select("status").eq("user_id", user.id).maybeSingle();
+  const { data: current } = await admin.from("subscriptions").select("status, updated_at").eq("user_id", user.id).maybeSingle();
   if (current?.status === "authorized") return NextResponse.json({ error: "Você já tem uma assinatura ativa." }, { status: 409 });
+  // Evita criar várias assinaturas seguidas (duplo clique ou abuso): espera alguns segundos entre tentativas.
+  if (current?.status === "pending" && current.updated_at && Date.now() - new Date(current.updated_at).getTime() < 15_000) {
+    return NextResponse.json({ error: "Aguarde alguns segundos e tente de novo." }, { status: 429, headers: { "Retry-After": "15" } });
+  }
 
   try {
     const site = (process.env.SITE_URL ?? new URL(request.url).origin).replace(/\/$/, "");

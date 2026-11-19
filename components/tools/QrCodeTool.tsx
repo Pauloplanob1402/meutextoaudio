@@ -29,10 +29,11 @@ export default function QrCodeTool() {
   }, [data, fg, bg, lvl]);
 
   async function png() {
+    // Desenha em um canvas e converte direto em arquivo (sem fetch, que o CSP não permitiria para data:).
     const Q = await import("qrcode");
-    const url2 = await Q.toDataURL(data, { width: size, margin: 2, errorCorrectionLevel: lvl, color: { dark: fg, light: bg } });
-    const blob = await (await fetch(url2)).blob();
-    downloadBlob(blob, "qrcode.png");
+    const canvas = document.createElement("canvas");
+    await Q.toCanvas(canvas, data, { width: size, margin: 2, errorCorrectionLevel: lvl, color: { dark: fg, light: bg } });
+    canvas.toBlob((blob) => { if (blob) downloadBlob(blob, "qrcode.png"); }, "image/png");
   }
   async function svg() {
     const Q = await import("qrcode");

@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   const dataId = url.searchParams.get("data.id") ?? "";
   const type = url.searchParams.get("type") ?? url.searchParams.get("topic") ?? "";
 
+  if (dataId && !/^[A-Za-z0-9_-]{1,64}$/.test(dataId)) return new Response("id inválido", { status: 400 });
   if (!verifySignature(request.headers, dataId)) return new Response("assinatura inválida", { status: 401 });
   if (type !== "subscription_preapproval" || !dataId) return new Response("ignorado", { status: 200 });
 

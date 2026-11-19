@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { billingEnabled, cancelPreapproval } from "@/lib/billing";
+import { forbidden, sameOrigin } from "@/lib/origin";
 
-export async function POST() {
+export async function POST(request: Request) {
+  if (!sameOrigin(request)) return forbidden();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Entre na sua conta." }, { status: 401 });

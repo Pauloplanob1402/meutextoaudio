@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { SUPABASE_KEY, SUPABASE_URL } from "./env";
+import { hardenCookie } from "./cookies";
 
 // Para Server Components, Route Handlers e Server Actions.
 export async function createClient() {
@@ -10,7 +11,7 @@ export async function createClient() {
       getAll: () => store.getAll(),
       setAll(list) {
         try {
-          for (const { name, value, options } of list) store.set(name, value, options);
+          for (const { name, value, options } of list) store.set(name, value, hardenCookie(options));
         } catch {
           // Server Components não gravam cookies; o proxy.ts renova a sessão.
         }

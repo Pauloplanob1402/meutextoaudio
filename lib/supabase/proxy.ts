@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_KEY, SUPABASE_URL } from "./env";
+import { hardenCookie } from "./cookies";
 
 // Renova a sessão a cada visita e protege /conta.
 export async function updateSession(request: NextRequest) {
@@ -11,7 +12,7 @@ export async function updateSession(request: NextRequest) {
       setAll(list) {
         list.forEach(({ name, value }) => request.cookies.set(name, value));
         response = NextResponse.next({ request });
-        list.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+        list.forEach(({ name, value, options }) => response.cookies.set(name, value, hardenCookie(options)));
       },
     },
   });

@@ -86,7 +86,7 @@ export default function Termos() {
       </Sec>
 
       <Sec id="informacoes" n={++n} title="Estimativas e sugestões das ferramentas">
-        <p>As ferramentas dão estimativas e sugestões. A calculadora de ganhos, o tempo de fala, a nota do validador de gancho e a simulação de título e miniatura mostram valores e resultados aproximados, e as ideias de vídeo e os títulos sugeridos são sugestões de formato. Nada disso é promessa de resultado nem aconselhamento financeiro, jurídico ou de saúde. As regras de outras plataformas, como os limites do YouTube, mudam: confira sempre a fonte oficial.</p>
+        <p>As ferramentas dão estimativas e sugestões. A calculadora de ganhos, o tempo de fala, a nota do validador de gancho, a nota do testador de títulos, as faixas da revisão do vídeo, a projeção da calculadora de frequência e a simulação de título e miniatura mostram valores e resultados aproximados, e as ideias de vídeo e os títulos sugeridos são sugestões de formato. Nada disso é promessa de resultado nem aconselhamento financeiro, jurídico ou de saúde. As regras de outras plataformas, como os limites do YouTube, mudam: confira sempre a fonte oficial.</p>
       </Sec>
 
       <Sec id="disponibilidade" n={++n} title="Disponibilidade do site">

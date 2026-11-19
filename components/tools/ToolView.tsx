@@ -33,6 +33,10 @@ const VIEWS: Record<string, ComponentType> = {
   "gerador-de-descricao": dynamic(() => import("./DescriptionBuilder"), { loading }),
   "limpador-de-roteiro": dynamic(() => import("./SpeechCleaner"), { loading }),
   "calculadora-de-frequencia": dynamic(() => import("./FrequencyCalc"), { loading }),
+  "links-com-tempo": dynamic(() => import("./TimeLinks"), { loading }),
+  "conversor-de-legenda": dynamic(() => import("./SubtitleConverter"), { loading }),
+  "qr-code-do-canal": dynamic(() => import("./QrCodeTool"), { loading }),
+  "banco-de-ideias": dynamic(() => import("./IdeaBank"), { loading }),
   "calculadora-de-ganhos": dynamic(() => import("./Earnings"), { loading }),
 };
 

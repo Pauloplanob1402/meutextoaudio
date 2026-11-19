@@ -49,13 +49,18 @@ export type DescInput = { resumo: string; pontos: string; cta: string; capitulos
 export const DEFAULT_CTA = "Se este vídeo ajudou, deixe o seu like e se inscreva no canal para não perder o próximo.";
 
 export function normHashtags(s: string, max = 3): string[] {
+  // Com vírgula, ponto e vírgula ou quebra de linha, cada pedaço é uma hashtag (frases viram uma só: #TextoEmÁudio).
+  // Sem separador, cada palavra solta vira uma hashtag.
+  const parts = /[,;\n]/.test(s) ? s.split(/[,;\n]+/) : s.split(/\s+/);
   const seen = new Set<string>();
   const out: string[] = [];
-  for (const raw of s.split(/[\s,;]+/)) {
-    const w = raw.replace(/^#+/, "").replace(/[^\p{L}\p{N}_]/gu, "");
-    if (!w || seen.has(w.toLowerCase())) continue;
-    seen.add(w.toLowerCase());
-    out.push("#" + w);
+  for (const raw of parts) {
+    const words = raw.replace(/#/g, " ").replace(/[^\p{L}\p{N}_\s]/gu, "").split(/\s+/).filter(Boolean);
+    if (!words.length) continue;
+    const tag = "#" + words.map((w) => w[0].toUpperCase() + w.slice(1)).join("");
+    if (seen.has(tag.toLowerCase())) continue;
+    seen.add(tag.toLowerCase());
+    out.push(tag);
     if (out.length >= max) break;
   }
   return out;
@@ -82,23 +87,29 @@ export function buildDescription(i: DescInput): string {
 const UN = ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
 const TENS = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
 const HUND = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+const HUND_F = HUND.map((h) => h.replace(/entos$/, "entas"));
 
-export function numberToWords(n: number): string {
+// fem = true usa "uma", "duas", "duzentas"... (para horas, semanas, pessoas etc.)
+export function numberToWords(n: number, fem = false): string {
   if (!Number.isFinite(n) || n < 0 || n > 999_999_999 || !Number.isInteger(n)) return String(n);
-  if (n < 20) return UN[n];
-  if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? " e " + UN[n % 10] : "");
-  if (n < 1000) return n === 100 ? "cem" : HUND[Math.floor(n / 100)] + (n % 100 ? " e " + numberToWords(n % 100) : "");
+  if (n < 20) return fem && n === 1 ? "uma" : fem && n === 2 ? "duas" : UN[n];
+  if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? " e " + numberToWords(n % 10, fem) : "");
+  if (n < 1000) return n === 100 ? "cem" : (fem ? HUND_F : HUND)[Math.floor(n / 100)] + (n % 100 ? " e " + numberToWords(n % 100, fem) : "");
   const link = (r: number) => (r < 100 || r % 100 === 0 ? " e " : " ");
   if (n < 1_000_000) {
     const th = Math.floor(n / 1000), r = n % 1000;
-    return (th === 1 ? "mil" : numberToWords(th) + " mil") + (r ? link(r) + numberToWords(r) : "");
+    return (th === 1 ? "mil" : numberToWords(th, fem) + " mil") + (r ? link(r) + numberToWords(r, fem) : "");
   }
   const m = Math.floor(n / 1_000_000), r = n % 1_000_000;
-  return (m === 1 ? "um milhão" : numberToWords(m) + " milhões") + (r ? link(r) + numberToWords(r) : "");
+  return (m === 1 ? "um milhão" : numberToWords(m) + " milhões") + (r ? link(r) + numberToWords(r, fem) : "");
 }
 
+// Substantivos femininos comuns: o número que vem antes concorda ("duas semanas", "uma hora")
+const FEM_NOUNS = new Set(["hora", "horas", "semana", "semanas", "vez", "vezes", "pessoa", "pessoas", "dica", "dicas", "ideia", "ideias", "etapa", "etapas", "parte", "partes", "aula", "aulas", "coisa", "coisas", "página", "páginas", "palavra", "palavras", "linha", "linhas", "ferramenta", "ferramentas", "receita", "receitas", "mulher", "mulheres", "criança", "crianças", "empresa", "empresas", "noite", "noites", "casa", "casas", "razão", "razões", "música", "músicas", "foto", "fotos", "mensagem", "mensagens", "pergunta", "perguntas", "resposta", "respostas", "história", "histórias", "cena", "cenas", "imagem", "imagens", "estratégia", "estratégias", "dúvida", "dúvidas", "tentativa", "tentativas", "lição", "lições", "visualizações", "visualização", "curtida", "curtidas", "inscrita", "inscritas"]);
+const isFem = (w?: string) => !!w && FEM_NOUNS.has(w.toLowerCase());
+
 const ABBR: [RegExp, string][] = [
-  [/\bp\.\s?ex\.?/gi, "por exemplo"], [/\bex\.:?/gi, "por exemplo"], [/\betc\.?/gi, "e assim por diante"],
+  [/\bp\.\s?ex\.?/gi, "por exemplo"], [/\bex\.:?/gi, "por exemplo"], 
   [/\bDr\./g, "doutor"], [/\bDra\./g, "doutora"], [/\bSr\./g, "senhor"], [/\bSra\./g, "senhora"], [/\bProf\./g, "professor"],
   [/\bvc\b/gi, "você"], [/\bvcs\b/gi, "vocês"], [/\btb\b/gi, "também"], [/\bpq\b/gi, "porque"], [/\bobs\.:?/gi, "observação:"],
   [/\bnº\s?/gi, "número "], [/\bkm\b/gi, "quilômetros"], [/\bkg\b/gi, "quilos"],
@@ -118,7 +129,12 @@ export function cleanForSpeech(text: string, o: CleanOptions = DEFAULT_CLEAN): s
     t = t.replace(/^\s{0,3}#{1,6}\s+/gm, "").replace(/[*_`~>]+/g, "").replace(/^\s*[-•]\s+/gm, "").replace(/\s*[—–]\s*/g, ", ").replace(/\s+-\s+/g, ", ").replace(/…/g, "...");
     t = t.replace(/&/g, " e ").replace(/\s\/\s/g, " ou ");
   }
-  if (o.abbr) for (const [re, rep] of ABBR) t = t.replace(re, rep);
+  if (o.abbr) {
+    // "etc." no fim da frase mantém o ponto final; no meio, não
+    t = t.replace(/\betc\b(\.?)(?=(\s*$|\s*\n|\s+\p{Lu}))/giu, (_m, dot: string) => "e assim por diante" + (dot ? "." : ""));
+    t = t.replace(/\betc\.?/gi, "e assim por diante");
+    for (const [re, rep] of ABBR) t = t.replace(re, rep);
+  }
   if (o.parens) t = t.replace(/\s*\(([^)]*)\)/g, (_m, inner: string) => `, ${inner.trim()},`).replace(/,\s*,/g, ",").replace(/,\s*([.!?])/g, "$1");
   if (o.numbers) {
     t = t.replace(/R\$\s?(\d{1,3}(?:\.\d{3})*|\d+)(?:,(\d{2}))?/g, (_m, a: string, c?: string) => {
@@ -128,10 +144,10 @@ export function cleanForSpeech(text: string, o: CleanOptions = DEFAULT_CLEAN): s
       return cents ? `${reais} e ${numberToWords(cents)} ${cents === 1 ? "centavo" : "centavos"}` : reais;
     });
     t = t.replace(/(\d+(?:,\d+)?)\s?%/g, (_m, a: string) => `${a.includes(",") ? a.replace(/^(\d+),(\d+)$/, (_x, i: string, d: string) => `${intWords(i)} vírgula ${decWords(d)}`) : intWords(a)} por cento`);
-    t = t.replace(/\b(\d{1,2})\s?h(?:(\d{2}))?\b/g, (_m, h: string, mm?: string) => `${intWords(h)} ${+h === 1 ? "hora" : "horas"}${mm ? " e " + numberToWords(parseInt(mm, 10)) : ""}`);
-    t = t.replace(/(?<![\d/:.,])(\d{1,3}(?:\.\d{3})+)(?![\d/:])/g, (_m, a: string) => intWords(a));
+    t = t.replace(/\b(\d{1,2})\s?h(?:(\d{2}))?\b/g, (_m, h: string, mm?: string) => `${numberToWords(+h, true)} ${+h === 1 ? "hora" : "horas"}${mm ? " e " + numberToWords(parseInt(mm, 10)) : ""}`);
+    t = t.replace(/(?<![\d/:.,])(\d{1,3}(?:\.\d{3})+)(?![\d/:])/g, (_m, a: string) => a.replace(/\./g, ""));
     t = t.replace(/(?<![\d/:.,])(\d+),(\d+)(?![\d/:])/g, (_m, i: string, d: string) => `${intWords(i)} vírgula ${decWords(d)}`);
-    t = t.replace(/(?<![\d/:.,])(\d+)(?![\d/:,]\d)(?!\d)/g, (m) => (m.length <= 9 ? intWords(m) : m));
+    t = t.replace(/(?<![\d/:.,])(\d+)(?![\d/:,]\d)(?!\d)(\s+\p{L}+)?/gu, (m, d: string, next?: string) => (d.length <= 9 ? numberToWords(parseInt(d, 10), isFem(next?.trim())) + (next ?? "") : m));
   }
   // concordância depois de trocar o link e capitalização no começo das frases
   t = t.replace(/\bem o link/g, "no link").replace(/\bde o link/g, "do link").replace(/\bpor o link/g, "pelo link").replace(/\ba o link/g, "ao link");
@@ -146,7 +162,9 @@ export function speechIssues(text: string, maxWords = 25): SpeechIssues {
   const sentences = text.split(/(?<=[.!?…])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
   const wc = (s: string) => (s.match(/[\p{L}\p{N}]+/gu) ?? []).length;
   const longSentences = sentences.map((s) => ({ text: s, words: wc(s) })).filter((s) => s.words > maxWords);
-  const acronyms = [...new Set(text.match(/\b[A-ZÀ-Þ]{2,6}\b/g) ?? [])].filter((w) => !["EU", "OI", "UM", "EM", "DE", "DO", "DA", "NA", "NO"].includes(w));
+  const COMMON = new Set(["NAO", "SIM", "MUITO", "TODOS", "TODAS", "AGORA", "HOJE", "DICA", "TUDO", "NUNCA", "SEMPRE", "GRATIS", "FACIL", "URGENTE", "CUIDADO", "ATENCAO", "OLHA", "VEJA", "COMO", "POR", "QUE", "EU", "OI", "UM", "EM", "DE", "DO", "DA", "NA", "NO", "OU", "MAS", "E", "SE", "TE", "ME"]);
+  // Siglas: 2 a 6 letras maiúsculas, sem acento (palavra com acento em caixa alta é só ênfase)
+  const acronyms = [...new Set(text.match(/(?<![\p{L}\p{N}])[A-Z]{2,6}(?![\p{L}\p{N}])/gu) ?? [])].filter((w) => !COMMON.has(w));
   return { longSentences, acronyms, digitsLeft: (text.match(/\d/g) ?? []).length };
 }
 
@@ -156,20 +174,30 @@ export function speechIssues(text: string, maxWords = 25): SpeechIssues {
 export type FreqInput = { hoursWeek: number; hoursPerVideo: number; subsNow: number; subsGoal: number; subsPerVideo: number };
 
 export type Scenario = { perWeek: number; weeks: number; date: Date; label: string };
-export type FreqResult = { possible: number; videosNeeded: number; scenarios: Scenario[]; ok: boolean; note: string };
+export type FreqResult = { possible: number; ratio: number; videosNeeded: number; scenarios: Scenario[]; ok: boolean; note: string };
+
+// perWeek pode ser fração: 0,5 = um vídeo a cada 2 semanas
+export function rateLabel(perWeek: number): string {
+  if (perWeek >= 1) return `${perWeek} ${perWeek === 1 ? "vídeo" : "vídeos"} por semana`;
+  const every = Math.round(1 / perWeek);
+  return `1 vídeo a cada ${every} semanas`;
+}
 
 export function planFrequency(i: FreqInput, today = new Date()): FreqResult {
   const ok = i.hoursWeek > 0 && i.hoursPerVideo > 0 && i.subsPerVideo > 0 && i.subsGoal > i.subsNow;
-  if (!ok) return { possible: 0, videosNeeded: 0, scenarios: [], ok: false, note: "Preencha as horas, a média de inscritos por vídeo e uma meta maior que os inscritos atuais." };
-  const possible = Math.max(1, Math.floor((i.hoursWeek / i.hoursPerVideo) * 100) / 100);
-  const recommended = Math.max(1, Math.floor(i.hoursWeek / i.hoursPerVideo));
+  if (!ok) return { possible: 0, ratio: 0, videosNeeded: 0, scenarios: [], ok: false, note: "Preencha as horas, a média de inscritos por vídeo e uma meta maior que os inscritos atuais." };
+  const ratio = i.hoursWeek / i.hoursPerVideo; // vídeos que cabem por semana
+  // Cabe no tempo: se passa de 1 por semana, o inteiro de baixo; se não, 1 a cada N semanas (N inteiro que cobre o tempo)
+  const fits = ratio >= 1 ? Math.floor(ratio) : 1 / Math.ceil(1 / ratio);
   const videosNeeded = Math.ceil((i.subsGoal - i.subsNow) / i.subsPerVideo);
-  const rates = [...new Set([1, 2, 3, recommended])].sort((a, b) => a - b);
+  const rates = [...new Set([0.5, 1, 2, 3, fits].map((r) => Math.round(r * 1000) / 1000))].sort((a, b) => a - b);
   const scenarios = rates.map((perWeek) => {
     const weeks = Math.ceil(videosNeeded / perWeek);
     const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + weeks * 7);
-    return { perWeek, weeks, date, label: perWeek === recommended ? "Cabe no seu tempo" : perWeek > recommended ? "Acima do seu tempo" : "Mais leve" };
+    const f = Math.round(fits * 1000) / 1000;
+    return { perWeek, weeks, date, label: perWeek === f ? "Cabe no seu tempo" : perWeek > f ? "Acima do seu tempo" : "Mais leve" };
   });
-  const note = recommended < 1 ? "" : `Com ${i.hoursWeek} h por semana e ${i.hoursPerVideo} h por vídeo, cabem cerca de ${possible.toLocaleString("pt-BR")} vídeos por semana. Publicar acima disso tende a cansar e baixar a qualidade.`;
-  return { possible: recommended, videosNeeded, scenarios, ok: true, note };
+  const fmt = (n: number) => n.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+  const note = `Com ${fmt(i.hoursWeek)} h por semana e ${fmt(i.hoursPerVideo)} h por vídeo, cabem cerca de ${fmt(ratio)} vídeos por semana. Publicar acima disso tende a cansar e baixar a qualidade.`;
+  return { possible: fits, ratio, videosNeeded, scenarios, ok: true, note };
 }

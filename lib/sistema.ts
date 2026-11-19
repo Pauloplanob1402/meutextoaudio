@@ -23,7 +23,7 @@ export const STAGES: Stage[] = [
       { id: "busca", text: "Procurei no YouTube e vi que existe gente buscando isso" },
     ],
     notes: "Descreva a ideia em uma frase: para quem é e o que a pessoa ganha.",
-    tools: ["ideias-de-video", "gerador-de-titulos"],
+    tools: ["banco-de-ideias", "ideias-de-video", "gerador-de-titulos"],
   },
   {
     id: "titulo", title: "Título e miniatura",
@@ -35,7 +35,7 @@ export const STAGES: Stage[] = [
       { id: "cel", text: "Testei título e miniatura no tamanho do celular" },
     ],
     notes: "Cole aqui o título escolhido e as outras opções.",
-    tools: ["gerador-de-titulos", "simulador-de-ctr", "miniatura", "titulo-e-descricao"],
+    tools: ["gerador-de-titulos", "testador-de-titulos", "simulador-de-ctr", "miniatura", "titulo-e-descricao"],
   },
   {
     id: "roteiro", title: "Roteiro",
@@ -46,7 +46,7 @@ export const STAGES: Stage[] = [
       { id: "corte", text: "Cortei o que não ajuda a promessa do título" },
     ],
     notes: "Duração alvo e pontos principais do vídeo.",
-    tools: ["roteiro-em-blocos", "tempo-de-fala"],
+    tools: ["playbooks", "roteiro-em-blocos", "limpador-de-roteiro", "tempo-de-fala"],
   },
   {
     id: "gancho", title: "Gancho",
@@ -69,7 +69,7 @@ export const STAGES: Stage[] = [
       { id: "rev", text: "Assisti do começo ao fim, sem erros" },
     ],
     notes: "Anotações de edição: o que ainda precisa ajustar.",
-    tools: ["/", "remover-silencio", "dividir-texto"],
+    tools: ["teleprompter", "/", "remover-silencio", "dividir-texto"],
   },
   {
     id: "publicar", title: "Preparar a publicação",
@@ -83,7 +83,7 @@ export const STAGES: Stage[] = [
       { id: "agenda", text: "Agendei a data e a hora" },
     ],
     notes: "Rascunho da descrição ou links que vão nela.",
-    tools: ["capitulos", "hashtags-e-tags", "legendas-srt", "checklist-de-publicacao", "calendario"],
+    tools: ["gerador-de-descricao", "capitulos", "hashtags-e-tags", "legendas-srt", "conversor-de-legenda", "checklist-de-publicacao", "calendario"],
   },
   {
     id: "no-ar", title: "No ar",
@@ -94,7 +94,7 @@ export const STAGES: Stage[] = [
       { id: "anot", text: "Anotei a data e a hora em que o vídeo saiu" },
     ],
     notes: "Onde você divulgou e o que as pessoas disseram.",
-    tools: [],
+    tools: ["links-com-tempo", "qr-code-do-canal"],
   },
   {
     id: "revisao", title: "Revisão",
@@ -105,7 +105,7 @@ export const STAGES: Stage[] = [
       { id: "muda", text: "Escrevi o que vou mudar no próximo vídeo" },
     ],
     notes: "O que você aprendeu com este vídeo.",
-    tools: ["revisao-do-video"],
+    tools: ["revisao-do-video", "calculadora-de-frequencia"],
   },
 ];
 

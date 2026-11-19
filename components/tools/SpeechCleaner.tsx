@@ -57,12 +57,12 @@ export default function SpeechCleaner() {
                   <ul className="problems">{iss.longSentences.slice(0, 5).map((s) => <li key={s.text}>({s.words} palavras) {s.text.slice(0, 90)}{s.text.length > 90 ? "…" : ""}</li>)}</ul>
                 </>
               )}
-              {iss.acronyms.length > 0 && <p className="count">Siglas no texto: <b>{iss.acronyms.join(", ")}</b>. A voz pode ler como palavra. Se precisar, escreva como se fala (ex.: “esse ê ó” no lugar de “SEO”).</p>}
+              {iss.acronyms.length > 0 && <p className="count">Siglas no texto: <b>{iss.acronyms.join(", ")}</b>. A voz pode ler como palavra. Se precisar, escreva como se fala (ex.: “ésse ê ó” no lugar de “SEO”).</p>}
             </div>
           )}
         </>
       )}
-      <p className="note">Confira o resultado antes de gerar o áudio: números e concordância (um/uma, dois/duas) nem sempre saem perfeitos. O texto não sai do seu aparelho.</p>
-    </div>
+      <p className="note">Confira o resultado antes de gerar o áudio. O gênero dos números (uma, duas) é ajustado para as palavras mais comuns, como horas, semanas e pessoas, mas outras palavras podem escapar. O texto não sai do seu aparelho.</p>
+      </div>
   );
 }

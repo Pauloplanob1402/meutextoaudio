@@ -1,5 +1,5 @@
 "use client";
-import { planFrequency } from "@/lib/sistema2";
+import { planFrequency, rateLabel } from "@/lib/sistema2";
 import { useStored } from "./ui";
 
 type F = { hoursWeek: string; hoursPerVideo: string; subsNow: string; subsGoal: string; subsPerVideo: string };
@@ -31,13 +31,13 @@ export default function FrequencyCalc() {
       {r.ok && (
         <>
           <div className="big-out" aria-live="polite">
-            <div className="num">{r.possible} {r.possible === 1 ? "vídeo" : "vídeos"} por semana</div>
+            <div className="num">{rateLabel(r.possible)}</div>
             <p className="count">é o ritmo que cabe no seu tempo. Para chegar à meta, são necessários cerca de {r.videosNeeded.toLocaleString("pt-BR")} vídeos.</p>
           </div>
           <ul className="rmetrics">
             {r.scenarios.map((s) => (
               <li key={s.perWeek} className={s.label === "Cabe no seu tempo" ? "lvl-otimo" : s.label === "Acima do seu tempo" ? "lvl-regular" : ""}>
-                <b>{s.perWeek} por semana</b>
+                <b>{rateLabel(s.perWeek)}</b>
                 <span>{s.date.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
                 <small>{s.weeks} {s.weeks === 1 ? "semana" : "semanas"} · {s.label}</small>
               </li>

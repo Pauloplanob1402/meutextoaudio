@@ -26,6 +26,7 @@ export const GROUPS: { id: GroupId; title: string; hint: string }[] = [
 ];
 
 export const TOOLS: ToolInfo[] = [
+  { slug: "banco-de-ideias", group: "ideias", start: true, title: "Banco de ideias", short: "Anote as ideias de vídeo na hora e escolha depois.", intro: "Guarde as ideias que aparecem fora de hora, separe por etiquetas e leve a escolhida para o painel ou o calendário." },
   { slug: "ideias-de-video", group: "ideias", start: true, title: "Ideias de vídeo por assunto", short: "Ideias de formato, título de exemplo e como começar, em 9 assuntos.", intro: "Escolha um assunto e veja ideias de vídeo com título de exemplo e uma sugestão de como começar." },
   { slug: "gerador-de-titulos", group: "ideias", start: true, title: "Gerador de títulos", short: "Preencha as lacunas e veja títulos prontos, por tipo de gatilho.", intro: "Responda 3 perguntas e receba títulos por tipo: curiosidade, lista, passo a passo, alerta e mais. Edite, copie e guarde os melhores." },
   { slug: "limpador-de-roteiro", group: "roteiro", start: true, title: "Limpador de roteiro para falar", short: "Deixe o texto do jeito que se fala: números, siglas e frases longas.", intro: "Cole o roteiro e a ferramenta arruma números, abreviações e símbolos, e aponta o que fica difícil de ouvir." },
@@ -42,9 +43,12 @@ export const TOOLS: ToolInfo[] = [
   { slug: "gerador-de-descricao", group: "publicar", start: true, title: "Gerador de descrição", short: "Preencha os campos e copie a descrição completa do vídeo.", intro: "Preencha o resumo, os capítulos e os links. A descrição sai montada na ordem certa." },
   { slug: "hashtags-e-tags", group: "publicar", start: true, title: "Gerador de hashtags e tags", short: "Digite as palavras-chave e copie tudo pronto.", intro: "Digite as palavras-chave do vídeo e copie as hashtags e as tags prontas." },
   { slug: "capitulos", group: "publicar", start: true, title: "Gerador de capítulos para YouTube", short: "Monte os capítulos e confira se o YouTube vai aceitar.", intro: "Escreva os horários e os títulos. A ferramenta confere se está no formato certo." },
+  { slug: "conversor-de-legenda", group: "publicar", title: "Conversor de legenda", short: "Troque .srt por .vtt ou texto puro e acerte o atraso.", intro: "Envie uma legenda, escolha o formato e baixe pronta. Dá para atrasar ou adiantar tudo." },
+  { slug: "links-com-tempo", group: "publicar", title: "Links com tempo", short: "Gere links que abrem o vídeo no minuto exato.", intro: "Cole o endereço do vídeo e os horários. Receba os links prontos para a descrição ou para responder comentários." },
   { slug: "legendas-srt", group: "publicar", title: "Gerador de legendas (.srt)", short: "Transforme o roteiro em um arquivo de legenda.", intro: "Cole o roteiro e baixe a legenda em .srt para colocar no vídeo." },
   { slug: "checklist-de-publicacao", group: "publicar", start: true, title: "Checklist de lançamento", short: "Confira tudo antes de publicar e suba de nível a cada item.", intro: "Marque o que já fez e veja seu nível subir. Suas marcações ficam salvas neste aparelho." },
 
+  { slug: "qr-code-do-canal", group: "imagem", title: "QR code do canal", short: "QR code do seu canal ou vídeo, em PNG ou SVG.", intro: "Cole o endereço e baixe um QR code que leva direto ao canal, até pedindo a inscrição." },
   { slug: "redimensionar-imagem", group: "imagem", start: true, title: "Redimensionador de imagem", short: "Deixe a imagem no tamanho da miniatura, do banner ou da foto.", intro: "Envie uma imagem, escolha o tamanho e baixe pronta." },
   { slug: "miniatura", group: "imagem", start: true, title: "Criador de miniatura", short: "Texto grande, cores prontas, 1280×720.", intro: "Escreva o texto, escolha as cores e baixe a miniatura no tamanho do YouTube." },
 

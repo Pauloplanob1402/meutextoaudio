@@ -35,7 +35,7 @@ export default function DescriptionBuilder() {
       </div>
       <div className="field"><label htmlFor="d-l">Links</label><textarea id="d-l" value={f.links} onChange={(e) => set("links", e.target.value)} style={{ minHeight: 80 }} placeholder={"Site: https://...\nInstagram: https://..."} /></div>
       <div className="field"><label htmlFor="d-s">Sobre o canal (fica salvo para os próximos vídeos)</label><textarea id="d-s" value={f.sobre} onChange={(e) => set("sobre", e.target.value)} style={{ minHeight: 70 }} /></div>
-      <div className="field"><label htmlFor="d-h">Hashtags (as 3 primeiras aparecem acima do título)</label><input id="d-h" type="text" value={f.hashtags} onChange={(e) => set("hashtags", e.target.value)} placeholder="criadores, youtube, texto em áudio" />{tags.length > 0 && <span className="count">Ficam assim: {tags.join(" ")}</span>}</div>
+      <div className="field"><label htmlFor="d-h">Hashtags, separadas por vírgula (as 3 primeiras aparecem acima do título)</label><input id="d-h" type="text" value={f.hashtags} onChange={(e) => set("hashtags", e.target.value)} placeholder="criadores, youtube, texto em áudio" />{tags.length > 0 && <span className="count">Ficam assim: {tags.join(" ")}</span>}</div>
 
       <h2 className="steph">Descrição pronta</h2>
       <div className="out">{out || "Preencha o resumo para ver a descrição."}</div>

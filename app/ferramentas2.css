@@ -117,3 +117,18 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .ttrules{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:16px}
 .ttrules .ok{color:#127a3a}.ttrules .no{color:var(--ink)}
 .ttrules .no small{color:var(--mute)}
+
+/* links com tempo, QR code e banco de ideias */
+.qrbox{display:grid;place-items:center;margin:16px 0;padding:16px;background:#fff;border:2px solid var(--line);border-radius:14px}
+.qrbox canvas{max-width:100%;height:auto!important;image-rendering:pixelated}
+.tp input.qrcolor{width:80px;min-height:50px;padding:2px;border:2px solid var(--line);border-radius:12px;background:#fff}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.ibank{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:10px}
+.ibank li{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:6px}
+.ibank li.pick{border-color:var(--blue);box-shadow:0 0 0 3px var(--lilac)}
+.ib-top{display:flex;gap:10px;align-items:flex-start}
+.ib-text{font-size:18px;flex:1;word-break:break-word}
+.ib-st{border:0;border-radius:99px;padding:3px 12px;font:700 13px var(--body);cursor:pointer;text-transform:capitalize;min-height:30px}
+.ib-st.st-nova{background:var(--lilac);color:var(--blue)}.ib-st.st-escolhida{background:#fff3d6;color:#5a3e00}.ib-st.st-feita{background:#dff5e6;color:#127a3a}
+.ib-act{display:flex;gap:16px;flex-wrap:wrap}
+.ib-act .link{min-height:36px;padding:4px 0;font-size:15px}

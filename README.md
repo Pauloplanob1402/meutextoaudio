@@ -1,6 +1,6 @@
 # Saium — Feito. Subiu. Postado.
 
-Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff, Edresson e Tugão; a lista fica em `lib/voices.ts`).
+Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff e Tugão, e as vozes naturais Dora, Alex e Santa; a lista fica em `lib/voices.ts`).
 
 Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/saium.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.
 O texto não sai do aparelho e não há custo por uso.
@@ -25,6 +25,14 @@ set NODE_OPTIONS=--dns-result-order=ipv4first
 1. Crie um repositório no GitHub e envie os arquivos desta pasta (sem `node_modules` nem `.next`, que já estão no `.gitignore`).
 2. Na Vercel: **Add New, Project**, escolha o repositório e clique em **Deploy**. Não precisa configurar nada.
 3. Domínio: no projeto da Vercel, **Settings, Domains**, e siga as instruções de DNS.
+
+## Vozes
+
+A lista fica em `lib/voices.ts`. Há dois motores:
+- **Piper** (Faber, Cadu, Jeff e Tugão): rápidas, uns 60 MB cada.
+- **Kokoro** (Dora, Alex e Santa): mais naturais e mais lentas. Um modelo só (uns 90 MB) serve as três. Vem do Hugging Face (`onnx-community/Kokoro-82M-v1.0-ONNX`).
+
+Com a hospedagem própria da voz ligada (`NEXT_PUBLIC_SELF_HOST=1`), as vozes Kokoro não aparecem no seletor, porque o modelo não é copiado para o seu site.
 
 ## Hospedar a voz por conta própria (opcional)
 

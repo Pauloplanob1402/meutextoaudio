@@ -23,10 +23,10 @@ const OFFICIAL = "https://huggingface.co/rhasspy/piper-voices/resolve/main/";
 // - sem ela, mandamos as vozes extras para o repositório oficial.
 export function redirectVoiceDownloads(map?: Record<string, string>) {
   if (typeof window === "undefined") return;
-  if (map) for (const v of VOICES) if (v.official) map[v.id] = v.path;
+  if (map) for (const v of VOICES) if (v.official && v.path) map[v.id] = v.path;
   const w = window as any;
   if (w.__voiceRedirect) return;
-  const extra = VOICES.filter((v) => v.official).map((v) => v.path.slice(0, v.path.lastIndexOf("/") + 1));
+  const extra = VOICES.filter((v) => v.official && v.path).map((v) => v.path!.slice(0, v.path!.lastIndexOf("/") + 1));
   const original = window.fetch.bind(window);
   window.fetch = (input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;

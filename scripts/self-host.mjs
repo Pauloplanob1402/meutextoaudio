@@ -13,7 +13,6 @@ const VOICES = [
   { path: "pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx" },
   { path: "pt/pt_BR/cadu/medium/pt_BR-cadu-medium.onnx", official: true },
   { path: "pt/pt_BR/jeff/medium/pt_BR-jeff-medium.onnx", official: true },
-  { path: "pt/pt_BR/edresson/low/pt_BR-edresson-low.onnx", official: true },
   { path: "pt/pt_PT/tugão/medium/pt_PT-tugão-medium.onnx" },
 ];
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript } from "@/lib/tts";
-import { redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
+import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
 import { DEFAULT_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
@@ -11,6 +11,11 @@ const SPEEDS = [
   { label: "Mais devagar", v: 0.85 },
   { label: "Normal", v: 1 },
   { label: "Mais rápido", v: 1.2 },
+];
+const GROUPS = [
+  { label: "Vozes rápidas · Português do Brasil", test: (v: (typeof VOICES)[number]) => v.engine === "piper" && v.lang === "pt-BR" },
+  { label: "Vozes rápidas · Português de Portugal", test: (v: (typeof VOICES)[number]) => v.engine === "piper" && v.lang === "pt-PT" },
+  { label: "Vozes naturais (mais lentas) · Português do Brasil", test: (v: (typeof VOICES)[number]) => v.engine === "kokoro" },
 ];
 const HEIGHTS = [30,55,40,75,50,90,35,65,85,45,70,30,95,55,40,80,60,35,75,50,90,40,65,30,85,55,45,70,35,60,80,40,95,50,65,30,75,45,55,85];
 
@@ -74,17 +79,32 @@ export default function Tool() {
       if (!total) throw new Error("sem texto");
 
       const tts = await import("@mintplex-labs/piper-tts-web");
-      redirectVoiceDownloads(tts.PATH_MAP as Record<string, string>);
-      // A biblioteca guarda uma sessão só. Para trocar de voz, descartamos a anterior.
-      if (loadedVoice.current && loadedVoice.current !== voiceId) (tts.TtsSession as any)._instance = undefined;
-      const session = await tts.TtsSession.create({
-        voiceId: voiceId as any,
-        wasmPaths,
-        progress: (p: any) => {
-          if (p?.total && p.url !== "tts://inference-progress")
-            setStatus(`Baixando a voz (só na primeira vez): ${Math.round((p.loaded * 100) / p.total)}%`);
-        },
-      });
+      const voice = getVoice(voiceId);
+      let session: { predict: (t: string) => Promise<Blob> };
+      if (voice.engine === "kokoro") {
+        const { createKokoro } = await import("@/lib/kokoro");
+        session = await createKokoro({
+          voice: voice.kokoro!,
+          bits: {
+            piperWasm: wasmPaths?.piperWasm ?? `${tts.WASM_BASE}.wasm`,
+            piperData: wasmPaths?.piperData ?? `${tts.WASM_BASE}.data`,
+            onnxWasm: wasmPaths?.onnxWasm ?? tts.ONNX_BASE,
+          },
+          onProgress: (l, t) => setStatus(`Baixando a voz natural (só na primeira vez): ${Math.round((l * 100) / t)}%`),
+        });
+      } else {
+        redirectVoiceDownloads(tts.PATH_MAP as Record<string, string>);
+        // A biblioteca guarda uma sessão só. Para trocar de voz, descartamos a anterior.
+        if (loadedVoice.current && loadedVoice.current !== voiceId) (tts.TtsSession as any)._instance = undefined;
+        session = await tts.TtsSession.create({
+          voiceId: voiceId as any,
+          wasmPaths,
+          progress: (p: any) => {
+            if (p?.total && p.url !== "tts://inference-progress")
+              setStatus(`Baixando a voz (só na primeira vez): ${Math.round((p.loaded * 100) / p.total)}%`);
+          },
+        });
+      }
 
       const out: (Blob | number)[] = [];
       const skipped: string[] = [];
@@ -102,7 +122,7 @@ export default function Tool() {
         await new Promise((r) => setTimeout(r, 0)); // deixa a tela respirar
       }
       if (!out.some((x) => typeof x !== "number")) throw new Error("nenhum trecho");
-      loadedVoice.current = voiceId;
+      if (voice.engine === "piper") loadedVoice.current = voiceId;
 
       setStatus("Montando o áudio final…");
       const merged = await mergeParts(out);
@@ -244,13 +264,21 @@ export default function Tool() {
         <div className="voicepick">
           <label htmlFor="voz">Voz</label>
           <select id="voz" value={voiceId} onChange={(e) => pickVoice(e.target.value)} disabled={busy}>
-            <optgroup label="Português do Brasil">
-              {VOICES.filter((v) => v.lang === "pt-BR").map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
-            </optgroup>
-            <optgroup label="Português de Portugal">
-              {VOICES.filter((v) => v.lang === "pt-PT").map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
-            </optgroup>
+            {GROUPS.map((g) => {
+              const list = VOICES.filter((v) => g.test(v) && (!SELF_HOST || v.engine === "piper"));
+              if (!list.length) return null;
+              return (
+                <optgroup key={g.label} label={g.label}>
+                  {list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
+                </optgroup>
+              );
+            })}
           </select>
+          {getVoice(voiceId).engine === "kokoro" && (
+            <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
+              Voz natural: a primeira vez baixa cerca de 90 MB e a geração é bem mais lenta que a das vozes rápidas. Para textos longos, prefira a Faber.
+            </p>
+          )}
         </div>
         <div className="row">
           <button className="btn go" type="button" onClick={generate} disabled={busy}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>

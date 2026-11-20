@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Email, LegalPage, OutraPagina, Resumo, Sec } from "@/components/Legal";
+import { Email, FacaParte, Historia, LegalPage, OutraPagina, Resumo, Sec } from "@/components/Legal";
 import { LEGAL, RECURSOS, VOZ_NO_PROPRIO_SITE } from "@/lib/legal";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const TOC = [
-  { id: "quem", title: "Quem é o responsável" },
+  { id: "quem", title: "Quem somos e quem cuida dos seus dados" },
   { id: "texto", title: "O que acontece com o seu texto" },
   { id: "conta", title: "Quais dados guardamos na sua conta" },
   { id: "pagamento", title: "Pagamentos" },
@@ -26,7 +26,7 @@ const TOC = [
 export default function Privacidade() {
   let n = 0;
   return (
-    <LegalPage title="Política de Privacidade" intro="Explicamos em linguagem simples quais dados o Saium usa, para quê e quais são os seus direitos." toc={TOC}>
+    <LegalPage title="Política de Privacidade" intro="Explicamos em linguagem simples quais dados o Saium usa, para quê e quais são os seus direitos. Quem confia o seu texto a um site merece saber para onde ele vai." toc={TOC}>
       <Resumo>
         <ul>
           <li>O seu texto vira áudio no seu navegador{RECURSOS.historicoNaNuvem ? ". Ele só vai para o nosso servidor se você escolher salvá-lo no histórico do plano Criador." : " e não vai para o nosso servidor."}</li>
@@ -36,8 +36,10 @@ export default function Privacidade() {
         </ul>
       </Resumo>
 
-      <Sec id="quem" n={++n} title="Quem é o responsável">
-        <p>O Saium é operado por <b>{LEGAL.nome}</b> ({LEGAL.documento}), {LEGAL.endereco}. Para qualquer assunto sobre privacidade, escreva para <Email />.</p>
+      <Sec id="quem" n={++n} title="Quem somos e quem cuida dos seus dados">
+        <Historia>
+          <p>Por enquanto, preferimos não divulgar o CNPJ nem os nomes dos fundadores. O que não muda: quem cuida dos seus dados é <b>{LEGAL.nome}</b>, e para qualquer assunto sobre privacidade você fala com gente de verdade, pelo e-mail <Email />.</p>
+        </Historia>
       </Sec>
 
       <Sec id="texto" n={++n} title="O que acontece com o seu texto">
@@ -83,6 +85,7 @@ export default function Privacidade() {
           <li><b>{LEGAL.hospedagem}</b>: hospedagem do site. Pode registrar dados técnicos de acesso, como o IP.</li>
           <li><b>Mercado Pago</b>: pagamento e assinatura.</li>
           <li><b>{LEGAL.envioEmail}</b>: envio dos e-mails de acesso. Recebe o seu e-mail e o conteúdo da mensagem.</li>
+          <li><b>{LEGAL.encaminhamento}</b>: encaminhamento das mensagens que você envia para o nosso e-mail de contato. Recebe o que você escrever para nós, incluindo o seu e-mail.</li>
           {RECURSOS.loginGoogle && <li><b>Google</b>: login com o Google, se você escolher essa opção.</li>}
           <li><b>Google Fonts</b>: ao abrir o site, o seu navegador carrega as fontes de letra dos servidores do Google, que podem registrar o seu IP.</li>
           {!VOZ_NO_PROPRIO_SITE && (
@@ -129,6 +132,7 @@ export default function Privacidade() {
       <Sec id="contato" n={++n} title="Contato">
         <p>Dúvidas, pedidos ou reclamações sobre os seus dados: <Email />.</p>
       </Sec>
+      <FacaParte />
     </LegalPage>
   );
 }

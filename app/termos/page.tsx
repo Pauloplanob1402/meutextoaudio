@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Email, LegalPage, OutraPagina, Resumo, Sec } from "@/components/Legal";
+import { Email, FacaParte, Historia, LegalPage, OutraPagina, Resumo, Sec } from "@/components/Legal";
 import { LEGAL, RECURSOS, VOZ } from "@/lib/legal";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ const TOC = [
 export default function Termos() {
   let n = 0;
   return (
-    <LegalPage title="Termos de Uso" intro="Estas são as regras para usar o Saium. Leia antes de criar uma conta ou assinar o plano Criador." toc={TOC}>
+    <LegalPage title="Termos de Uso" intro="Estas são as regras do jogo entre nós e você: curtas e claras. Leia antes de criar uma conta ou assinar o plano Criador." toc={TOC}>
       <Resumo>
         <ul>
           <li>O texto para áudio e as ferramentas são grátis e não precisam de conta.</li>
@@ -40,7 +40,9 @@ export default function Termos() {
       </Resumo>
 
       <Sec id="quem" n={++n} title="Quem somos">
-        <p>O Saium é operado por <b>{LEGAL.nome}</b> ({LEGAL.documento}), {LEGAL.endereco}. Contato: <Email />.</p>
+        <Historia>
+          <p>Por enquanto, não divulgamos o CNPJ nem os nomes dos fundadores. Quem responde por estes Termos é <b>{LEGAL.nome}</b>, e você fala com a gente pelo e-mail <Email />.</p>
+        </Historia>
       </Sec>
 
       <Sec id="servico" n={++n} title="O que é o Saium">
@@ -98,7 +100,7 @@ export default function Termos() {
       </Sec>
 
       <Sec id="propriedade" n={++n} title="Propriedade do site">
-        <p>O código, o design e a marca Saium pertencem a {LEGAL.nome}. Usar o serviço não transfere esses direitos para você.</p>
+        <p>O código, o design e a marca Saium pertencem à equipe do Saium. Usar o serviço não transfere esses direitos para você.</p>
       </Sec>
 
       <Sec id="encerramento" n={++n} title="Encerramento de conta">
@@ -116,6 +118,7 @@ export default function Termos() {
       <Sec id="contato" n={++n} title="Contato">
         <p>Dúvidas sobre estes Termos: <Email />.</p>
       </Sec>
+      <FacaParte />
     </LegalPage>
   );
 }

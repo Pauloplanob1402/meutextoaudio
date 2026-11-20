@@ -8,6 +8,13 @@
 .legal .resumo{background:var(--lilac);border-radius:16px;padding:20px 24px;margin:24px 0 8px}
 .legal .resumo b{display:block;font:800 20px var(--display);margin-bottom:8px}
 .legal .resumo ul{margin:0}
+.legal .historia p{margin-top:12px}
+.legal .historia p:first-child{margin-top:0}
+.legal .junte-se{background:var(--lilac);border-radius:16px;padding:24px 28px;margin:48px 0 0}
+.legal .junte-se b{display:block;font:800 22px var(--display);margin-bottom:8px}
+.legal .junte-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.legal .junte-links a{background:var(--blue);color:#fff;border-radius:999px;padding:10px 20px;text-decoration:none}
+.legal .junte-links a + a{background:#fff;color:var(--blue);border:2px solid var(--blue);padding:8px 18px}
 .legal .sec{margin-top:40px;scroll-margin-top:24px}
 .legal .sec h2{font-size:clamp(22px,3vw,28px);margin-bottom:12px}
 .legal p,.legal li{font-size:18px;line-height:1.65}

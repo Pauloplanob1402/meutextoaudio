@@ -1,6 +1,6 @@
 # Saium — Feito. Subiu. Postado.
 
-Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (voz Piper `pt_BR-faber-medium`).
+Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff, Edresson e Tugão; a lista fica em `lib/voices.ts`).
 
 Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/saium.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.
 O texto não sai do aparelho e não há custo por uso.

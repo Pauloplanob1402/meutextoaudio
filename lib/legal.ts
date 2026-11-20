@@ -1,7 +1,7 @@
 // Dados legais do site, usados nas páginas /privacidade e /termos.
 // 1) Se algum campo voltar a ter [PREENCHER ...], as duas páginas mostram um aviso para você.
 // 2) Ajuste os "recursos" mais abaixo para o que o site faz de verdade hoje.
-import { VOICE_ID } from "@/lib/tts";
+import { VOICES } from "@/lib/voices";
 
 export const LEGAL = {
   // Por enquanto o site não divulga CNPJ/CPF, endereço nem os nomes dos fundadores (decisão da equipe).
@@ -22,7 +22,8 @@ export const RECURSOS = {
 
 // Vem do mesmo ajuste usado em lib/selfhost.ts: se a voz é servida pelo próprio site, não há terceiros nesse download.
 export const VOZ_NO_PROPRIO_SITE = process.env.NEXT_PUBLIC_SELF_HOST === "1";
-export const VOZ = VOICE_ID;
+const nomes = VOICES.map((v) => `${v.name} (${v.lang})`);
+export const VOZ = nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}` : nomes[0];
 
 export const ATUALIZADO_EM = "19 de novembro de 2026";
 

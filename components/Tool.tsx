@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { SAMPLE_TEXT, VOICE_ID, estimateSeconds, formatDuration, mergeParts, parseScript } from "@/lib/tts";
+import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript } from "@/lib/tts";
 import { redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
+import { DEFAULT_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -23,6 +24,8 @@ export default function Tool() {
   const [fmt, setFmt] = useState<"mp3" | "wav">("mp3");
   const [site, setSite] = useState("");
   const [copied, setCopied] = useState(false);
+  const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
+  const loadedVoice = useRef<string | null>(null);
   const original = useRef<Blob | null>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
   const au = useRef<HTMLAudioElement>(null);
@@ -38,8 +41,14 @@ export default function Tool() {
   useEffect(() => {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
+    try { const v = localStorage.getItem("voz"); if (v) setVoiceId(getVoice(v).id); } catch {}
     if (window.matchMedia("(min-width:861px)").matches) ta.current?.focus();
   }, []);
+
+  function pickVoice(id: string) {
+    setVoiceId(id);
+    try { localStorage.setItem("voz", id); } catch {}
+  }
 
   function applySpeed() {
     if (!au.current) return;
@@ -64,10 +73,12 @@ export default function Tool() {
       const total = parts.filter((p) => p.kind === "text").length;
       if (!total) throw new Error("sem texto");
 
-      redirectVoiceDownloads();
       const tts = await import("@mintplex-labs/piper-tts-web");
+      redirectVoiceDownloads(tts.PATH_MAP as Record<string, string>);
+      // A biblioteca guarda uma sessão só. Para trocar de voz, descartamos a anterior.
+      if (loadedVoice.current && loadedVoice.current !== voiceId) (tts.TtsSession as any)._instance = undefined;
       const session = await tts.TtsSession.create({
-        voiceId: VOICE_ID as any,
+        voiceId: voiceId as any,
         wasmPaths,
         progress: (p: any) => {
           if (p?.total && p.url !== "tts://inference-progress")
@@ -91,6 +102,7 @@ export default function Tool() {
         await new Promise((r) => setTimeout(r, 0)); // deixa a tela respirar
       }
       if (!out.some((x) => typeof x !== "number")) throw new Error("nenhum trecho");
+      loadedVoice.current = voiceId;
 
       setStatus("Montando o áudio final…");
       const merged = await mergeParts(out);
@@ -104,7 +116,9 @@ export default function Tool() {
       requestAnimationFrame(() => res.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     } catch (e) {
       console.error(e);
-      setStatus("Não consegui gerar o áudio agora. Recarregue a página (F5) e tente de novo, ou use um texto menor.");
+      try { (((await import("@mintplex-labs/piper-tts-web")).TtsSession) as any)._instance = undefined; } catch {}
+      loadedVoice.current = null;
+      setStatus(`Não consegui gerar o áudio com a voz ${getVoice(voiceId).name}. Escolha outra voz, ou recarregue a página (F5) e tente de novo.`);
     } finally {
       setBusy(false);
     }
@@ -227,6 +241,17 @@ export default function Tool() {
             Duração estimada do áudio: cerca de <b>{formatDuration(est)}</b>
           </p>
         )}
+        <div className="voicepick">
+          <label htmlFor="voz">Voz</label>
+          <select id="voz" value={voiceId} onChange={(e) => pickVoice(e.target.value)} disabled={busy}>
+            <optgroup label="Português do Brasil">
+              {VOICES.filter((v) => v.lang === "pt-BR").map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
+            </optgroup>
+            <optgroup label="Português de Portugal">
+              {VOICES.filter((v) => v.lang === "pt-PT").map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
+            </optgroup>
+          </select>
+        </div>
         <div className="row">
           <button className="btn go" type="button" onClick={generate} disabled={busy}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
           <p className="status" role="status" aria-live="polite">{status}</p>
@@ -267,7 +292,7 @@ export default function Tool() {
             </div>
           </div>
         )}
-        <p className="note">Carregamos a voz uma única vez (cerca de 60 MB) e ela fica salva no seu navegador. Nas próximas, é imediato.</p>
+        <p className="note">Cada voz é baixada uma única vez (cerca de 60 MB a maioria) e fica salva no seu navegador. A primeira geração com uma voz nova demora um pouco mais. Nas próximas, é imediato.</p>
       </div>
     </section>
   );

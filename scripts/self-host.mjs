@@ -7,7 +7,15 @@ import { pipeline } from "node:stream/promises";
 import { join } from "node:path";
 
 const HF = "https://huggingface.co/diffusionstudio/piper-voices/resolve/main";
-const VOICE = "pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx";
+const OFFICIAL = "https://huggingface.co/rhasspy/piper-voices/resolve/main";
+// mantenha igual à lista de lib/voices.ts. "official" = voz que não está no espelho diffusionstudio.
+const VOICES = [
+  { path: "pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx" },
+  { path: "pt/pt_BR/cadu/medium/pt_BR-cadu-medium.onnx", official: true },
+  { path: "pt/pt_BR/jeff/medium/pt_BR-jeff-medium.onnx", official: true },
+  { path: "pt/pt_BR/edresson/low/pt_BR-edresson-low.onnx" },
+  { path: "pt/pt_PT/tugão/medium/pt_PT-tugão-medium.onnx" },
+];
 
 // 1) Motor de pronúncia (vem do pacote instalado)
 mkdirSync("public/piper", { recursive: true });
@@ -24,12 +32,12 @@ for (const f of readdirSync(dist)) {
 }
 console.log("OK  public/ort");
 
-// 3) A voz (uns 60 MB)
-for (const path of [VOICE, VOICE + ".json"]) {
+// 3) As vozes (uns 60 MB cada)
+for (const { path: vp, official } of VOICES) for (const path of [vp, vp + ".json"]) {
   const out = join("public/voices", path);
   mkdirSync(join(out, ".."), { recursive: true });
   if (existsSync(out)) { console.log("já existe", out); continue; }
-  const res = await fetch(`${HF}/${path}`);
+  const res = await fetch(`${official ? OFFICIAL : HF}/${path}`);
   if (!res.ok) throw new Error(`Falha ao baixar ${path}: HTTP ${res.status}`);
   await pipeline(Readable.fromWeb(res.body), createWriteStream(out));
   console.log("OK ", out);

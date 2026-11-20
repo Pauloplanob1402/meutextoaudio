@@ -84,7 +84,7 @@ export default function Termos() {
 
       <Sec id="conteudo" n={++n} title="O seu texto e o áudio gerado">
         <p>O texto é seu, e você é responsável por ter o direito de usá-lo. O áudio é gerado no seu navegador e você pode baixá-lo. Nós não revisamos o que você escreve nem o que você gera.</p>
-        <p>O áudio é criado por uma voz sintética de código aberto (hoje, <b>{VOZ}</b>). A licença dessa voz também vale para o uso que você fizer do áudio, então, se pretende usá-lo em um projeto comercial, confira a licença da voz antes.</p>
+        <p>O áudio é criado por uma voz sintética de código aberto, à sua escolha (hoje: <b>{VOZ}</b>). A licença da voz usada também vale para o uso que você fizer do áudio, então, se pretende usá-lo em um projeto comercial, confira a licença da voz antes.</p>
       </Sec>
 
       <Sec id="informacoes" n={++n} title="Estimativas e sugestões das ferramentas">

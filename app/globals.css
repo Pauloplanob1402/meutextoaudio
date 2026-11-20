@@ -63,6 +63,9 @@ label.big{font:800 20px var(--display);display:block;margin-bottom:10px}
 .stage textarea{min-height:200px;font-size:19px}
 .aux{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 20px;font-size:15px;color:var(--mute)}
 .aux .chip{min-height:44px;padding:8px 16px}
+.voicepick{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px}
+.voicepick label{font-weight:600}
+.voicepick select{min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);color:inherit;font:inherit;max-width:100%}
 .btn.go{font-size:20px;padding:0 34px;min-height:56px}
 .btn:disabled{opacity:.6;cursor:progress}
 .result{margin-top:24px;padding-top:24px;border-top:2px solid var(--line)}

@@ -52,13 +52,13 @@ export default function Tool() {
   async function generate() {
     if (busy) return;
     if (!text.trim()) {
-      setStatus("É só colar um texto na caixa acima, ou tocar em “Usar um exemplo”.");
+      setStatus("Cole um texto na caixa acima ou toque em “Usar um exemplo”.");
       ta.current?.focus();
       return;
     }
     setBusy(true);
     setUrl(null);
-    setStatus("Preparando a voz… na primeira vez demora um pouco mais, depois é instantâneo.");
+    setStatus("Preparando a voz… A primeira geração leva um pouco mais. As próximas são imediatas.");
     try {
       const parts = parseScript(text);
       const total = parts.filter((p) => p.kind === "text").length;
@@ -99,7 +99,7 @@ export default function Tool() {
       setStatus(
         skipped.length
           ? `Pronto, mas ${skipped.length} trecho(s) não puderam ser lidos. Tente dividir o texto em partes menores.`
-          : "Pronto! Seu áudio está aqui."
+          : "Seu áudio está pronto."
       );
       requestAnimationFrame(() => res.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     } catch (e) {
@@ -157,7 +157,7 @@ export default function Tool() {
   }
 
   // Convite para um amigo (aparece depois que o áudio fica pronto)
-  const SHARE_MSG = "Testa o Saium: texto em áudio em português, grátis e sem cadastro:";
+  const SHARE_MSG = "Conheça o Saium: texto em áudio em português do Brasil, direto no navegador:";
   function shareWhatsApp() {
     const link = site || window.location.origin;
     window.open(`https://wa.me/?text=${encodeURIComponent(`${SHARE_MSG} ${link}`)}`, "_blank", "noopener");
@@ -199,9 +199,9 @@ export default function Tool() {
 
   return (
     <section className="stage" aria-labelledby="h">
-      <p className="sa-eyebrow">Principal • direto no navegador</p>
+      <p className="sa-eyebrow">Ferramenta principal</p>
       <h2 id="h">Texto em Áudio</h2>
-      <p className="lead">Cole o roteiro, gere a voz e baixe em MP3 ou WAV. Grátis para testar, e o seu texto não sai do seu aparelho.</p>
+      <p className="lead">Cole o roteiro, gere a narração e baixe em MP3 ou WAV. O seu texto não sai do seu aparelho.</p>
 
       <ol className="path" aria-label="Passo a passo">
         {["Cole seu texto", "Gere o áudio", "Ouça e baixe"].map((t, i) => (
@@ -240,7 +240,7 @@ export default function Tool() {
 
         {url && (
           <div className="result" ref={res}>
-            <h2>Pronto! Seu áudio está aqui.</h2>
+            <h2>Seu áudio está pronto.</h2>
             <audio ref={au} src={url} controls onLoadedMetadata={applySpeed} />
             <div className="rrow" style={{ marginTop: 16 }}>
               <div className="speeds" role="group" aria-label="Velocidade">
@@ -259,7 +259,7 @@ export default function Tool() {
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
             <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
-              <p style={{ fontWeight: 600 }}>Gostou? Mande para um amigo.</p>
+              <p style={{ fontWeight: 600 }}>Gostou? Indique o Saium a outro criador.</p>
               <div className="rrow" style={{ marginTop: 10 }}>
                 <button className="btn ghost" type="button" onClick={shareWhatsApp}>Enviar pelo WhatsApp</button>
                 <button className="btn ghost" type="button" onClick={copyLink}>{copied ? "Link copiado!" : "Copiar link"}</button>
@@ -267,7 +267,7 @@ export default function Tool() {
             </div>
           </div>
         )}
-        <p className="note">Na primeira vez, baixamos a voz (uns 60 MB). Depois fica instantâneo.</p>
+        <p className="note">Carregamos a voz uma única vez (cerca de 60 MB) e ela fica salva no seu navegador. Nas próximas, é imediato.</p>
       </div>
     </section>
   );

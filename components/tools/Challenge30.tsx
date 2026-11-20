@@ -23,7 +23,7 @@ export default function Challenge30() {
   if (!st.start) {
     return (
       <div className="tool">
-        <p className="note">30 dias, uma missão por dia, 4 vídeos publicados no final. Cada missão leva uns 20 a 40 minutos e usa as ferramentas do site. É o caminho que quem começa costuma não ter.</p>
+        <p className="note">30 dias, uma missão por dia, 4 vídeos publicados no final. Cada missão leva de 20 a 40 minutos e usa as ferramentas do site. É o caminho que quem começa costuma não ter.</p>
         <div className="field">
           <label htmlFor="ds">Quando você quer começar?</label>
           <div className="addrow">

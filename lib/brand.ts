@@ -24,11 +24,11 @@ export type Stage = { id: string; n: string; tag: string; kicker: string; title:
 
 export const STAGES: Stage[] = [
   { id: "feito", n: "01", tag: "Feito", kicker: "Criação pronta", title: "Roteiro, Áudio & Capa", unit: "ferramentas de criação", groups: ["ideias", "roteiro", "imagem"],
-    text: "Tudo resolvido antes mesmo de abrir o YouTube Studio: ideias validadas, roteiro cronometrado, narração ilimitada em MP3/WAV e miniatura de alto contraste." },
+    text: "Tudo resolvido antes de abrir o YouTube Studio: ideias, roteiro cronometrado, narração em MP3 ou WAV e miniatura de alto contraste." },
   { id: "subiu", n: "02", tag: "Subiu", kicker: "Upload otimizado", title: "SEO, Capítulos & Legendas", unit: "ferramentas de publicação", groups: ["publicar"],
-    text: "Garras afiadas para escalar o algoritmo sem escorregar. Títulos calibrados, tags, capítulos 00:00, legendas .srt e checklist completo sem atrito." },
-  { id: "postado", n: "03", tag: "Postado", kicker: "No ar para o público", title: "Visão do Topo & Ritmo", unit: "ferramentas estratégicas", groups: ["planejar"],
-    text: "Vídeo no ar e território sob controle. Mantenha o ritmo constante com o calendário editorial, DNA de marca e projeção clara de ganhos dos próximos vídeos." },
+    text: "Títulos, tags, capítulos, legendas .srt e checklist de lançamento: tudo conferido antes de você apertar em publicar." },
+  { id: "postado", n: "03", tag: "Postado", kicker: "No ar para o público", title: "Planejamento & Ritmo", unit: "ferramentas estratégicas", groups: ["planejar"],
+    text: "Com o vídeo no ar, mantenha o ritmo com calendário editorial, DNA de marca e uma projeção clara de ganhos." },
 ];
 
 // a ferramenta principal (Texto em Áudio) conta na etapa "Feito"

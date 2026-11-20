@@ -18,7 +18,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
     <Shell>
       <div className="auth tool">
         <h1>Entrar</h1>
-        <p className="lead">A conta só é necessária para assinar o plano Criador. O texto para áudio continua grátis e sem cadastro.</p>
+        <p className="lead">Entre para acessar a sua conta e gerenciar o seu plano.</p>
         {erro && <p className="status" role="alert">Esse link não funcionou ou já expirou. Peça um novo abaixo.</p>}
         <LoginForm next={next} />
         <p className="note">Ao continuar, você concorda com os <Link href="/termos">Termos de Uso</Link> e com a <Link href="/privacidade">Política de Privacidade</Link>.</p>

@@ -56,7 +56,7 @@ export default function Termos() {
 
       <Sec id="planos" n={++n} title="Planos e pagamento">
         <ul>
-          <li><b>Grátis:</b> texto para áudio e ferramentas, sem custo.</li>
+          <li><b>Grátis:</b> texto para áudio, com limite de gerações, e ferramentas, sem custo.</li>
           <li><b>Criador:</b> assinatura mensal. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
         </ul>
         <p>O pagamento é processado pelo Mercado Pago. A assinatura se renova todo mês, na mesma forma de pagamento, até você cancelar.</p>

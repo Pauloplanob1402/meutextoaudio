@@ -26,7 +26,7 @@ export default function Arsenal() {
               <h3>{t.title}</h3>
               <p>{t.short}</p>
             </div>
-            <div className="sa-tool-foot"><span>Grátis, no navegador</span><b>Testar →</b></div>
+            <div className="sa-tool-foot"><span>Ferramenta extra</span><b>Abrir →</b></div>
           </Link>
         ))}
       </div>

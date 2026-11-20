@@ -6,15 +6,15 @@ import { STAGES, TOTAL, stageCount } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Ferramentas para criadores de YouTube · Saium",
-  description: "Texto em áudio, gerador de capítulos e legendas, criador de miniatura e mais. Grátis, sem cadastro e direto no navegador.",
+  description: "Texto em áudio, gerador de capítulos e legendas, criador de miniatura e mais. Direto no navegador, sem enviar seus arquivos.",
 };
 
 export default function Ferramentas() {
   return (
     <Shell>
       <div className="tp">
-        <h1>O arsenal completo para criadores</h1>
-        <p className="lead">{TOTAL} ferramentas em 3 etapas: Feito, Subiu, Postado. Grátis para testar, sem enviar seus arquivos: tudo roda no seu navegador.</p>
+        <h1>Todas as ferramentas para criadores</h1>
+        <p className="lead">{TOTAL} ferramentas em 3 etapas: Feito, Subiu, Postado. Tudo roda no seu navegador, sem enviar seus arquivos.</p>
         <p className="sa-jump">
           {STAGES.map((s) => <a key={s.id} href={`#${s.id}`}>{s.n} • {s.tag}</a>)}
         </p>
@@ -26,7 +26,7 @@ export default function Ferramentas() {
             {s.id === "feito" && (
               <Link className="sa-main" href="/#texto-audio">
                 <div>
-                  <span className="sa-chip dark">Principal • 100% ilimitado</span>
+                  <span className="sa-chip dark">Principal</span>
                   <h3>Texto em áudio</h3>
                   <p>Cole o roteiro e baixe a narração em MP3 ou WAV, com velocidade e pausas sob medida.</p>
                 </div>

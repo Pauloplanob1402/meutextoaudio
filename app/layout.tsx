@@ -8,10 +8,10 @@ import "./saium.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://saium.com.br"),
   title: "Saium — Feito. Subiu. Postado. | Ferramentas para criadores de YouTube",
-  description: "Texto em áudio ilimitado direto no navegador e mais ferramentas para criadores de YouTube: roteiro, capítulos, legendas, miniatura e planejamento.",
+  description: "Texto em áudio em português do Brasil e ferramentas para criadores de YouTube: roteiro, capítulos, legendas, miniatura e planejamento.",
   openGraph: {
     title: "Saium — Feito. Subiu. Postado.",
-    description: "Criação pronta antes de abrir o YouTube Studio, upload sem atrito e seu vídeo no ar. Texto em áudio direto no navegador.",
+    description: "Do roteiro à publicação: narração, títulos, capítulos, legendas e miniatura para criadores de YouTube.",
     siteName: "Saium",
     locale: "pt_BR",
     type: "website",

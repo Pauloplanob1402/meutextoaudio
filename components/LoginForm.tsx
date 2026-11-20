@@ -48,7 +48,7 @@ export default function LoginForm({ next }: { next: string }) {
       <div className="row" style={{ marginTop: 16 }}>
         <button className="btn go" type="submit" disabled={state === "busy"}>{state === "busy" ? "Enviando…" : "Receber link de acesso"}</button>
       </div>
-      <p className="status" role="status" aria-live="polite" style={{ marginTop: 12 }}>{msg || "Sem senha: enviamos um link para o seu e-mail."}</p>
+      <p className="status" role="status" aria-live="polite" style={{ marginTop: 12 }}>{msg || "Sem senha: você recebe um link de acesso no seu e-mail."}</p>
     </form>
   );
 }

@@ -9,9 +9,9 @@ export default function SiteHeader({ home = false }: { home?: boolean }) {
       <div className="sa-nav-in">
         <Logo />
         <nav aria-label="Principal">
-          <a href={`${h}#fluxo`}>Fluxo</a>
+          <a href={`${h}#fluxo`}>Como funciona</a>
           <Link href="/ferramentas">Ferramentas</Link>
-          <a href={`${h}#biologia`}>Biologia</a>
+          <a href={`${h}#biologia`}>Sobre</a>
           <a href={`${h}#planos`}>Planos</a>
           <Link href="/conta">Conta</Link>
         </nav>

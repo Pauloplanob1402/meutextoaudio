@@ -51,7 +51,7 @@ export default function Termos() {
       </Sec>
 
       <Sec id="conta" n={++n} title="Conta e acesso">
-        <p>Você usa o texto para áudio (com as vozes gratuitas) sem conta. Para assinar o plano Criador, você entra com o seu e-mail (por um link de acesso){RECURSOS.loginGoogle ? " ou com o Google" : ""}.</p>
+        <p>Você usa o texto para áudio (com as vozes gratuitas) sem conta. Para assinar o plano Criador, você cria uma conta com e-mail e senha{RECURSOS.loginGoogle ? " ou entra com o Google" : ""}.</p>
         <p>Você é responsável por manter o acesso ao seu e-mail seguro e por tudo o que acontece na sua conta. Informe apenas dados verdadeiros. Para assinar, é preciso ter 18 anos ou mais, ou ter a autorização de um responsável.</p>
       </Sec>
 

@@ -16,7 +16,7 @@ export const LEGAL = {
 // Ligue (true) ou desligue (false) conforme o que o site faz de fato.
 // Se o texto de uma página disser algo que o site não faz, ou deixar de dizer algo que ele faz, a página fica errada.
 export const RECURSOS = {
-  loginGoogle: false, // true quando existir o botão "Continuar com o Google" (hoje o login é só por link no e-mail)
+  loginGoogle: true, // há o botão "Continuar com o Google" (além de e-mail e senha, e link por e-mail)
   historicoNaNuvem: false, // true quando o plano Criador puder salvar textos no servidor (ainda não existe)
 };
 

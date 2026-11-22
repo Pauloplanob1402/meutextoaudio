@@ -53,7 +53,8 @@ export default function Privacidade() {
       <Sec id="conta" n={++n} title="Quais dados guardamos na sua conta">
         <p>Você só precisa de conta para assinar o plano Criador. O texto para áudio com as vozes gratuitas funciona sem cadastro. Se você criar uma conta, guardamos:</p>
         <ul>
-          <li><b>E-mail.</b> Para identificar a sua conta e enviar o link de acesso.</li>
+          <li><b>E-mail.</b> Para identificar a sua conta e enviar mensagens de acesso e confirmação.</li>
+          <li><b>Senha.</b> Guardada de forma protegida (criptografada) pelo nosso provedor de autenticação; nós não a vemos.</li>
           {RECURSOS.loginGoogle && (
             <li><b>Dados do login com o Google.</b> Se você entrar com o Google, ele nos informa o seu e-mail e pode informar também o nome e a foto do perfil. Usamos apenas o e-mail para identificar a conta, mas o serviço de login pode guardar esses outros dados junto com ela.</li>
           )}

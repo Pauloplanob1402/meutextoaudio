@@ -40,7 +40,7 @@ export default function IdeaBank() {
     setMsg("Criado no Painel do vídeo.");
   }
   function toCal(i: IdeaItem) {
-    setMsg(addToCalendar(date, i.text) ? `Colocado no calendário em ${date.split("-").reverse().join("/")}.` : "Não consegui salvar no calendário neste navegador.");
+    setMsg(addToCalendar(date, i.text) ? `Colocado no calendário em ${date.split("-").reverse().join("/")}.` : "Não foi possível salvar no calendário neste navegador.");
   }
   function draw() {
     const pool = list.filter((i) => i.status === "nova");

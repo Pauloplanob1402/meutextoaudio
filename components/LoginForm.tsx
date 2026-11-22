@@ -14,7 +14,7 @@ export default function LoginForm({ next }: { next: string }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim() || state === "busy") return;
-    if (TURNSTILE_SITE_KEY && !token) { setMsg("Aguarde a verificação de segurança terminar e tente de novo."); return; }
+    if (TURNSTILE_SITE_KEY && !token) { setMsg("Aguarde a conclusão da verificação de segurança e tente novamente."); return; }
     setState("busy");
     setMsg("");
     const { error } = await createClient().auth.signInWithOtp({
@@ -25,7 +25,7 @@ export default function LoginForm({ next }: { next: string }) {
     setRound((n) => n + 1);
     if (error) {
       setState("error");
-      setMsg(error.status === 429 ? "Muitas tentativas. Espere um pouco e tente de novo." : "Não consegui enviar o link agora. Confira o e-mail e tente de novo.");
+      setMsg(error.status === 429 ? "Muitas tentativas. Aguarde um pouco e tente novamente." : "Não foi possível enviar o link agora. Confira o e-mail e tente novamente.");
       return;
     }
     setState("sent");
@@ -34,8 +34,8 @@ export default function LoginForm({ next }: { next: string }) {
   if (state === "sent")
     return (
       <div role="status">
-        <h2>Confira seu e-mail</h2>
-        <p className="lead">Enviamos um link de acesso para <strong>{email}</strong>. É só tocar nele para entrar. Se não chegar em alguns minutos, olhe a caixa de spam.</p>
+        <h2>Confira o seu e-mail</h2>
+        <p className="lead">Enviamos um link de acesso para <strong>{email}</strong>. Toque nele para entrar. Se não chegar em alguns minutos, verifique a caixa de spam.</p>
         <button className="link" type="button" onClick={() => setState("idle")}>Usar outro e-mail</button>
       </div>
     );

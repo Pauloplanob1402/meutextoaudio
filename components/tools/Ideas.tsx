@@ -21,7 +21,7 @@ export default function Ideas() {
     if (!date) return;
     const [y, m, d] = date.split("-").map(Number);
     const label = new Date(y, m - 1, d).toLocaleDateString("pt-BR", { day: "numeric", month: "long" });
-    setMsg(addToCalendar(date, title) ? `Adicionado ao dia ${label}.` : "Não consegui salvar no calendário neste navegador.");
+    setMsg(addToCalendar(date, title) ? `Adicionado ao dia ${label}.` : "Não foi possível salvar no calendário neste navegador.");
   }
 
   return (

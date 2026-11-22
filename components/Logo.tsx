@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// Saguizinho geométrico do Saium (mesmo desenho do arquivo de identidade)
+// Saguizinho geométrico do Sauim (mesmo desenho do arquivo de identidade)
 export function Mark({ size = 32 }: { size?: number }) {
   return (
     <span className="sa-mark" style={{ width: size, height: size }} aria-hidden="true">
@@ -16,9 +16,9 @@ export function Mark({ size = 32 }: { size?: number }) {
 
 export default function Logo({ href = "/" }: { href?: string }) {
   return (
-    <Link className="sa-logo" href={href} aria-label="Saium, início">
+    <Link className="sa-logo" href={href} aria-label="Sauim, início">
       <Mark />
-      <span className="sa-word">Saium<small>.com.br</small></span>
+      <span className="sa-word">Sauim<small>.com.br</small></span>
     </Link>
   );
 }

@@ -3,16 +3,16 @@ import "./globals.css";
 import "./ferramentas.css";
 import "./ferramentas2.css";
 import "./legal.css";
-import "./saium.css";
+import "./sauim.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? "https://saium.com.br"),
-  title: "Saium — Feito. Subiu. Postado. | Ferramentas para criadores de YouTube",
+  metadataBase: new URL(process.env.SITE_URL ?? "https://sauim.com.br"),
+  title: "Sauim — Feito. Subiu. Postado. | Ferramentas para criadores de YouTube",
   description: "Texto em áudio em português do Brasil e ferramentas para criadores de YouTube: roteiro, capítulos, legendas, miniatura e planejamento.",
   openGraph: {
-    title: "Saium — Feito. Subiu. Postado.",
+    title: "Sauim — Feito. Subiu. Postado.",
     description: "Do roteiro à publicação: narração, títulos, capítulos, legendas e miniatura para criadores de YouTube.",
-    siteName: "Saium",
+    siteName: "Sauim",
     locale: "pt_BR",
     type: "website",
   },

@@ -113,13 +113,13 @@ export default function Thumbnail() {
     if (!f) return;
     const im = new Image();
     im.onload = () => setImg(im);
-    im.onerror = () => setMsg("Não consegui abrir essa imagem. Tente um arquivo JPG, PNG ou WebP.");
+    im.onerror = () => setMsg("Não foi possível abrir esta imagem. Use um arquivo JPG, PNG ou WebP.");
     im.src = URL.createObjectURL(f);
   }
 
   function save() {
     cv.current?.toBlob((b) => {
-      if (!b) return setMsg("Não consegui gerar o arquivo.");
+      if (!b) return setMsg("Não foi possível gerar o arquivo.");
       const mb = b.size / 1048576;
       setMsg(`Arquivo de ${fmtNum(Math.round(mb * 10) / 10)} MB.${mb > 2 ? " Miniaturas do YouTube aceitam até 2 MB: escolha JPG." : ""}`);
       downloadBlob(b, `miniatura.${fmt}`);

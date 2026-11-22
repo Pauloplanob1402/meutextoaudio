@@ -20,7 +20,7 @@ export default function SpeechCleaner() {
   const iss = out ? speechIssues(out) : null;
 
   function sendToAudio() {
-    try { localStorage.setItem("draft", out); setMsg("Texto enviado. Abra a página inicial para gerar o áudio."); } catch { setMsg("Não consegui enviar neste navegador."); }
+    try { localStorage.setItem("draft", out); setMsg("Texto enviado. Abra a página inicial para gerar o áudio."); } catch { setMsg("Não foi possível enviar neste navegador."); }
   }
 
   return (

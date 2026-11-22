@@ -5,7 +5,7 @@ import { GROUPS, TOOLS } from "@/lib/tools";
 import { STAGES, TOTAL, stageCount } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "Ferramentas para criadores de YouTube · Saium",
+  title: "Ferramentas para criadores de YouTube · Sauim",
   description: "Texto em áudio, gerador de capítulos e legendas, criador de miniatura e mais. Direto no navegador, sem enviar seus arquivos.",
 };
 
@@ -28,7 +28,7 @@ export default function Ferramentas() {
                 <div>
                   <span className="sa-chip dark">Principal</span>
                   <h3>Texto em áudio</h3>
-                  <p>Cole o roteiro e baixe a narração em MP3 ou WAV, com velocidade e pausas sob medida.</p>
+                  <p>Cole o roteiro e baixe a narração em MP3 ou WAV, com controle de velocidade e pausas.</p>
                 </div>
                 <div className="sa-main-side"><b>Abrir →</b></div>
               </Link>

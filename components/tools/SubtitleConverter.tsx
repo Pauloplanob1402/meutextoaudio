@@ -19,7 +19,7 @@ export default function SubtitleConverter() {
 
   async function pick(f?: File) {
     if (!f) return;
-    try { setRaw(await f.text()); setMsg(`Arquivo “${f.name}” carregado.`); } catch { setMsg("Não consegui ler este arquivo."); }
+    try { setRaw(await f.text()); setMsg(`Arquivo “${f.name}” carregado.`); } catch { setMsg("Não foi possível ler este arquivo."); }
   }
 
   return (
@@ -32,7 +32,7 @@ export default function SubtitleConverter() {
         {msg && <span className="count">{msg}</span>}
       </div>
 
-      {raw.trim() && !cues.length && <p className="note"><b className="bad">Não encontrei legendas neste texto.</b> Confira se as linhas de tempo têm o formato 00:00:01,000 --&gt; 00:00:03,500.</p>}
+      {raw.trim() && !cues.length && <p className="note"><b className="bad">Nenhuma legenda foi encontrada neste texto.</b> Confira se as linhas de tempo têm o formato 00:00:01,000 --&gt; 00:00:03,500.</p>}
 
       {cues.length > 0 && (
         <>

@@ -43,23 +43,22 @@ export function Email() {
 
 export const OutraPagina = ({ href, children }: { href: string; children: ReactNode }) => <Link href={href}>{children}</Link>;
 
-// A história do Saium: abre as páginas legais com quem somos e por quê. "children" é o fecho de cada página.
+// A história do Sauim: abre as páginas legais com quem somos e por quê. "children" é o fecho de cada página.
 export const Historia = ({ children }: { children: ReactNode }) => (
   <div className="historia">
-    <p>O Saium nasceu entre criadores. Somos inquietos: gente que ama produzir conteúdo para o YouTube e que fez da programação e do próprio YouTube a sua paixão. Conhecemos de perto o roteiro que não fecha, a voz que falha, a miniatura que não convence e aquela dúvida de madrugada: “será que alguém vai ver?”</p>
-    <p>Foi por causa dessa dúvida que escolhemos o <b>sauim</b>. Ele é um primata pequeno, pouco conhecido, pouco falado, que vive lá no alto, entre as folhas, e quase ninguém repara. Mas é ágil, esperto e está sempre em movimento. Assim são os canais que começam: pequenos, ainda pouco falados, cheios de vida.</p>
-    <p>O nome tem dois sentidos, e a gente gosta dos dois. Um é o sauim. O outro é o <b>“sai um”</b>: sai um vídeo aqui de alguém que está começando. Sai mais um. Sai mais um. Sai um. É assim que todo canal grande começa, um vídeo de cada vez, e é para esses vídeos que o Saium existe.</p>
-    <p>Nosso propósito é ajudar você a levar o seu potencial de criador ao ponto máximo. Nesta história, o herói é você. O Saium é o guia que segura a lanterna: dá a voz, as ferramentas e o caminho para o seu canal sair do chão e chegar ao topo das árvores.</p>
-    <p>E como cada dado que passa por aqui faz parte da sua jornada, escrevemos o que segue do jeito que gostaríamos de ler: claro, direto e sem letras miúdas.</p>
+    <p>O Sauim nasceu entre criadores de conteúdo para o YouTube, gente que conhece de perto o roteiro que não fecha, a narração que falha e a dúvida de quem está começando: “será que alguém vai ver?”</p>
+    <p>A origem do nome tem um lado cômico. O <b>sauim</b> é um pequeno primata brasileiro, ágil e pouco conhecido, que vive lá no alto, entre as folhas, e quase ninguém repara. Como os canais que estão começando. Só que, lido em voz alta, “sauim” também soa como <b>“sai um”</b>. E foi daí que veio a brincadeira que virou a identidade do site: cada ferramenta existe para que saia um vídeo. Depois sai mais um. E mais um.</p>
+    <p>Todo canal grande começou assim, um vídeo de cada vez. O nosso propósito é ajudar você a levar o seu potencial de criador ao ponto máximo.</p>
+    <p>O que segue está escrito do jeito que gostaríamos de ler: claro, direto e sem letras miúdas.</p>
     {children}
   </div>
 );
 
-// Convite para fazer parte, no fim de cada página legal
+// Convite no fim de cada página legal
 export const FacaParte = () => (
   <div className="junte-se">
-    <b>Faça parte do topo da copa</b>
-    <p>Todo canal grande já foi pequeno. Se você também é inquieto como a gente, cole o seu texto, ouça a sua narração e veja o que acontece quando o seu vídeo ganha voz. Estamos construindo o Saium junto com criadores como você, e há lugar para o seu canal.</p>
+    <b>Experimente o Sauim</b>
+    <p>Cole o seu texto, ouça a narração e conheça as ferramentas para cada etapa do seu vídeo. Sai um vídeo hoje?</p>
     <div className="junte-links">
       <Link href="/">Experimentar grátis</Link>
       <Link href="/ferramentas">Ver as ferramentas</Link>

@@ -1,8 +1,8 @@
-# Saium — Feito. Subiu. Postado.
+# Sauim — Feito. Subiu. Postado.
 
 Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff e Tugão, e as vozes naturais Dora, Alex e Santa; a lista fica em `lib/voices.ts`).
 
-Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/saium.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.
+Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/sauim.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.
 O texto não sai do aparelho e não há custo por uso.
 
 ## Rodar no seu computador
@@ -30,6 +30,8 @@ set NODE_OPTIONS=--dns-result-order=ipv4first
 
 A lista fica em `lib/voices.ts`. Há dois motores:
 - **Piper** (Faber, Cadu, Jeff e Tugão): rápidas, uns 60 MB cada.
+
+Cada voz tem o campo `plan`: `"free"` (qualquer pessoa) ou `"pro"` (só com o plano Criador ativo). Hoje Cadu e Jeff são gratuitas e as demais são do plano Criador. O site pergunta o plano em `/api/plano`. Trocar uma voz de plano é mudar uma palavra em `lib/voices.ts`; os textos dos planos e dos Termos acompanham sozinhos. Atenção: como a voz roda no navegador, o bloqueio é feito na tela, e quem tem conhecimento técnico consegue contorná-lo.
 - **Kokoro** (Dora, Alex e Santa): mais naturais e mais lentas. Um modelo só (uns 90 MB) serve as três. Vem do Hugging Face (`onnx-community/Kokoro-82M-v1.0-ONNX`).
 
 Com a hospedagem própria da voz ligada (`NEXT_PUBLIC_SELF_HOST=1`), as vozes Kokoro não aparecem no seletor, porque o modelo não é copiado para o seu site.

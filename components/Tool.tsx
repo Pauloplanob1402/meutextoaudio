@@ -4,7 +4,7 @@ import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript }
 import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
-import { DEFAULT_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
+import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -29,7 +29,9 @@ export default function Tool() {
   const [fmt, setFmt] = useState<"mp3" | "wav">("mp3");
   const [site, setSite] = useState("");
   const [copied, setCopied] = useState(false);
-  const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
+  const [voiceId, setVoiceId] = useState(DEFAULT_FREE_VOICE_ID);
+  const [plan, setPlan] = useState<"loading" | "free" | "pro">("loading");
+  const savedVoice = useRef(false);
   const loadedVoice = useRef<string | null>(null);
   const original = useRef<Blob | null>(null);
   const ta = useRef<HTMLTextAreaElement>(null);
@@ -46,11 +48,24 @@ export default function Tool() {
   useEffect(() => {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
-    try { const v = localStorage.getItem("voz"); if (v) setVoiceId(getVoice(v).id); } catch {}
+    try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(getVoice(v).id); savedVoice.current = true; } } catch {}
+    fetch("/api/plano", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
+      .catch(() => setPlan("free"));
     if (window.matchMedia("(min-width:861px)").matches) ta.current?.focus();
   }, []);
 
+  // quem tem o plano Criador e nunca escolheu voz começa pela Faber
+  useEffect(() => {
+    if (plan === "pro" && !savedVoice.current) setVoiceId("pt_BR-faber-medium");
+  }, [plan]);
+
+  const voice = getVoice(voiceId);
+  const locked = voice.plan === "pro" && plan !== "pro";
+
   function pickVoice(id: string) {
+    savedVoice.current = true;
     setVoiceId(id);
     try { localStorage.setItem("voz", id); } catch {}
   }
@@ -65,6 +80,10 @@ export default function Tool() {
 
   async function generate() {
     if (busy) return;
+    if (locked) {
+      setStatus(`A voz ${voice.name} faz parte do plano Criador. Escolha uma voz gratuita ou assine na página Minha conta.`);
+      return;
+    }
     if (!text.trim()) {
       setStatus("Cole um texto na caixa acima ou toque em “Usar um exemplo”.");
       ta.current?.focus();
@@ -138,7 +157,7 @@ export default function Tool() {
       console.error(e);
       try { (((await import("@mintplex-labs/piper-tts-web")).TtsSession) as any)._instance = undefined; } catch {}
       loadedVoice.current = null;
-      setStatus(`Não consegui gerar o áudio com a voz ${getVoice(voiceId).name}. Escolha outra voz, ou recarregue a página (F5) e tente de novo.`);
+      setStatus(`Não foi possível gerar o áudio com a voz ${getVoice(voiceId).name}. Escolha outra voz ou recarregue a página (F5) e tente novamente.`);
     } finally {
       setBusy(false);
     }
@@ -161,7 +180,7 @@ export default function Tool() {
           stretched = true;
         } catch (e) {
           console.error(e);
-          warn = "Não consegui ajustar a velocidade do arquivo, então baixei na velocidade original. ";
+          warn = "Não foi possível ajustar a velocidade. O arquivo foi baixado na velocidade original. ";
           out = src;
         }
       }
@@ -174,24 +193,24 @@ export default function Tool() {
           ext = "mp3";
         } catch (e) {
           console.error(e);
-          warn += "Não consegui converter para MP3, então baixei em WAV.";
+          warn += "Não foi possível converter para MP3. O arquivo foi baixado em WAV.";
         }
       }
 
       const a = document.createElement("a");
       const u = URL.createObjectURL(out);
       a.href = u;
-      a.download = stretched ? `narracao-saium-${sp}x.${ext}` : `narracao-saium.${ext}`;
+      a.download = stretched ? `narracao-sauim-${sp}x.${ext}` : `narracao-sauim.${ext}`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(u), 10000);
-      setStatus(warn.trim() || "Pronto! Download iniciado.");
+      setStatus(warn.trim() || "Download iniciado.");
     } finally {
       setDlBusy(false);
     }
   }
 
   // Convite para um amigo (aparece depois que o áudio fica pronto)
-  const SHARE_MSG = "Conheça o Saium: texto em áudio em português do Brasil, direto no navegador:";
+  const SHARE_MSG = "Conheça o Sauim: texto em áudio em português do Brasil, direto no navegador:";
   function shareWhatsApp() {
     const link = site || window.location.origin;
     window.open(`https://wa.me/?text=${encodeURIComponent(`${SHARE_MSG} ${link}`)}`, "_blank", "noopener");
@@ -202,7 +221,7 @@ export default function Tool() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      setStatus("Não consegui copiar. Copie o endereço direto da barra do navegador.");
+      setStatus("Não foi possível copiar. Copie o endereço direto da barra do navegador.");
     }
   }
 
@@ -269,19 +288,24 @@ export default function Tool() {
               if (!list.length) return null;
               return (
                 <optgroup key={g.label} label={g.label}>
-                  {list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}</option>)}
+                  {list.map((v) => <option key={v.id} value={v.id}>{v.name} · {v.note}{v.plan === "pro" ? " · Plano Criador" : ""}</option>)}
                 </optgroup>
               );
             })}
           </select>
-          {getVoice(voiceId).engine === "kokoro" && (
+          {locked && plan !== "loading" && (
+            <p className="note" role="status" style={{ flexBasis: "100%", margin: 0 }}>
+              A voz {voice.name} faz parte do plano Criador. <a href="/conta">Assine para usar</a> ou escolha uma voz gratuita.
+            </p>
+          )}
+          {!locked && voice.engine === "kokoro" && (
             <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
               Voz natural: a primeira vez baixa cerca de 90 MB e a geração é bem mais lenta que a das vozes rápidas. Para textos longos, prefira a Faber.
             </p>
           )}
         </div>
         <div className="row">
-          <button className="btn go" type="button" onClick={generate} disabled={busy}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
+          <button className="btn go" type="button" onClick={generate} disabled={busy || locked}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
           <p className="status" role="status" aria-live="polite">{status}</p>
         </div>
 
@@ -312,7 +336,7 @@ export default function Tool() {
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
             <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
-              <p style={{ fontWeight: 600 }}>Gostou? Indique o Saium a outro criador.</p>
+              <p style={{ fontWeight: 600 }}>Gostou? Indique o Sauim a outro criador.</p>
               <div className="rrow" style={{ marginTop: 10 }}>
                 <button className="btn ghost" type="button" onClick={shareWhatsApp}>Enviar pelo WhatsApp</button>
                 <button className="btn ghost" type="button" onClick={copyLink}>{copied ? "Link copiado!" : "Copiar link"}</button>

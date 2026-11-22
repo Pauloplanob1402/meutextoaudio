@@ -18,7 +18,7 @@ export default function TimeLinks() {
       <div className="field">
         <label htmlFor="tl-u">Endereço do vídeo</label>
         <input id="tl-u" type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://www.youtube.com/watch?v=..." />
-        {url.trim() && !id && <span className="count"><b className="bad">Não encontrei o vídeo neste endereço.</b> Cole o link da barra do navegador ou do botão Compartilhar.</span>}
+        {url.trim() && !id && <span className="count"><b className="bad">Nenhum vídeo foi encontrado neste endereço.</b> Cole o link da barra do navegador ou do botão Compartilhar.</span>}
         {id && <span className="count"><b className="ok">Vídeo reconhecido.</b></span>}
       </div>
 

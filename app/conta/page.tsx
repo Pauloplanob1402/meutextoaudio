@@ -5,7 +5,7 @@ import AccountActions from "@/components/AccountActions";
 import { getAccount } from "@/lib/entitlements";
 import { billingEnabled } from "@/lib/billing";
 
-export const metadata: Metadata = { title: "Minha conta · Saium", robots: { index: false } };
+export const metadata: Metadata = { title: "Minha conta · Sauim", robots: { index: false } };
 
 const LABEL: Record<string, string> = {
   authorized: "Plano Criador ativo",

@@ -8,5 +8,5 @@ export async function proxy(request: NextRequest) {
 
 // Só roda onde há login. Páginas públicas e ferramentas não passam por aqui.
 export const config = {
-  matcher: ["/conta/:path*", "/login", "/auth/:path*", "/api/checkout", "/api/cancelar"],
+  matcher: ["/conta/:path*", "/login", "/auth/:path*", "/api/checkout", "/api/cancelar", "/api/plano"],
 };

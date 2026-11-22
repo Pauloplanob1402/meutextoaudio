@@ -26,7 +26,7 @@ export default function SeriesPlanner() {
 
   function toCalendar() {
     const ok = eps.filter((e) => e.date).every((e) => addToCalendar(e.date, `Série: ${e.title}`));
-    setMsg(ok ? `${eps.length} episódios colocados no calendário de conteúdo.` : "Não consegui salvar no calendário neste navegador.");
+    setMsg(ok ? `${eps.length} episódios colocados no calendário de conteúdo.` : "Não foi possível salvar no calendário neste navegador.");
   }
   function toPanel() {
     const created = iso(new Date());

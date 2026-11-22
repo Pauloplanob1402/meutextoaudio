@@ -16,7 +16,7 @@ export const kokoroStyleUrl = (voice: string) => `${HF}/voices/${voice}.bin`;
 const SAMPLE_RATE = 24000;
 const MAX_TOKENS = 500; // o modelo aceita até 510; deixo folga
 const GAP_SECONDS = 0.1; // silêncio entre os pedaços de um mesmo trecho
-const CACHE_NAME = "saium-kokoro-v1";
+const CACHE_NAME = "sauim-kokoro-v1";
 
 type Progress = (loaded: number, total: number) => void;
 

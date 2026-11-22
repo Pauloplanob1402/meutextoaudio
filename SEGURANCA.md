@@ -1,4 +1,4 @@
-# Segurança do Saium: o que já está no código e o que falta nos painéis
+# Segurança do Sauim: o que já está no código e o que falta nos painéis
 
 Este arquivo é o passo a passo. A primeira parte mostra o que o código já faz. A segunda é a sua lista,
 em ordem de importância, para fazer nos painéis (GitHub, Supabase, Vercel). Nada aqui muda o que o visitante vê.
@@ -11,7 +11,7 @@ em ordem de importância, para fazer nos painéis (GitHub, Supabase, Vercel). Na
 | Banco (RLS) | A tabela `subscriptions` tem RLS: cada pessoa só lê a própria linha. O `schema.sql` agora também tira do navegador qualquer permissão de gravar (`revoke`). Quem grava é só o servidor. |
 | Autenticação no servidor | Rotas de pagamento e cancelamento conferem o usuário com `getUser()`. O `proxy.ts` protege `/conta`. |
 | Adulteração de campos | O preço vem de `PRO_PRICE_BRL` no servidor, nunca do navegador. O estado da assinatura vem direto da API do Mercado Pago, e o webhook confere a assinatura (HMAC). |
-| Redirecionamento do login | `safeNext` foi corrigido: antes, `/\site.com` levava para fora do Saium. Agora só passa caminho do próprio site. |
+| Redirecionamento do login | `safeNext` foi corrigido: antes, `/\site.com` levava para fora do Sauim. Agora só passa caminho do próprio site. |
 | Pedidos de outros sites (CSRF) | `/api/checkout`, `/api/cancelar` e `/auth/sair` só aceitam POST vindo do próprio site. |
 | Repetição | O checkout espera 15 segundos entre tentativas (evita duplo clique e abuso). |
 | Cookies da sessão | `SameSite=Lax` e `Secure` em produção. `httpOnly` fica desligado porque o login por link precisa do cliente do navegador. |
@@ -37,7 +37,7 @@ O que **não** se aplica a este site: upload para servidor (imagem, áudio e leg
    select tablename, rowsecurity as rls_ligado
    from pg_tables where schemaname = 'public';
    ```
-3. **Authentication > URL Configuration**: em **Site URL**, o seu domínio. Em **Redirect URLs**, só o seu domínio (`https://saium.com.br/auth/callback`). Não deixe `*`.
+3. **Authentication > URL Configuration**: em **Site URL**, o seu domínio. Em **Redirect URLs**, só o seu domínio (`https://sauim.com.br/auth/callback`). Não deixe `*`.
 4. **Authentication > Rate Limits**: confira os limites de e-mail por hora. O envio de e-mail padrão do Supabase tem limite baixo (confira o número no painel); para produção, configure um SMTP próprio em **Authentication > SMTP**.
 5. **Authentication > Providers**: desligue o que você não usa (só **Email** com link mágico).
 6. **Anti-robô**: veja a seção 4. (O nome exato dos menus do Supabase e da Vercel pode mudar com o tempo.)

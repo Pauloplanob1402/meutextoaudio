@@ -34,7 +34,7 @@ export function createPreapproval(p: { userId: string; email: string; backUrl: s
     method: "POST",
     idempotency: p.key,
     body: JSON.stringify({
-      reason: "Saium Criador (mensal)",
+      reason: "Sauim Criador (mensal)",
       external_reference: p.userId,
       payer_email: p.email,
       back_url: p.backUrl,

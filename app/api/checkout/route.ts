@@ -39,6 +39,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: pre.init_point });
   } catch (e) {
     console.error("checkout falhou:", e);
-    return NextResponse.json({ error: "Não consegui abrir o pagamento agora. Tente de novo em instantes." }, { status: 502 });
+    return NextResponse.json({ error: "Não foi possível abrir o pagamento agora. Tente de novo em instantes." }, { status: 502 });
   }
 }

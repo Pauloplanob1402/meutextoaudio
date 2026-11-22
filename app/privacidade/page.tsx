@@ -3,8 +3,8 @@ import { Email, FacaParte, Historia, LegalPage, OutraPagina, Resumo, Sec } from 
 import { LEGAL, RECURSOS, VOZ_NO_PROPRIO_SITE } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade · Saium",
-  description: "Quais dados o Saium usa, para quê, com quem compartilha e quais são os seus direitos.",
+  title: "Política de Privacidade · Sauim",
+  description: "Quais dados o Sauim usa, para quê, com quem compartilha e quais são os seus direitos.",
 };
 
 const TOC = [
@@ -26,7 +26,7 @@ const TOC = [
 export default function Privacidade() {
   let n = 0;
   return (
-    <LegalPage title="Política de Privacidade" intro="Explicamos em linguagem simples quais dados o Saium usa, para quê e quais são os seus direitos. Quem confia o seu texto a um site merece saber para onde ele vai." toc={TOC}>
+    <LegalPage title="Política de Privacidade" intro="Esta política explica, em linguagem simples, quais dados o Sauim usa, para quê e quais são os seus direitos." toc={TOC}>
       <Resumo>
         <ul>
           <li>O seu texto vira áudio no seu navegador{RECURSOS.historicoNaNuvem ? ". Ele só vai para o nosso servidor se você escolher salvá-lo no histórico do plano Criador." : " e não vai para o nosso servidor."}</li>
@@ -38,7 +38,7 @@ export default function Privacidade() {
 
       <Sec id="quem" n={++n} title="Quem somos e quem cuida dos seus dados">
         <Historia>
-          <p>Por enquanto, preferimos não divulgar o CNPJ nem os nomes dos fundadores. O que não muda: quem cuida dos seus dados é <b>{LEGAL.nome}</b>, e para qualquer assunto sobre privacidade você fala com gente de verdade, pelo e-mail <Email />.</p>
+          <p>Quem cuida dos seus dados é <b>{LEGAL.nome}</b>. Para qualquer assunto sobre privacidade, escreva para <Email />.</p>
         </Historia>
       </Sec>
 
@@ -47,11 +47,11 @@ export default function Privacidade() {
         {RECURSOS.historicoNaNuvem && (
           <p>A única exceção é o <b>histórico na nuvem do plano Criador</b>: se você escolher salvar um texto na sua conta, ele fica guardado no nosso banco de dados até você apagá-lo ou pedir a exclusão da conta.</p>
         )}
-        <p>Alguns recursos guardam informações <b>só no seu aparelho</b>, no armazenamento local do navegador: o rascunho do texto, as marcações do checklist, as anotações do calendário e as respostas e rascunhos das outras ferramentas (como o roteiro em blocos e o DNA de marca). Isso não vem para nós. Para apagar, limpe os dados do site no seu navegador.</p>
+        <p>Alguns recursos guardam informações <b>só no seu aparelho</b>, no armazenamento local do navegador: o rascunho do texto, a voz escolhida, as marcações do checklist, as anotações do calendário e as respostas e rascunhos das outras ferramentas (como o roteiro em blocos e o DNA de marca). Isso não vem para nós. Para apagar, limpe os dados do site no seu navegador.</p>
       </Sec>
 
       <Sec id="conta" n={++n} title="Quais dados guardamos na sua conta">
-        <p>Você só precisa de conta para assinar o plano Criador. O texto para áudio e as ferramentas funcionam sem cadastro. Se você criar uma conta, guardamos:</p>
+        <p>Você só precisa de conta para assinar o plano Criador. O texto para áudio com as vozes gratuitas e as ferramentas funcionam sem cadastro. Se você criar uma conta, guardamos:</p>
         <ul>
           <li><b>E-mail.</b> Para identificar a sua conta e enviar o link de acesso.</li>
           {RECURSOS.loginGoogle && (
@@ -60,11 +60,11 @@ export default function Privacidade() {
           <li><b>Assinatura.</b> O código da assinatura no Mercado Pago, o status (por exemplo, ativa, pausada ou cancelada), a data da próxima cobrança e as datas de criação e de atualização.</li>
           <li><b>Dados técnicos de acesso.</b> Endereço IP, tipo de navegador e horários de acesso podem ser registrados pelos serviços que usamos (login e hospedagem), por segurança e para o site funcionar.</li>
         </ul>
-        <p>O Saium não pede CPF, telefone nem endereço para criar a conta. O Mercado Pago pode pedir dados no momento do pagamento.</p>
+        <p>O Sauim não pede CPF, telefone nem endereço para criar a conta. O Mercado Pago pode pedir dados no momento do pagamento.</p>
       </Sec>
 
       <Sec id="pagamento" n={++n} title="Pagamentos">
-        <p>Os pagamentos acontecem no ambiente do Mercado Pago. Você informa os dados do cartão ou da forma de pagamento diretamente a eles: o Saium não recebe nem guarda número de cartão. Enviamos ao Mercado Pago o seu e-mail e um identificador da sua conta, só para ligar a assinatura a você. A política de privacidade do Mercado Pago explica como eles tratam os seus dados.</p>
+        <p>Os pagamentos acontecem no ambiente do Mercado Pago. Você informa os dados do cartão ou da forma de pagamento diretamente a eles: o Sauim não recebe nem guarda número de cartão. Enviamos ao Mercado Pago o seu e-mail e um identificador da sua conta, só para ligar a assinatura a você. A política de privacidade do Mercado Pago explica como eles tratam os seus dados.</p>
       </Sec>
 
       <Sec id="bases" n={++n} title="Para que usamos os dados">
@@ -87,6 +87,7 @@ export default function Privacidade() {
           <li><b>{LEGAL.envioEmail}</b>: envio dos e-mails de acesso. Recebe o seu e-mail e o conteúdo da mensagem.</li>
           <li><b>{LEGAL.encaminhamento}</b>: encaminhamento das mensagens que você envia para o nosso e-mail de contato. Recebe o que você escrever para nós, incluindo o seu e-mail.</li>
           {RECURSOS.loginGoogle && <li><b>Google</b>: login com o Google, se você escolher essa opção.</li>}
+          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && <li><b>Cloudflare</b>: verificação anti-robô na tela de login (Turnstile). Ela recebe o seu IP e dados do navegador para confirmar que o acesso não é automatizado.</li>}
           <li><b>Google Fonts</b>: ao abrir o site, o seu navegador carrega as fontes de letra dos servidores do Google, que podem registrar o seu IP.</li>
           {!VOZ_NO_PROPRIO_SITE && (
             <li><b>Hugging Face e redes de distribuição de arquivos</b> (como cdnjs e jsDelivr): na primeira vez que você gera um áudio, o navegador baixa a voz e arquivos auxiliares desses serviços, que podem registrar o seu IP.</li>
@@ -122,7 +123,7 @@ export default function Privacidade() {
       </Sec>
 
       <Sec id="criancas" n={++n} title="Crianças e adolescentes">
-        <p>O Saium não é feito para crianças. Quem tem menos de 18 anos só deve criar conta e assinar o plano Criador com a autorização e o acompanhamento de um responsável.</p>
+        <p>O Sauim não é feito para crianças. Quem tem menos de 18 anos só deve criar conta e assinar o plano Criador com a autorização e o acompanhamento de um responsável.</p>
       </Sec>
 
       <Sec id="mudancas" n={++n} title="Mudanças nesta política">

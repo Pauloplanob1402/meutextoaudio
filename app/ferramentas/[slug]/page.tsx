@@ -10,7 +10,7 @@ export const generateStaticParams = () => TOOLS.map((t) => ({ slug: t.slug }));
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const t = getTool((await params).slug);
-  return t ? { title: `${t.title} · Saium`, description: t.intro } : {};
+  return t ? { title: `${t.title} · Sauim`, description: t.intro } : {};
 }
 
 export default async function FerramentaPage({ params }: { params: Promise<{ slug: string }> }) {

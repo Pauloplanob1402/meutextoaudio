@@ -83,7 +83,7 @@ export default function VideoBoard() {
   }
   function toCalendar() {
     if (!v!.date) return;
-    setMsg(addToCalendar(v!.date, `Publicar: ${v!.title}`) ? "Colocado no calendário de conteúdo." : "Não consegui salvar no calendário neste navegador.");
+    setMsg(addToCalendar(v!.date, `Publicar: ${v!.title}`) ? "Colocado no calendário de conteúdo." : "Não foi possível salvar no calendário neste navegador.");
   }
 
   return (

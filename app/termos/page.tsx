@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { Email, FacaParte, Historia, LegalPage, OutraPagina, Resumo, Sec } from "@/components/Legal";
 import { LEGAL, RECURSOS, VOZ } from "@/lib/legal";
+import { voiceNames } from "@/lib/voices";
 
 export const metadata: Metadata = {
-  title: "Termos de Uso · Saium",
-  description: "As regras de uso do Saium, do plano Criador, do cancelamento e do direito de arrependimento.",
+  title: "Termos de Uso · Sauim",
+  description: "As regras de uso do Sauim, do plano Criador, do cancelamento e do direito de arrependimento.",
 };
 
 const TOC = [
   { id: "quem", title: "Quem somos" },
-  { id: "servico", title: "O que é o Saium" },
+  { id: "servico", title: "O que é o Sauim" },
   { id: "conta", title: "Conta e acesso" },
   { id: "planos", title: "Planos e pagamento" },
   { id: "cancelar", title: "Cancelamento" },
   { id: "arrependimento", title: "Direito de arrependimento" },
-  { id: "uso", title: "Como usar o Saium" },
+  { id: "uso", title: "Como usar o Sauim" },
   { id: "conteudo", title: "O seu texto e o áudio gerado" },
   { id: "informacoes", title: "Estimativas e sugestões das ferramentas" },
   { id: "disponibilidade", title: "Disponibilidade do site" },
@@ -29,11 +30,11 @@ const TOC = [
 export default function Termos() {
   let n = 0;
   return (
-    <LegalPage title="Termos de Uso" intro="Estas são as regras do jogo entre nós e você: curtas e claras. Leia antes de criar uma conta ou assinar o plano Criador." toc={TOC}>
+    <LegalPage title="Termos de Uso" intro="Estes Termos descrevem as condições de uso do Sauim e do plano Criador. Leia-os antes de criar uma conta ou assinar." toc={TOC}>
       <Resumo>
         <ul>
-          <li>O texto para áudio e as ferramentas são grátis e não precisam de conta.</li>
-          <li>O plano Criador é uma assinatura mensal, renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta.</li>
+          <li>O texto para áudio com as vozes gratuitas e as ferramentas são grátis e não precisam de conta.</li>
+          <li>O plano Criador é uma assinatura mensal, que libera as demais vozes e é renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta.</li>
           <li>Você é responsável pelo texto que usa e pelo uso que faz do áudio.</li>
           <li>Não use o site para enganar, ofender ou violar direitos de outras pessoas.</li>
         </ul>
@@ -41,23 +42,23 @@ export default function Termos() {
 
       <Sec id="quem" n={++n} title="Quem somos">
         <Historia>
-          <p>Por enquanto, não divulgamos o CNPJ nem os nomes dos fundadores. Quem responde por estes Termos é <b>{LEGAL.nome}</b>, e você fala com a gente pelo e-mail <Email />.</p>
+          <p>Quem responde por estes Termos é <b>{LEGAL.nome}</b>. Contato: <Email />.</p>
         </Historia>
       </Sec>
 
-      <Sec id="servico" n={++n} title="O que é o Saium">
+      <Sec id="servico" n={++n} title="O que é o Sauim">
         <p>É um site que transforma texto em áudio em português do Brasil, usando uma voz sintética que roda no seu navegador, e que oferece ferramentas de apoio (como contador de título, capítulos, legendas, miniatura e calendário). Ao usar o site, você concorda com estes Termos e com a <OutraPagina href="/privacidade">Política de Privacidade</OutraPagina>.</p>
       </Sec>
 
       <Sec id="conta" n={++n} title="Conta e acesso">
-        <p>Você usa o texto para áudio e as ferramentas sem conta. Para assinar o plano Criador, você entra com o seu e-mail (por um link de acesso){RECURSOS.loginGoogle ? " ou com o Google" : ""}.</p>
+        <p>Você usa o texto para áudio (com as vozes gratuitas) e as ferramentas sem conta. Para assinar o plano Criador, você entra com o seu e-mail (por um link de acesso){RECURSOS.loginGoogle ? " ou com o Google" : ""}.</p>
         <p>Você é responsável por manter o acesso ao seu e-mail seguro e por tudo o que acontece na sua conta. Informe apenas dados verdadeiros. Para assinar, é preciso ter 18 anos ou mais, ou ter a autorização de um responsável.</p>
       </Sec>
 
       <Sec id="planos" n={++n} title="Planos e pagamento">
         <ul>
-          <li><b>Grátis:</b> texto para áudio, com limite de gerações, e ferramentas, sem custo.</li>
-          <li><b>Criador:</b> assinatura mensal. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
+          <li><b>Grátis:</b> texto para áudio com as vozes {voiceNames("free")} e todas as ferramentas, sem custo.</li>
+          <li><b>Criador:</b> assinatura mensal que libera as demais vozes ({voiceNames("pro")}). O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
         </ul>
         <p>O pagamento é processado pelo Mercado Pago. A assinatura se renova todo mês, na mesma forma de pagamento, até você cancelar.</p>
         <p>Os recursos do plano Criador podem ser acrescentados ao longo do tempo. O que estiver marcado como “em breve” ainda não está disponível e não tem data prometida. Se mudarmos o preço, avisaremos antes, e o novo valor só vale para renovações futuras. Você poderá cancelar antes disso.</p>
@@ -71,7 +72,7 @@ export default function Termos() {
         <p>Se você assinou o plano Criador pela internet, pode desistir em até 7 dias corridos, contados da contratação, e pedir o reembolso integral do valor pago. Para isso, escreva para <Email /> usando o e-mail da sua conta.</p>
       </Sec>
 
-      <Sec id="uso" n={++n} title="Como usar o Saium">
+      <Sec id="uso" n={++n} title="Como usar o Sauim">
         <p>Você pode usar o site para fins pessoais ou profissionais, dentro da lei. <b>Não é permitido:</b></p>
         <ul>
           <li>usar o áudio para enganar pessoas, como fingir que ele foi gravado por uma pessoa real determinada;</li>
@@ -96,11 +97,11 @@ export default function Termos() {
       </Sec>
 
       <Sec id="responsabilidade" n={++n} title="Responsabilidade">
-        <p>Dentro do que a lei permite, o Saium não responde por prejuízos indiretos, como perda de lucros, nem pelo uso que você faz do áudio. Nada nestes Termos limita os direitos que a lei garante a você como consumidor.</p>
+        <p>Dentro do que a lei permite, o Sauim não responde por prejuízos indiretos, como perda de lucros, nem pelo uso que você faz do áudio. Nada nestes Termos limita os direitos que a lei garante a você como consumidor.</p>
       </Sec>
 
       <Sec id="propriedade" n={++n} title="Propriedade do site">
-        <p>O código, o design e a marca Saium pertencem à equipe do Saium. Usar o serviço não transfere esses direitos para você.</p>
+        <p>O código, o design e a marca Sauim pertencem à equipe do Sauim. Usar o serviço não transfere esses direitos para você.</p>
       </Sec>
 
       <Sec id="encerramento" n={++n} title="Encerramento de conta">

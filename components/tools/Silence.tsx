@@ -39,7 +39,7 @@ export default function Silence() {
       setMsg("");
     } catch (e) {
       console.error(e);
-      setMsg("Não consegui abrir esse arquivo. Tente um MP3, WAV ou M4A.");
+      setMsg("Não foi possível abrir este arquivo. Use um arquivo MP3, WAV ou M4A.");
     } finally {
       setBusy(false);
     }
@@ -67,11 +67,11 @@ export default function Silence() {
         setMsg("Convertendo para MP3…");
         try {
           downloadBlob(await wavToMp3(out.wav), `${src.name}-sem-silencio.mp3`);
-          setMsg("Pronto! Download iniciado.");
+          setMsg("Download iniciado.");
           return;
         } catch (e) {
           console.error(e);
-          setMsg("Não consegui converter para MP3, então baixei em WAV.");
+          setMsg("Não foi possível converter para MP3. O arquivo foi baixado em WAV.");
         }
       }
       downloadBlob(out.wav, `${src.name}-sem-silencio.wav`);

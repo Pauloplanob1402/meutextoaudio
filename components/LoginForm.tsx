@@ -9,6 +9,7 @@ export default function LoginForm({ next }: { next: string }) {
   const [mode, setMode] = useState<Mode>("entrar");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [state, setState] = useState<"idle" | "busy" | "sent" | "error">("idle");
   const [msg, setMsg] = useState("");
   const [token, setToken] = useState("");
@@ -31,6 +32,7 @@ export default function LoginForm({ next }: { next: string }) {
     e.preventDefault();
     if (!email.trim() || state === "busy") return;
     if (mode !== "link" && password.length < 8) { fail("A senha precisa ter pelo menos 8 caracteres."); return; }
+    if (mode === "criar" && password !== confirm) { fail("As duas senhas precisam ser iguais."); return; }
     if (TURNSTILE_SITE_KEY && !token) { setMsg("Aguarde a conclusão da verificação de segurança e tente novamente."); return; }
     setState("busy");
     setMsg("");
@@ -90,6 +92,12 @@ export default function LoginForm({ next }: { next: string }) {
         <>
           <label className="big" htmlFor="senha" style={{ marginTop: 14 }}>Senha</label>
           <input id="senha" type="password" required minLength={8} autoComplete={mode === "criar" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo de 8 caracteres" className="field" />
+          {mode === "criar" && (
+            <>
+              <label className="big" htmlFor="senha2" style={{ marginTop: 14 }}>Repita a senha</label>
+              <input id="senha2" type="password" required minLength={8} autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="Digite a senha novamente" className="field" />
+            </>
+          )}
         </>
       )}
       <Turnstile key={round} onToken={onToken} />

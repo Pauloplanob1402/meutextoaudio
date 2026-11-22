@@ -33,8 +33,8 @@ export default function Termos() {
     <LegalPage title="Termos de Uso" intro="Estes Termos descrevem as condições de uso do Sauim e do plano Criador. Leia-os antes de criar uma conta ou assinar." toc={TOC}>
       <Resumo>
         <ul>
-          <li>O texto para áudio com as vozes gratuitas e as ferramentas são grátis e não precisam de conta.</li>
-          <li>O plano Criador é uma assinatura mensal, que libera as demais vozes e é renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta.</li>
+          <li>O texto para áudio com as vozes gratuitas é grátis e não precisa de conta.</li>
+          <li>O plano Criador é uma assinatura mensal, que libera as demais vozes e todas as ferramentas extras, e é renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta.</li>
           <li>Você é responsável pelo texto que usa e pelo uso que faz do áudio.</li>
           <li>Não use o site para enganar, ofender ou violar direitos de outras pessoas.</li>
         </ul>
@@ -51,14 +51,14 @@ export default function Termos() {
       </Sec>
 
       <Sec id="conta" n={++n} title="Conta e acesso">
-        <p>Você usa o texto para áudio (com as vozes gratuitas) e as ferramentas sem conta. Para assinar o plano Criador, você entra com o seu e-mail (por um link de acesso){RECURSOS.loginGoogle ? " ou com o Google" : ""}.</p>
+        <p>Você usa o texto para áudio (com as vozes gratuitas) sem conta. Para assinar o plano Criador, você entra com o seu e-mail (por um link de acesso){RECURSOS.loginGoogle ? " ou com o Google" : ""}.</p>
         <p>Você é responsável por manter o acesso ao seu e-mail seguro e por tudo o que acontece na sua conta. Informe apenas dados verdadeiros. Para assinar, é preciso ter 18 anos ou mais, ou ter a autorização de um responsável.</p>
       </Sec>
 
       <Sec id="planos" n={++n} title="Planos e pagamento">
         <ul>
-          <li><b>Grátis:</b> texto para áudio com as vozes {voiceNames("free")} e todas as ferramentas, sem custo.</li>
-          <li><b>Criador:</b> assinatura mensal que libera as demais vozes ({voiceNames("pro")}). O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
+          <li><b>Grátis:</b> texto para áudio com as vozes {voiceNames("free")}, sem custo.</li>
+          <li><b>Criador:</b> assinatura mensal que libera as demais vozes ({voiceNames("pro")}) e todas as ferramentas extras. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
         </ul>
         <p>O pagamento é processado pelo Mercado Pago. A assinatura se renova todo mês, na mesma forma de pagamento, até você cancelar.</p>
         <p>Os recursos do plano Criador podem ser acrescentados ao longo do tempo. O que estiver marcado como “em breve” ainda não está disponível e não tem data prometida. Se mudarmos o preço, avisaremos antes, e o novo valor só vale para renovações futuras. Você poderá cancelar antes disso.</p>

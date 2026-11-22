@@ -14,7 +14,7 @@ export default function Ferramentas() {
     <Shell>
       <div className="tp">
         <h1>Todas as ferramentas para criadores</h1>
-        <p className="lead">{TOTAL} ferramentas em 3 etapas: Feito, Subiu, Postado. Tudo roda no seu navegador, sem enviar seus arquivos.</p>
+        <p className="lead">{TOTAL} ferramentas em 3 etapas: Feito, Subiu, Postado. Tudo roda no seu navegador, sem enviar seus arquivos. O Texto em áudio é gratuito; as demais fazem parte do plano Criador.</p>
         <p className="sa-jump">
           {STAGES.map((s) => <a key={s.id} href={`#${s.id}`}>{s.n} • {s.tag}</a>)}
         </p>

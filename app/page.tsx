@@ -57,7 +57,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">1 ferramenta principal + {EXTRAS} extras</p>
           <h2>Ferramentas para cada etapa do vídeo.</h2>
-          <p className="sa-lead">Abra qualquer ferramenta e use na hora. Tudo roda no seu navegador, sem enviar seus arquivos.</p>
+          <p className="sa-lead">O Texto em áudio é gratuito. As ferramentas extras fazem parte do plano Criador. Tudo roda no seu navegador, sem enviar seus arquivos.</p>
           <a className="sa-main" href="#texto-audio">
             <div>
               <span className="sa-chip dark">Principal</span>
@@ -105,7 +105,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">Planos</p>
           <h2>Escolha o seu plano.</h2>
-          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes.</p>
+          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas.</p>
           <div className="plans sa-plans">
             <div className="plan free">
               <span className="sa-chip">Para começar</span>
@@ -115,18 +115,18 @@ export default function Home() {
               <ul>
                 <li>Texto em áudio (MP3 e WAV) com as vozes {voiceNames("free")}</li>
                 <li>Controle de velocidade e pausas</li>
-                <li>Todas as {EXTRAS} ferramentas extras</li>
               </ul>
               <a className="btn ghost" href="#texto-audio">Começar grátis</a>
             </div>
             <div className="plan pro">
-              <span className="sa-chip dark">Todas as vozes</span>
+              <span className="sa-chip dark">Tudo liberado</span>
               <h3>Criador</h3>
               <div className="price">{brl(price)} <small>/mês</small></div>
-              <p className="sa-plan-sub">Todas as vozes, incluindo as naturais e uma voz feminina.</p>
+              <p className="sa-plan-sub">Todas as vozes e todas as ferramentas.</p>
               <ul>
                 <li>Tudo do plano Grátis</li>
                 <li>As demais vozes: {voiceNames("pro")}</li>
+                <li>Todas as {EXTRAS} ferramentas extras</li>
               </ul>
               {billing ? <Link className="btn" href="/conta">Assinar o plano Criador</Link> : <span className="soon">Assinatura em breve</span>}
             </div>
@@ -163,7 +163,7 @@ export default function Home() {
       <section className="sa-final">
         <div className="wrap">
           <h2>Seu próximo vídeo começa aqui.</h2>
-          <p>Comece grátis agora ou libere todas as vozes por {brl(price)}/mês.</p>
+          <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
           <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
         </div>
       </section>

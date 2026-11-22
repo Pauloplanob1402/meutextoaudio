@@ -51,7 +51,7 @@ export default function Privacidade() {
       </Sec>
 
       <Sec id="conta" n={++n} title="Quais dados guardamos na sua conta">
-        <p>Você só precisa de conta para assinar o plano Criador. O texto para áudio com as vozes gratuitas e as ferramentas funcionam sem cadastro. Se você criar uma conta, guardamos:</p>
+        <p>Você só precisa de conta para assinar o plano Criador. O texto para áudio com as vozes gratuitas funciona sem cadastro. Se você criar uma conta, guardamos:</p>
         <ul>
           <li><b>E-mail.</b> Para identificar a sua conta e enviar o link de acesso.</li>
           {RECURSOS.loginGoogle && (

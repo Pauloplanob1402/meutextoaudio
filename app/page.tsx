@@ -42,6 +42,11 @@ export default function Home() {
               </>
             )}
           </div>
+          <ul className="sa-proof" aria-label="Sem limites de uso">
+            <li>Vozes grátis sem limite de gerações nem de caracteres</li>
+            {billing && <li>Plano Criador: tudo ilimitado</li>}
+            <li>Roda no seu navegador, sem créditos</li>
+          </ul>
           {billing && <p className="sa-note">Todas as vozes e as {EXTRAS} ferramentas. Cancele quando quiser. Pague no cartão ou no Pix.</p>}
         </div>
       </section>
@@ -120,7 +125,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">Planos</p>
           <h2>{billing ? `Tudo liberado por ${brl(price)}/mês.` : "Escolha o seu plano."}</h2>
-          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas, a cerca de {brl(price / 30)} por dia. O plano Grátis continua disponível para testar.</p>
+          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. Por isso não há limite mensal de gerações nem de caracteres em nenhum plano. O plano Criador libera as demais vozes e todas as ferramentas, a cerca de {brl(price / 30)} por dia.</p>
           <div className="plans sa-plans">
             <div className="plan free">
               <span className="sa-chip">Para começar</span>
@@ -130,6 +135,7 @@ export default function Home() {
               <ul>
                 <li>Texto em áudio (MP3 e WAV) com as vozes {voiceNames("free")}</li>
                 <li>Controle de velocidade e pausas</li>
+                <li><strong>Gerações ilimitadas</strong>, sem limite mensal e sem limite de caracteres</li>
               </ul>
               <a className="btn ghost" href="#texto-audio">Começar grátis</a>
             </div>
@@ -142,6 +148,7 @@ export default function Home() {
                 <li>Tudo do plano Grátis</li>
                 <li>As demais vozes: {voiceNames("pro")}</li>
                 <li>Todas as {EXTRAS} ferramentas extras</li>
+                <li><strong>Tudo ilimitado</strong>: vozes, gerações e caracteres</li>
               </ul>
               {billing ? <Link className="btn" href="/conta">Assinar por {brl(price)}/mês</Link> : <span className="soon">Assinatura em breve</span>}
             </div>
@@ -166,6 +173,7 @@ export default function Home() {
         <div className="wrap">
           <h2>Perguntas frequentes</h2>
           <div className="faq">
+            <details open><summary>Existe limite de uso?</summary><p>Não. Nem no plano Grátis nem no Criador há limite mensal de gerações ou de caracteres, porque a voz roda no seu navegador e não gera custo por uso. O único limite é o do seu aparelho: textos muito longos podem demorar mais em celulares mais fracos.</p></details>
             <details><summary>Meu texto é enviado para algum servidor?</summary><p>Não. A voz é carregada no seu navegador e o áudio é gerado ali mesmo. O seu texto não sai do seu aparelho.</p></details>
             <details><summary>Por que a primeira geração demora mais?</summary><p>Na primeira vez que você usa uma voz, o navegador baixa o modelo dela (cerca de 60 MB nas vozes rápidas e 90 MB nas vozes naturais) e o mantém salvo. Depois disso, o carregamento é imediato.</p></details>
             <details><summary>Como coloco pausas na narração?</summary><p>Escreva [PAUSA 0.5s] (ou [PAUSA - 3 segundos]) onde quiser o silêncio. O botão “Inserir pausa de 2 segundos” faz isso por você.</p></details>

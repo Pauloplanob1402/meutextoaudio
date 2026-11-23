@@ -145,3 +145,5 @@ footer.sa-foot{display:block;padding:40px 0 56px;border-top:1px solid var(--line
 .sa-bridge a{color:var(--blue);font-weight:700}
 .sa-final .sa-bridge{margin:22px auto 0;font-size:16px}
 .sa-final .sa-bridge a{color:#fff;text-decoration:underline}
+.sa-proof{list-style:none;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:center;margin:22px auto 0;padding:0;max-width:820px;font:600 16px var(--body);color:var(--ink)}
+.sa-proof li::before{content:"\2713";font-weight:800;margin-right:8px;color:var(--blue)}

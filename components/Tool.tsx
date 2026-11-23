@@ -53,7 +53,7 @@ export default function Tool() {
       .then((r) => r.json())
       .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
       .catch(() => setPlan("free"));
-    if (window.matchMedia("(min-width:861px)").matches) ta.current?.focus({ preventScroll: true });
+    if (window.matchMedia("(min-width:861px)").matches) ta.current?.focus();
   }, []);
 
   // quem tem o plano Criador e nunca escolheu voz começa pela Faber

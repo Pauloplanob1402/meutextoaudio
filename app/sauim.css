@@ -141,3 +141,67 @@ footer.sa-foot{display:block;padding:40px 0 56px;border-top:1px solid var(--line
 /* ajustes dos cartões de plano */
 .plan ul{align-content:start}
 .plan .btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 26px}
+
+/* ===== Refino visual (fluxo de leitura, ritmo e responsividade). Só apresentação. ===== */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:8px}
+
+/* topo: o lilás do mascote se dissolve no fundo da página */
+.sa-hero{background:linear-gradient(180deg,#F2F0FB 0%,#F2F0FB 38%,var(--paper) 100%);padding:28px 0 56px}
+.sa-brand{max-width:720px;margin:0 auto 20px;border-radius:0;box-shadow:none;overflow:visible;
+  -webkit-mask-image:radial-gradient(ellipse 62% 64% at 50% 50%,#000 58%,transparent 100%);
+  mask-image:radial-gradient(ellipse 62% 64% at 50% 50%,#000 58%,transparent 100%)}
+.sa-badge{margin-bottom:18px}
+.sa-hero h1{font-size:clamp(42px,7vw,80px)}
+.sa-sub{margin-top:18px}
+.sa-actions{margin-top:28px}
+@media (max-width:520px){
+  .sa-hero{padding:16px 0 44px}
+  .sa-brand{max-width:none;margin:0 -8px 8px}
+  .sa-actions{flex-direction:column;align-items:stretch;max-width:340px;margin-inline:auto}
+}
+
+/* ferramenta principal: entra logo depois do topo, sem linha dura entre os dois */
+.stage{padding-top:8px;padding-bottom:24px;border-top:0}
+.stage::before{display:none}
+.stage .lead{margin-inline:auto;text-align:center}
+.stage .path{justify-content:center}
+
+/* ritmo das seções */
+.sa-sec{padding:clamp(56px,8vw,96px) 0}
+.sa-sec h2{max-width:22ch}
+.sa-sec .sa-lead{font-size:clamp(17px,1.6vw,19px)}
+.sa-steps{margin-top:clamp(24px,4vw,40px)}
+.sa-step{padding:28px 26px}
+.sa-step:hover,.sa-tool:hover{transform:translateY(-2px)}
+.sa-step,.sa-tool{transition:border-color .2s,box-shadow .2s,transform .2s}
+
+/* grade das ferramentas: mais leve de ler */
+.sa-grid{gap:16px}
+.sa-tool{padding:20px;gap:14px}
+.sa-tool-top{margin-bottom:10px}
+.sa-tool p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sa-tabs{margin:24px 0 18px}
+
+@media (max-width:640px){
+  .sa-tabs{flex-wrap:nowrap;overflow-x:auto;margin-inline:-24px;padding:2px 24px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
+  .sa-tabs::-webkit-scrollbar{display:none}
+  .sa-tabs button{flex:none;scroll-snap-align:start}
+  .sa-grid{grid-template-columns:1fr;gap:10px}
+  .sa-tool{padding:14px 16px;gap:8px;border-radius:18px}
+  .sa-tool-top{margin-bottom:6px}
+  .sa-num,.sa-tool-foot span{display:none}
+  .sa-tool-foot{border-top:0;padding-top:0;justify-content:flex-end}
+  .sa-tool h3{font-size:18px}
+  .sa-tool p{font-size:14.5px;-webkit-line-clamp:2}
+  .sa-main{padding:22px;border-radius:20px}
+  .sa-main-side{width:100%}
+  .sa-step{padding:22px 20px}
+  .sa-bio > div{padding:22px 20px}
+  /* no celular o plano Criador vem primeiro */
+  .sa-plans .plan.pro{order:-1}
+  .sa-final{padding:64px 0}
+}
+.sa-sec h2{max-width:26ch}
+.sa-step-foot b{white-space:nowrap}

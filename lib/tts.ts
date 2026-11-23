@@ -3,7 +3,7 @@ export const PARAGRAPH_PAUSE = 0.7; // segundos de silêncio entre parágrafos
 export const CHUNK_PAUSE = 0.15; // segundos entre trechos da mesma frase longa
 export const DEFAULT_PAUSE = 1.5; // usado se [PAUSA] vier sem número
 export const MAX_PAUSE = 30; // limite de segurança por pausa
-export const WORDS_PER_MINUTE = 155; // ritmo da voz, só para a estimativa de duração (ajuste depois de testar)
+export const WORDS_PER_MINUTE = 190; // ritmo da voz, só para a estimativa de duração. Medido: voz Faber, 744 palavras + ~40 s de pausas = 4 min 35 s de áudio
 
 // Voz usada pelo app (Piper, português do Brasil)
 export const VOICE_ID = "pt_BR-faber-medium";

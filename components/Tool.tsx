@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript } from "@/lib/tts";
+import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript, scriptStats } from "@/lib/tts";
 import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
@@ -38,7 +38,11 @@ export default function Tool() {
   const au = useRef<HTMLAudioElement>(null);
   const res = useRef<HTMLDivElement>(null);
   const step = url ? 3 : text.trim() ? 2 : 1;
-  const est = useMemo(() => estimateSeconds(text, speed), [text, speed]);
+  // Ritmo real de cada voz (palavras por minuto), medido nos áudios que ela já gerou neste aparelho.
+  const [wpmMap, setWpmMap] = useState<Record<string, number>>({});
+  const [realDur, setRealDur] = useState(0); // duração real do áudio gerado, na velocidade original
+  const genInfo = useRef<{ words: number; pauses: number; voice: string } | null>(null);
+  const est = useMemo(() => estimateSeconds(text, speed, wpmMap[voiceId]), [text, speed, wpmMap, voiceId]);
 
   // rascunho salvo só no navegador
   function update(v: string) {
@@ -48,6 +52,7 @@ export default function Tool() {
   useEffect(() => {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
+    try { const m = JSON.parse(localStorage.getItem("wpm") || "{}"); if (m && typeof m === "object") setWpmMap(m); } catch {}
     try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(getVoice(v).id); savedVoice.current = true; } } catch {}
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
@@ -68,6 +73,25 @@ export default function Tool() {
     savedVoice.current = true;
     setVoiceId(id);
     try { localStorage.setItem("voz", id); } catch {}
+  }
+
+  // Quando o áudio carrega, guarda a duração real e aprende o ritmo da voz para as próximas estimativas.
+  function onMeta() {
+    applySpeed();
+    const d = au.current?.duration;
+    if (!d || !isFinite(d)) return;
+    setRealDur(d);
+    const g = genInfo.current;
+    genInfo.current = null;
+    if (!g || g.words < 20) return;
+    const talk = d - g.pauses;
+    if (talk <= 0) return;
+    const wpm = Math.round(Math.min(300, Math.max(80, (g.words / talk) * 60)));
+    setWpmMap((m) => {
+      const next = { ...m, [g.voice]: wpm };
+      try { localStorage.setItem("wpm", JSON.stringify(next)); } catch {}
+      return next;
+    });
   }
 
   function applySpeed() {
@@ -146,6 +170,7 @@ export default function Tool() {
       setStatus("Montando o áudio final…");
       const merged = await mergeParts(out);
       original.current = merged;
+      genInfo.current = { ...scriptStats(text), voice: voiceId };
       setUrl(URL.createObjectURL(merged));
       setStatus(
         skipped.length
@@ -318,7 +343,8 @@ export default function Tool() {
         {url && (
           <div className="result" ref={res}>
             <h2>Seu áudio está pronto.</h2>
-            <audio ref={au} src={url} controls onLoadedMetadata={applySpeed} />
+            <audio ref={au} src={url} controls onLoadedMetadata={onMeta} />
+            {realDur > 0 && <p className="note" style={{ marginTop: 8 }}>Duração na velocidade escolhida: <b>{formatDuration(realDur / speed)}</b>.{speed !== 1 && <> O player mostra a duração original ({formatDuration(realDur)}).</>}</p>}
             <div className="rrow" style={{ marginTop: 16 }}>
               <div className="speeds" role="group" aria-label="Velocidade">
                 {SPEEDS.map((s) => (

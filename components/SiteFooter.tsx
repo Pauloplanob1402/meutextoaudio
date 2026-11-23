@@ -15,6 +15,7 @@ export default function SiteFooter() {
           <Link href="/#fluxo">Como funciona</Link>
           <Link href="/ferramentas">{TOTAL} Ferramentas</Link>
           <Link href="/#biologia">Sobre</Link>
+          <Link href="/historia">Nossa história</Link>
           <Link href="/#planos">Planos</Link>
           <Link href="/privacidade">Privacidade</Link>
           <Link href="/termos">Termos</Link>

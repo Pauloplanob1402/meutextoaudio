@@ -22,32 +22,18 @@ export default function Home() {
 
       <section className="sa-hero" aria-labelledby="sa-h1">
         <div className="wrap">
+          <picture className="sa-brand">
+            <source type="image/webp" srcSet="/marca/sauim-480.webp 480w, /marca/sauim-800.webp 800w, /marca/sauim-1264.webp 1264w" sizes="(max-width: 860px) 92vw, 760px" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/marca/sauim-1264.jpg" width={1264} height={843} alt="Mascote do Sauim, um sauim de fone de ouvido, com a frase: Comece pequeno. Cresça gigante." fetchPriority="high" decoding="async" />
+          </picture>
           <p className="sa-badge">Ferramentas para criadores de YouTube</p>
           <h1 id="sa-h1">Feito. Subiu. <span>Postado.</span></h1>
-          <p className="sa-sub">
-            {billing
-              ? `Narração, roteiro, títulos e planejamento num só lugar. Tudo liberado por ${brl(price)}/mês, cerca de ${brl(price / 30)} por dia.`
-              : "Roteiro, narração, título e planejamento em um só lugar, para publicar vídeos com constância."}
-          </p>
+          <p className="sa-sub">Roteiro, narração, título e planejamento em um só lugar, para publicar vídeos com constância.</p>
           <div className="sa-actions">
-            {billing ? (
-              <>
-                <Link className="btn go" href="/conta">Assinar por {brl(price)}/mês</Link>
-                <a className="btn ghost" href="#texto-audio">Testar a narração grátis</a>
-              </>
-            ) : (
-              <>
-                <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
-                <a className="btn ghost" href="#planos">Ver planos</a>
-              </>
-            )}
+            <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
+            <a className="btn ghost" href="#planos">Ver planos</a>
           </div>
-          <ul className="sa-proof" aria-label="Sem limites de uso">
-            <li>Vozes grátis sem limite de gerações nem de caracteres</li>
-            {billing && <li>Plano Criador: tudo ilimitado</li>}
-            <li>Roda no seu navegador, sem créditos</li>
-          </ul>
-          {billing && <p className="sa-note">Todas as vozes e as {EXTRAS} ferramentas. Cancele quando quiser. Pague no cartão ou no Pix.</p>}
         </div>
       </section>
 
@@ -86,7 +72,6 @@ export default function Home() {
             <div className="sa-main-side"><span>MP3 e WAV</span><span>Velocidade e pausas</span><b>Abrir →</b></div>
           </a>
           <Arsenal />
-          {billing && <p className="sa-bridge">Todas as ferramentas e vozes liberadas por {brl(price)}/mês. <Link href="/conta">Assinar o plano Criador</Link></p>}
         </div>
       </section>
 
@@ -112,7 +97,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">Sobre o Sauim</p>
           <h2>Um nome com dois sentidos.</h2>
-          <p className="sa-lead">O sauim é um pequeno primata brasileiro, ágil e pouco conhecido, como os canais que estão começando. Lido em voz alta, “sauim” também soa como “sai um”: sai um vídeo, depois outro, e o canal cresce.</p>
+          <p className="sa-lead">O sauim é um pequeno primata brasileiro, ágil e pouco conhecido, como os canais que estão começando. Lido em voz alta, “sauim” também soa como “sai um”: sai um vídeo, depois outro, e o canal cresce. Dessa brincadeira nasceu o nome, e o site inteiro joga com ela.</p>
           <div className="sa-bio">
             {BIO.map((b) => (
               <div key={b.title}><span aria-hidden="true">{b.big}</span><h3>{b.title}</h3><p>{b.text}</p></div>
@@ -124,8 +109,8 @@ export default function Home() {
       <section id="planos" className="sa-sec">
         <div className="wrap">
           <p className="sa-eyebrow">Planos</p>
-          <h2>{billing ? `Tudo liberado por ${brl(price)}/mês.` : "Escolha o seu plano."}</h2>
-          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. Por isso não há limite mensal de gerações nem de caracteres em nenhum plano. O plano Criador libera as demais vozes e todas as ferramentas, a cerca de {brl(price / 30)} por dia.</p>
+          <h2>Escolha o seu plano.</h2>
+          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas.</p>
           <div className="plans sa-plans">
             <div className="plan free">
               <span className="sa-chip">Para começar</span>
@@ -135,7 +120,6 @@ export default function Home() {
               <ul>
                 <li>Texto em áudio (MP3 e WAV) com as vozes {voiceNames("free")}</li>
                 <li>Controle de velocidade e pausas</li>
-                <li><strong>Gerações ilimitadas</strong>, sem limite mensal e sem limite de caracteres</li>
               </ul>
               <a className="btn ghost" href="#texto-audio">Começar grátis</a>
             </div>
@@ -143,14 +127,13 @@ export default function Home() {
               <span className="sa-chip dark">Tudo liberado</span>
               <h3>Criador</h3>
               <div className="price">{brl(price)} <small>/mês</small></div>
-              <p className="sa-plan-sub">Cerca de {brl(price / 30)} por dia, com tudo liberado.</p>
+              <p className="sa-plan-sub">Todas as vozes e todas as ferramentas.</p>
               <ul>
                 <li>Tudo do plano Grátis</li>
                 <li>As demais vozes: {voiceNames("pro")}</li>
                 <li>Todas as {EXTRAS} ferramentas extras</li>
-                <li><strong>Tudo ilimitado</strong>: vozes, gerações e caracteres</li>
               </ul>
-              {billing ? <Link className="btn" href="/conta">Assinar por {brl(price)}/mês</Link> : <span className="soon">Assinatura em breve</span>}
+              {billing ? <Link className="btn" href="/conta">Assinar o plano Criador</Link> : <span className="soon">Assinatura em breve</span>}
             </div>
             <div className="plan studio">
               <span className="sa-chip">Premium</span>
@@ -173,7 +156,6 @@ export default function Home() {
         <div className="wrap">
           <h2>Perguntas frequentes</h2>
           <div className="faq">
-            <details open><summary>Existe limite de uso?</summary><p>Não. Nem no plano Grátis nem no Criador há limite mensal de gerações ou de caracteres, porque a voz roda no seu navegador e não gera custo por uso. O único limite é o do seu aparelho: textos muito longos podem demorar mais em celulares mais fracos.</p></details>
             <details><summary>Meu texto é enviado para algum servidor?</summary><p>Não. A voz é carregada no seu navegador e o áudio é gerado ali mesmo. O seu texto não sai do seu aparelho.</p></details>
             <details><summary>Por que a primeira geração demora mais?</summary><p>Na primeira vez que você usa uma voz, o navegador baixa o modelo dela (cerca de 60 MB nas vozes rápidas e 90 MB nas vozes naturais) e o mantém salvo. Depois disso, o carregamento é imediato.</p></details>
             <details><summary>Como coloco pausas na narração?</summary><p>Escreva [PAUSA 0.5s] (ou [PAUSA - 3 segundos]) onde quiser o silêncio. O botão “Inserir pausa de 2 segundos” faz isso por você.</p></details>
@@ -186,18 +168,8 @@ export default function Home() {
       <section className="sa-final">
         <div className="wrap">
           <h2>Seu próximo vídeo começa aqui.</h2>
-          {billing ? (
-            <>
-              <p>Libere todas as vozes e as {EXTRAS} ferramentas por {brl(price)}/mês. Cancele quando quiser.</p>
-              <Link className="btn go" href="/conta">Assinar o plano Criador</Link>
-              <p className="sa-bridge">Prefere testar antes? <a href="#texto-audio">Gerar narração grátis</a></p>
-            </>
-          ) : (
-            <>
-              <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
-              <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
-            </>
-          )}
+          <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
+          <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
         </div>
       </section>
 

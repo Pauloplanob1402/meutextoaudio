@@ -24,11 +24,25 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-badge">Ferramentas para criadores de YouTube</p>
           <h1 id="sa-h1">Feito. Subiu. <span>Postado.</span></h1>
-          <p className="sa-sub">Roteiro, narração, título e planejamento em um só lugar, para publicar vídeos com constância.</p>
+          <p className="sa-sub">
+            {billing
+              ? `Narração, roteiro, títulos e planejamento num só lugar. Tudo liberado por ${brl(price)}/mês, cerca de ${brl(price / 30)} por dia.`
+              : "Roteiro, narração, título e planejamento em um só lugar, para publicar vídeos com constância."}
+          </p>
           <div className="sa-actions">
-            <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
-            <a className="btn ghost" href="#planos">Ver planos</a>
+            {billing ? (
+              <>
+                <Link className="btn go" href="/conta">Assinar por {brl(price)}/mês</Link>
+                <a className="btn ghost" href="#texto-audio">Testar a narração grátis</a>
+              </>
+            ) : (
+              <>
+                <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
+                <a className="btn ghost" href="#planos">Ver planos</a>
+              </>
+            )}
           </div>
+          {billing && <p className="sa-note">Todas as vozes e as {EXTRAS} ferramentas. Cancele quando quiser. Pague no cartão ou no Pix.</p>}
         </div>
       </section>
 
@@ -67,6 +81,7 @@ export default function Home() {
             <div className="sa-main-side"><span>MP3 e WAV</span><span>Velocidade e pausas</span><b>Abrir →</b></div>
           </a>
           <Arsenal />
+          {billing && <p className="sa-bridge">Todas as ferramentas e vozes liberadas por {brl(price)}/mês. <Link href="/conta">Assinar o plano Criador</Link></p>}
         </div>
       </section>
 
@@ -92,7 +107,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">Sobre o Sauim</p>
           <h2>Um nome com dois sentidos.</h2>
-          <p className="sa-lead">O sauim é um pequeno primata brasileiro, ágil e pouco conhecido, como os canais que estão começando. Lido em voz alta, “sauim” também soa como “sai um”: sai um vídeo, depois outro, e o canal cresce. Dessa brincadeira nasceu o nome, e o site inteiro joga com ela.</p>
+          <p className="sa-lead">O sauim é um pequeno primata brasileiro, ágil e pouco conhecido, como os canais que estão começando. Lido em voz alta, “sauim” também soa como “sai um”: sai um vídeo, depois outro, e o canal cresce.</p>
           <div className="sa-bio">
             {BIO.map((b) => (
               <div key={b.title}><span aria-hidden="true">{b.big}</span><h3>{b.title}</h3><p>{b.text}</p></div>
@@ -104,8 +119,8 @@ export default function Home() {
       <section id="planos" className="sa-sec">
         <div className="wrap">
           <p className="sa-eyebrow">Planos</p>
-          <h2>Escolha o seu plano.</h2>
-          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas.</p>
+          <h2>{billing ? `Tudo liberado por ${brl(price)}/mês.` : "Escolha o seu plano."}</h2>
+          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas, a cerca de {brl(price / 30)} por dia. O plano Grátis continua disponível para testar.</p>
           <div className="plans sa-plans">
             <div className="plan free">
               <span className="sa-chip">Para começar</span>
@@ -122,13 +137,13 @@ export default function Home() {
               <span className="sa-chip dark">Tudo liberado</span>
               <h3>Criador</h3>
               <div className="price">{brl(price)} <small>/mês</small></div>
-              <p className="sa-plan-sub">Todas as vozes e todas as ferramentas.</p>
+              <p className="sa-plan-sub">Cerca de {brl(price / 30)} por dia, com tudo liberado.</p>
               <ul>
                 <li>Tudo do plano Grátis</li>
                 <li>As demais vozes: {voiceNames("pro")}</li>
                 <li>Todas as {EXTRAS} ferramentas extras</li>
               </ul>
-              {billing ? <Link className="btn" href="/conta">Assinar o plano Criador</Link> : <span className="soon">Assinatura em breve</span>}
+              {billing ? <Link className="btn" href="/conta">Assinar por {brl(price)}/mês</Link> : <span className="soon">Assinatura em breve</span>}
             </div>
             <div className="plan studio">
               <span className="sa-chip">Premium</span>
@@ -163,8 +178,18 @@ export default function Home() {
       <section className="sa-final">
         <div className="wrap">
           <h2>Seu próximo vídeo começa aqui.</h2>
-          <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
-          <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
+          {billing ? (
+            <>
+              <p>Libere todas as vozes e as {EXTRAS} ferramentas por {brl(price)}/mês. Cancele quando quiser.</p>
+              <Link className="btn go" href="/conta">Assinar o plano Criador</Link>
+              <p className="sa-bridge">Prefere testar antes? <a href="#texto-audio">Gerar narração grátis</a></p>
+            </>
+          ) : (
+            <>
+              <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
+              <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
+            </>
+          )}
         </div>
       </section>
 

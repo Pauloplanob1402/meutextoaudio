@@ -139,3 +139,9 @@ footer.sa-foot{display:block;padding:40px 0 56px;border-top:1px solid var(--line
 /* ajustes dos cartões de plano */
 .plan ul{align-content:start}
 .plan .btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 26px}
+/* Caminho para assinar: texto de apoio sob o botão e ponte entre seções */
+.sa-note{font-size:15px;color:var(--mute);max-width:52ch;margin:16px auto 0}
+.sa-bridge{margin:28px auto 0;text-align:center;font-size:18px}
+.sa-bridge a{color:var(--blue);font-weight:700}
+.sa-final .sa-bridge{margin:22px auto 0;font-size:16px}
+.sa-final .sa-bridge a{color:#fff;text-decoration:underline}

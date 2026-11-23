@@ -62,6 +62,8 @@ const nextConfig: NextConfig = {
   // o calendário semanal virou calendário do mês: o endereço antigo continua funcionando
   async redirects() {
     return [
+      // um endereço só: o login é guardado por endereço, então sauim.com.br e www.sauim.com.br não podem conviver
+      { source: "/:path*", has: [{ type: "host", value: "sauim.com.br" }], destination: "https://www.sauim.com.br/:path*", permanent: false },
       { source: "/ferramentas/calendario-semanal", destination: "/ferramentas/calendario", permanent: true },
       // o cruzador de nicho foi trocado pelo gerador de títulos
       { source: "/ferramentas/cruzador-de-nicho", destination: "/ferramentas/gerador-de-titulos", permanent: true },

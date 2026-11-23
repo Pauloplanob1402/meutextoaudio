@@ -58,7 +58,7 @@ export default function Termos() {
       <Sec id="planos" n={++n} title="Planos e pagamento">
         <ul>
           <li><b>Grátis:</b> texto para áudio com as vozes {voiceNames("free")}, sem custo.</li>
-          <li><b>Criador:</b> assinatura mensal que libera as demais vozes ({voiceNames("pro")}) e todas as ferramentas extras. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
+          <li><b>Criador:</b> assinatura mensal, no cartão (renova sozinha) ou em Pix de 30 dias (não renova sozinho), que libera as demais vozes ({voiceNames("pro")}) e todas as ferramentas extras. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
         </ul>
         <p>O pagamento é processado pelo Mercado Pago. A assinatura se renova todo mês, na mesma forma de pagamento, até você cancelar.</p>
         <p>Os recursos do plano Criador podem ser acrescentados ao longo do tempo. O que estiver marcado como “em breve” ainda não está disponível e não tem data prometida. Se mudarmos o preço, avisaremos antes, e o novo valor só vale para renovações futuras. Você poderá cancelar antes disso.</p>

@@ -71,3 +71,50 @@ export function verifySignature(headers: Headers, dataId: string): boolean {
   const given = Buffer.from(v1);
   return expected.length === given.length && timingSafeEqual(expected, given);
 }
+
+// ---------- Pix de 30 dias (pago uma vez por mês, sem renovação automática) ----------
+
+export const PIX_DAYS = 30;
+export const PIX_PREFIX = "pix_"; // marca na assinatura: "pix_" + número do pagamento
+
+export type MpPayment = {
+  id: number;
+  status: string;
+  payment_method_id?: string;
+  transaction_amount?: number;
+  external_reference?: string;
+  date_approved?: string | null;
+  point_of_interaction?: { transaction_data?: { qr_code?: string; qr_code_base64?: string } };
+};
+
+async function mpPayment(path: string, init: RequestInit & { idempotency?: string } = {}): Promise<MpPayment> {
+  const { idempotency, ...rest } = init;
+  const res = await fetch(API + path, {
+    ...rest,
+    headers: { ...auth(), ...(idempotency ? { "X-Idempotency-Key": idempotency } : {}) },
+    cache: "no-store",
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(`Mercado Pago ${res.status}: ${JSON.stringify(body).slice(0, 300)}`);
+  return body as MpPayment;
+}
+
+// Cria um Pix de 30 dias. O pagamento vale por 30 minutos para ser feito.
+export function createPixPayment(p: { userId: string; email: string; amount: number; notificationUrl: string; key: string }) {
+  const expires = new Date(Date.now() + 30 * 60_000 - 3 * 3_600_000).toISOString().replace("Z", "-03:00");
+  return mpPayment("/v1/payments", {
+    method: "POST",
+    idempotency: p.key,
+    body: JSON.stringify({
+      transaction_amount: p.amount,
+      description: "Sauim Criador (30 dias)",
+      payment_method_id: "pix",
+      payer: { email: p.email },
+      external_reference: `pix:${p.userId}`,
+      notification_url: p.notificationUrl,
+      date_of_expiration: expires,
+    }),
+  });
+}
+
+export const getPayment = (id: string) => mpPayment(`/v1/payments/${encodeURIComponent(id)}`);

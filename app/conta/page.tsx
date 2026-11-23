@@ -9,6 +9,7 @@ export const metadata: Metadata = { title: "Minha conta · Sauim", robots: { ind
 
 const LABEL: Record<string, string> = {
   authorized: "Plano Criador ativo",
+  expired: "Plano Criador vencido",
   pending: "Aguardando a confirmação do pagamento",
   paused: "Assinatura pausada",
   cancelled: "Assinatura cancelada",
@@ -30,13 +31,13 @@ export default async function Conta({ searchParams }: { searchParams: Promise<{ 
         )}
 
         <h2>Plano: {account.plan === "pro" ? "Criador" : "Grátis"}</h2>
-        {account.status && <p className="status">{LABEL[account.status] ?? account.status}</p>}
+        {account.status && <p className="status">{account.pix && account.plan !== "pro" && account.status === "authorized" ? LABEL.expired : LABEL[account.status] ?? account.status}</p>}
         {account.status === "authorized" && account.nextPayment && (
-          <p className="note">Próxima cobrança: {new Date(account.nextPayment).toLocaleDateString("pt-BR")}</p>
+          <p className="note">{account.pix ? "Acesso até" : "Próxima cobrança"}: {new Date(account.nextPayment).toLocaleDateString("pt-BR")}</p>
         )}
 
         <div style={{ margin: "20px 0" }}>
-          <AccountActions status={account.status} enabled={billingEnabled()} />
+          <AccountActions status={account.status} enabled={billingEnabled()} pix={account.pix} active={account.plan === "pro"} />
         </div>
 
         <form action="/auth/sair" method="post">

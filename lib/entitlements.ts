@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 
-export type Account = { userId: string; email: string; status: string | null; nextPayment: string | null; plan: "free" | "pro" };
+export type Account = { userId: string; email: string; status: string | null; nextPayment: string | null; plan: "free" | "pro"; pix: boolean };
 
 // Quem é o usuário e qual é o plano dele. Retorna null se não estiver logado.
 // Para liberar um recurso só do Pro no servidor:  const a = await getAccount(); if (a?.plan !== "pro") return 403.
@@ -9,13 +9,17 @@ export async function getAccount(): Promise<Account | null> {
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
   if (!claims) return null;
-  const { data: sub } = await supabase.from("subscriptions").select("status, next_payment_date").maybeSingle();
+  const { data: sub } = await supabase.from("subscriptions").select("status, next_payment_date, mp_preapproval_id").maybeSingle();
   const status = sub?.status ?? null;
+  const pix = Boolean(sub?.mp_preapproval_id?.startsWith("pix_"));
+  // Pix vale só até a data guardada; o cartão segue o status que o Mercado Pago informa.
+  const pixVencido = pix && (!sub?.next_payment_date || new Date(sub.next_payment_date).getTime() < Date.now());
   return {
     userId: claims.sub,
     email: (claims.email as string | undefined) ?? "",
     status,
     nextPayment: sub?.next_payment_date ?? null,
-    plan: status === "authorized" ? "pro" : "free",
+    plan: status === "authorized" && !pixVencido ? "pro" : "free",
+    pix,
   };
 }

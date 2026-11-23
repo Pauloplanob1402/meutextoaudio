@@ -8,14 +8,13 @@ export default function SiteFooter() {
     <footer className="sa-foot">
       <div className="wrap sa-foot-in">
         <div>
-          <p className="sa-foot-brand"><Mark size={26} /> <b>Sauim</b> <span>— Feito. Subiu. Postado.</span></p>
+          <p className="sa-foot-brand"><Mark size={26} /> <b>Sauim</b> <span>— Comece pequeno. Cresça gigante.</span></p>
           <p className="sa-foot-note">© 2026 Sauim. Todos os direitos reservados.</p>
         </div>
         <nav aria-label="Rodapé" className="sa-foot-links">
           <Link href="/#fluxo">Como funciona</Link>
           <Link href="/ferramentas">{TOTAL} Ferramentas</Link>
           <Link href="/#biologia">Sobre</Link>
-          <Link href="/historia">Nossa história</Link>
           <Link href="/#planos">Planos</Link>
           <Link href="/privacidade">Privacidade</Link>
           <Link href="/termos">Termos</Link>

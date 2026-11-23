@@ -3,7 +3,7 @@
 // então o texto do site nunca fica diferente do que existe de verdade.
 import { TOOLS, type GroupId } from "./tools";
 
-export const BRAND = { name: "Sauim", domain: ".com.br", site: "sauim.com.br", tagline: "Feito. Subiu. Postado." };
+export const BRAND = { name: "Sauim", domain: ".com.br", site: "sauim.com.br", tagline: "Comece pequeno. Cresça gigante." };
 
 // Criador usa o mesmo preço configurado na cobrança (PRO_PRICE_BRL). Sem ele, mostra o preço de lançamento (R$ 39,90).
 export const PRICE = {

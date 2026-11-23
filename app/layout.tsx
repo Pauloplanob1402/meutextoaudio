@@ -7,10 +7,10 @@ import "./sauim.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://sauim.com.br"),
-  title: "Sauim — Feito. Subiu. Postado. | Ferramentas para criadores de YouTube",
+  title: "Sauim — Comece pequeno. Cresça gigante. | Ferramentas para criadores de YouTube",
   description: "Texto em áudio em português do Brasil e ferramentas para criadores de YouTube: roteiro, capítulos, legendas, miniatura e planejamento.",
   openGraph: {
-    title: "Sauim — Feito. Subiu. Postado.",
+    title: "Sauim — Comece pequeno. Cresça gigante.",
     description: "Do roteiro à publicação: narração, títulos, capítulos, legendas e miniatura para criadores de YouTube.",
     siteName: "Sauim",
     locale: "pt_BR",

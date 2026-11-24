@@ -1,3 +1,4 @@
+import { FreeCardCta, ProCardCta } from "@/components/PlanCtas";
 import Link from "next/link";
 import Tool from "@/components/Tool";
 import Arsenal from "@/components/Arsenal";
@@ -103,7 +104,6 @@ export default function Home() {
               <div key={b.title}><span aria-hidden="true">{b.big}</span><h3>{b.title}</h3><p>{b.text}</p></div>
             ))}
           </div>
-          <p style={{ marginTop: 28 }}><Link className="btn ghost" href="/historia">Leia a nossa história →</Link></p>
         </div>
       </section>
 
@@ -122,7 +122,7 @@ export default function Home() {
                 <li>Texto em áudio (MP3 e WAV) com as vozes {voiceNames("free")}</li>
                 <li>Controle de velocidade e pausas</li>
               </ul>
-              <a className="btn ghost" href="#texto-audio">Começar grátis</a>
+              <FreeCardCta />
             </div>
             <div className="plan pro">
               <span className="sa-chip dark">Tudo liberado</span>
@@ -134,7 +134,7 @@ export default function Home() {
                 <li>As demais vozes: {voiceNames("pro")}</li>
                 <li>Todas as {EXTRAS} ferramentas extras</li>
               </ul>
-              {billing ? <Link className="btn" href="/conta">Assinar o plano Criador</Link> : <span className="soon">Assinatura em breve</span>}
+              {billing ? <ProCardCta /> : <span className="soon">Assinatura em breve</span>}
             </div>
             <div className="plan studio">
               <span className="sa-chip">Premium</span>

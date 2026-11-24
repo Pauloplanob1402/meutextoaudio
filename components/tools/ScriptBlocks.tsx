@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { blockStatus, SCRIPT_BLOCKS } from "@/lib/toolkit2";
 import { fmtTime, speechSeconds } from "@/lib/toolkit";
-import { formatDuration } from "@/lib/tts";
+import { formatDuration, savedNarrationWpm } from "@/lib/tts";
 import { CopyButton, downloadText, fmtNum, useStored } from "./ui";
 
 const PACES = [
@@ -14,6 +14,10 @@ const PACES = [
 export default function ScriptBlocks() {
   const [texts, setTexts] = useStored<Record<string, string>>("roteiro-blocos", {});
   const [wpm, setWpm] = useState(150);
+  const [pace, setPace] = useState("Normal");
+  const [nar, setNar] = useState(0); // ritmo real da voz do Sauim neste aparelho (0 até carregar)
+  useEffect(() => { setNar(savedNarrationWpm()); }, []);
+  const paces = nar ? [...PACES, { label: "Narração do Sauim", wpm: nar }] : PACES;
   const calc = SCRIPT_BLOCKS.map((b) => speechSeconds(texts[b.id] ?? "", wpm));
   const total = calc.reduce((s, c) => s + c.seconds, 0);
   const words = calc.reduce((s, c) => s + c.words, 0);
@@ -28,8 +32,8 @@ export default function ScriptBlocks() {
       <div className="field">
         <span>Ritmo da fala</span>
         <div className="speeds" role="group" aria-label="Ritmo da fala">
-          {PACES.map((p) => (
-            <button key={p.wpm} type="button" className={wpm === p.wpm ? "on" : ""} onClick={() => setWpm(p.wpm)}>{p.label} ({p.wpm} palavras por minuto)</button>
+          {paces.map((p) => (
+            <button key={p.label} type="button" className={pace === p.label ? "on" : ""} onClick={() => { setWpm(p.wpm); setPace(p.label); }}>{p.label} ({p.wpm} palavras por minuto)</button>
           ))}
         </div>
       </div>

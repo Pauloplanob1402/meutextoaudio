@@ -149,9 +149,11 @@ html{scroll-behavior:smooth}
 
 /* topo: o lilás do mascote se dissolve no fundo da página */
 .sa-hero{background:linear-gradient(180deg,#F2F0FB 0%,#F2F0FB 38%,var(--paper) 100%);padding:28px 0 56px}
-.sa-brand{max-width:720px;margin:0 auto 20px;border-radius:0;box-shadow:none;overflow:visible;
-  -webkit-mask-image:radial-gradient(ellipse 62% 64% at 50% 50%,#000 58%,transparent 100%);
-  mask-image:radial-gradient(ellipse 62% 64% at 50% 50%,#000 58%,transparent 100%)}
+/* mascote do topo: recortado nas laterais vazias da imagem para ficar bem maior, sem mudar de lugar */
+.sa-brand{max-width:600px;margin:0 auto 20px;border-radius:0;box-shadow:none;overflow:hidden;aspect-ratio:670/611;
+  -webkit-mask-image:radial-gradient(ellipse 54% 66% at 50% 50%,#000 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 54% 66% at 50% 50%,#000 70%,transparent 100%)}
+.sa-brand img{width:188.66%;max-width:none;margin-left:-44.78%}
 .sa-badge{margin-bottom:18px}
 .sa-hero h1{font-size:clamp(42px,7vw,80px)}
 .sa-sub{margin-top:18px}

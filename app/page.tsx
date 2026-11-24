@@ -24,7 +24,7 @@ export default function Home() {
       <section className="sa-hero" aria-labelledby="sa-h1">
         <div className="wrap">
           <picture className="sa-brand">
-            <source type="image/webp" srcSet="/marca/sauim-480.webp 480w, /marca/sauim-800.webp 800w, /marca/sauim-1264.webp 1264w" sizes="(max-width: 860px) 92vw, 760px" />
+            <source type="image/webp" srcSet="/marca/sauim-480.webp 480w, /marca/sauim-800.webp 800w, /marca/sauim-1264.webp 1264w" sizes="(max-width: 860px) 190vw, 1140px" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/marca/sauim-1264.jpg" width={1264} height={611} alt="Mascote do Sauim, um sauim de fone de ouvido, sorrindo" fetchPriority="high" decoding="async" />
           </picture>

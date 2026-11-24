@@ -7,6 +7,7 @@ const loading = () => <p className="note">Carregando…</p>;
 // slug da página -> componente da ferramenta
 const VIEWS: Record<string, ComponentType> = {
   "ideias-de-video": dynamic(() => import("./Ideas"), { loading }),
+  "descricao-do-roteiro": dynamic(() => import("./ScriptDescription"), { loading }),
   "tempo-de-fala": dynamic(() => import("./SpeechTime"), { loading }),
   "dividir-texto": dynamic(() => import("./SplitBlocks"), { loading }),
   "remover-silencio": dynamic(() => import("./Silence"), { loading }),

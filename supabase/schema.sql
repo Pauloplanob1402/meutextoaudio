@@ -11,6 +11,11 @@ create table if not exists public.subscriptions (
   updated_at timestamptz not null default now()
 );
 
+-- 1b) Marca de que o e-mail de boas-vindas já foi enviado (evita mandar duas vezes)
+alter table public.subscriptions add column if not exists welcome_sent_at timestamptz;
+-- Se JÁ existirem assinantes ativos que não devem receber o e-mail de boas-vindas, rode UMA vez, à parte:
+--   update public.subscriptions set welcome_sent_at = now() where status = 'authorized' and welcome_sent_at is null;
+
 -- 2) Regras de acesso (RLS): cada pessoa só enxerga a PRÓPRIA assinatura
 alter table public.subscriptions enable row level security;
 

@@ -85,7 +85,7 @@ export default function Privacidade() {
           <li><b>Supabase</b>: login e banco de dados (e-mail, conta e assinatura).</li>
           <li><b>{LEGAL.hospedagem}</b>: hospedagem do site. Pode registrar dados técnicos de acesso, como o IP.</li>
           <li><b>Mercado Pago</b>: pagamento e assinatura.</li>
-          <li><b>{LEGAL.envioEmail}</b>: envio dos e-mails de acesso. Recebe o seu e-mail e o conteúdo da mensagem.</li>
+          <li><b>{LEGAL.envioEmail}</b>: envio dos e-mails de acesso à conta e do e-mail de boas-vindas da assinatura. Recebe o seu e-mail, o seu nome (se houver) e o conteúdo da mensagem.</li>
           <li><b>{LEGAL.encaminhamento}</b>: encaminhamento das mensagens que você envia para o nosso e-mail de contato. Recebe o que você escrever para nós, incluindo o seu e-mail.</li>
           {RECURSOS.loginGoogle && <li><b>Google</b>: login com o Google, se você escolher essa opção.</li>}
           {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && <li><b>Cloudflare</b>: verificação anti-robô na tela de login (Turnstile). Ela recebe o seu IP e dados do navegador para confirmar que o acesso não é automatizado.</li>}

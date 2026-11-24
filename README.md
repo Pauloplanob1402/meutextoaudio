@@ -158,3 +158,12 @@ Para adicionar uma ferramenta nova:
 3. Inclua o nome e a frase em `lib/tools.ts`. O cartão aparece sozinho na página de ferramentas.
 
 Checklist e calendário salvam no `localStorage` do navegador de cada pessoa. A calculadora de ganhos usa valores de exemplo (RPM 2, 5 e 10): troque pelos valores reais do seu YouTube Studio.
+
+## E-mail de boas-vindas (plano Criador)
+
+Quando o pagamento é confirmado (cartão ou Pix), o webhook envia **uma vez** um e-mail de boas-vindas com as vozes liberadas e as ferramentas para começar. O envio é feito pela API do Brevo, não pelo Supabase (o Supabase só envia os e-mails de login).
+
+1. No Brevo: **SMTP e API > Chaves de API > Gerar uma nova chave** (é diferente da chave SMTP do Supabase). Confirme que `contato@sauim.com.br` está em **Remetentes e IPs** e que o domínio está autenticado (DKIM e DMARC).
+2. Na Vercel (Settings > Environment Variables): `BREVO_API_KEY`, e se quiser `EMAIL_FROM` e `EMAIL_FROM_NAME`. Faça um novo deploy depois.
+3. No Supabase (SQL Editor): rode `supabase/schema.sql` de novo. Ele acrescenta a coluna `welcome_sent_at`.
+4. Para mudar o texto ou as ferramentas citadas, edite `lib/welcomeEmail.ts`. Abra `preview-email-boas-vindas.html` no navegador para ver o resultado.

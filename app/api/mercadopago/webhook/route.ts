@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendWelcomeOnce } from "@/lib/welcome";
 import { PIX_DAYS, PIX_PREFIX, getPayment, getPreapproval, verifySignature } from "@/lib/billing";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
       { onConflict: "user_id" }
     );
     if (error) throw error;
+    if (pre.status === "authorized") await sendWelcomeOnce(admin, userId, { kind: "card", until: pre.next_payment_date ?? null });
     return new Response("ok", { status: 200 });
   } catch (e) {
     console.error("webhook falhou:", e);
@@ -68,17 +70,19 @@ async function handlePix(paymentId: string) {
     // Se ainda há dias de Pix sobrando, os 30 dias novos entram depois deles.
     const left = current?.next_payment_date ? new Date(current.next_payment_date).getTime() : 0;
     const base = Math.max(Date.now(), current?.status === "authorized" ? left : 0);
+    const ate = new Date(base + PIX_DAYS * 86_400_000).toISOString();
     const { error } = await admin.from("subscriptions").upsert(
       {
         user_id: userId,
         mp_preapproval_id: marker,
         status: "authorized",
-        next_payment_date: new Date(base + PIX_DAYS * 86_400_000).toISOString(),
+        next_payment_date: ate,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id" }
     );
     if (error) throw error;
+    await sendWelcomeOnce(admin, userId, { kind: "pix", until: ate });
     return new Response("ok", { status: 200 });
   } catch (e) {
     console.error("webhook pix falhou:", e);

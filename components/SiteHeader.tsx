@@ -12,7 +12,7 @@ export default function SiteHeader({ home = false }: { home?: boolean }) {
         <nav aria-label="Principal">
           <a href={`${h}#fluxo`}>Como funciona</a>
           <Link href="/ferramentas">Ferramentas</Link>
-          <a href={`${h}#biologia`}>Sobre</a>
+          <Link href="/historia">Nossa história</Link>
           <a href={`${h}#planos`}>Planos</a>
           <Link href="/conta">Conta</Link>
         </nav>

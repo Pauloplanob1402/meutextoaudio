@@ -104,6 +104,7 @@ export default function Home() {
               <div key={b.title}><span aria-hidden="true">{b.big}</span><h3>{b.title}</h3><p>{b.text}</p></div>
             ))}
           </div>
+          <p style={{ marginTop: 28 }}><Link className="btn ghost" href="/historia">Leia a nossa história →</Link></p>
         </div>
       </section>
 

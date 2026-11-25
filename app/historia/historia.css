@@ -1,6 +1,5 @@
 /* Página "Nossa história": só estilos desta página */
-.hi-hero{background:#F1EFFA;padding:40px 0 72px;text-align:center}
-.hi-hero img{display:block;width:100%;max-width:880px;height:auto;margin:0 auto}
+.hi-hero{background:#F1EFFA;padding:28px 0 72px;text-align:center}
 .hi-hero h1{font-size:clamp(38px,7vw,72px);max-width:16ch;margin:8px auto 0}
 .hi-hero h1 span{color:var(--blue)}
 .hi-eyebrow{font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:0 0 14px}
@@ -16,4 +15,4 @@
 .hi-end{background:var(--lilac);padding:72px 0;text-align:center}
 .hi-end h2{font-size:clamp(28px,4.5vw,44px);max-width:20ch;margin:0 auto}
 .hi-end .hi-actions{margin-top:28px}
-@media (max-width:520px){.hi-hero{padding:24px 0 56px}.hi-story{padding:64px 0}.hi-story p{font-size:19px}}
+@media (max-width:520px){.hi-hero{padding:16px 0 56px}.hi-story{padding:64px 0}.hi-story p{font-size:19px}}

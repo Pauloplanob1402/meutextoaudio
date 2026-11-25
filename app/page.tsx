@@ -2,6 +2,7 @@ import { FreeCardCta, ProAnnualCta, ProCardCta } from "@/components/PlanCtas";
 import Link from "next/link";
 import Tool from "@/components/Tool";
 import Arsenal from "@/components/Arsenal";
+import Mascote from "@/components/Mascote";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { ANNUAL, EXTRAS, PRICE, STAGES, TOTAL, brl, stageCount } from "@/lib/brand";
@@ -32,11 +33,7 @@ export default function Home() {
 
       <section className="sa-hero" aria-labelledby="sa-h1">
         <div className="wrap">
-          <picture className="sa-brand">
-            <source type="image/webp" srcSet="/marca/sauim-480.webp 480w, /marca/sauim-800.webp 800w, /marca/sauim-1264.webp 1264w" sizes="(max-width: 860px) 190vw, 1140px" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/marca/sauim-1264.jpg" width={1264} height={611} alt="Mascote do Sauim, um sauim de fone de ouvido, sorrindo" fetchPriority="high" decoding="async" />
-          </picture>
+          <Mascote variante="home" />
           <p className="sa-badge">Ferramentas para criadores de YouTube</p>
           <h1 id="sa-h1">Comece pequeno. <span>Cresça gigante.</span></h1>
           <p className="sa-sub">Roteiro, narração, título e planejamento em um só lugar, para publicar vídeos com constância.</p>

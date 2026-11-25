@@ -1,3 +1,5 @@
+> **Antes de mexer no site, leia `PADROES.md` (medidas e decisões fixas) e `IDEIAS.md` (ideias para melhorar o Sauim).**
+
 # Sauim — Feito. Subiu. Postado.
 
 Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff e Tugão, e as vozes naturais Dora, Alex e Santa; a lista fica em `lib/voices.ts`).

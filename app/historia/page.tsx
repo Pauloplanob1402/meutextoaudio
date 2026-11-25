@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Mascote from "@/components/Mascote";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import "./historia.css";
@@ -35,12 +36,7 @@ export default function Historia() {
       <main>
         <section className="hi-hero" aria-labelledby="hi-h1">
           <div className="wrap">
-            <img
-              src="/sauim-mascote.jpg"
-              width={1264}
-              height={843}
-              alt="O mascote da SAUIM, um sauim de fones azuis, segura uma placa com SAIUM riscado e SAUIM escrito do jeito certo."
-            />
+            <Mascote variante="historia" />
             <h1 id="hi-h1">Comece pequeno. <span>Cresça gigante.</span></h1>
             <p className="hi-sub">A história de um nome que saiu errado e do projeto que saiu mesmo assim.</p>
             <Actions />

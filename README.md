@@ -1,4 +1,4 @@
-> **Antes de mexer no site, leia `PADROES.md` (medidas e decisões fixas) e `IDEIAS.md` (ideias para melhorar o Sauim).**
+> **Antes de mexer no site, leia `PADROES.md` (medidas e decisões fixas), `IDEIAS.md` (ideias para melhorar o Sauim) e `BIBLIOTECA.md` (os livros-guia, em 3 categorias).**
 
 # Sauim — Feito. Subiu. Postado.
 

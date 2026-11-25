@@ -24,7 +24,16 @@ Regras:
 - Se uma página nova tiver mascote, gere a imagem no MESMO molde: mesmo tamanho do Sauim, mesma posição do cabelo e dos pés, 888 px de largura. Use `mascote-home.jpg` como referência de alinhamento. Depois use `<Mascote variante="..." />`.
 - Para mudar o tamanho das duas ao mesmo tempo, mude só `max-width:645px` na regra `.sa-mascote`.
 
-## 2. Outras decisões já tomadas
+## 2. Livros-guia (sempre seguir)
+
+Os livros estão em `BIBLIOTECA.md`, em 3 categorias:
+- **Textos** (site, botões, e-mails, mensagens, páginas legais): sempre seguir livros de texto e persuasão (categoria B) e outros do mesmo tipo.
+- **Construção da plataforma** (telas, fluxos, planos, crescimento, comunidade): sempre seguir livros de produto, UX, crescimento e comunidade (categoria C) e outros do mesmo tipo.
+- **Ferramentas e conteúdo para o criador:** usar os livros de YouTube, narrativa e marca (categoria A).
+- Em toda sessão, a IA pode sugerir 3 melhorias ou ferramentas novas com base nesses livros ou em lançamentos recentes. As ideias aceitas vão para o `IDEIAS.md`.
+- Persuasão só com fatos reais: sem escassez falsa, sem promessa que o produto não cumpre.
+
+## 3. Outras decisões já tomadas
 
 - A marca é **Sauim** (sauim.com.br). O contato oficial é **contato@sauim.com.br**.
 - Todo texto do site é em português do Brasil, com tom humano, claro e profissional. Evite frases informais que pareçam amadoras.

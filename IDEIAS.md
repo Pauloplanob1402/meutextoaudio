@@ -11,6 +11,7 @@ Quem trabalha no projeto (o Paulo, o Claude ou qualquer pessoa da equipe) acresc
 2. Quando surgir uma ideia nova, acrescente na categoria certa, com o modelo abaixo.
 3. Ao terminar uma ideia, mude o estado para **feita** e escreva a data. Não apague: o histórico mostra o caminho.
 4. Ao propor melhorias, o Claude cita as ideias desta lista que fazem sentido agora e diz por quê.
+5. Os livros-guia estão em `BIBLIOTECA.md`, em 3 categorias. Toda ideia nova deve dizer em qual livro ou categoria se apoia.
 
 Modelo de ideia:
 ```
@@ -26,6 +27,19 @@ Uma ideia sobe na fila quando:
 - é honesta (sem promessa falsa, sem pegadinha) e cabe na nossa política de privacidade;
 - aproveita o que já temos (tudo roda no navegador, sem enviar arquivos do criador);
 - dá uma razão clara para a pessoa voltar e, mais tarde, assinar.
+
+## Rotina: 3 sugestões a cada sessão
+
+Em toda sessão de trabalho no Sauim, a IA pode sugerir **3 melhorias ou ferramentas novas**, baseadas nos livros da `BIBLIOTECA.md` ou em **lançamentos recentes** sobre o tema (pesquisando na internet e confirmando que o livro existe). As sugestões aceitas entram nesta lista; as outras ficam como "em análise" ou "descartada", com o motivo.
+
+## Sugestões para aplicar neste mês (novembro de 2026)
+
+- [nova] **"Saiu um!"**: um contador e uma sequência de vídeos publicados pelo criador, com um botão simples para marcar "saiu um". Origem: Claude.
+  Base: Primal Branding (vocabulário e ritual próprios), Hooked (investimento), Detonando! (constância). Para quem: todo criador. Por que importa: transforma o nome do Sauim em hábito e dá um motivo para voltar toda semana. Esforço: baixo a médio.
+- [nova] **Roteiro em 4 batidas**: ferramenta que guia o criador por gancho, conflito, virada e resolução, e mostra onde o roteiro está fraco. Origem: Claude.
+  Base: Salve o Gato!, Story, A Fórmula do YouTube (retenção). Para quem: quem roteiriza. Por que importa: completa o Validador de gancho e o Roteiro em blocos, que hoje não cobrem o roteiro inteiro. Esforço: médio.
+- [nova] **Caixa "o que faltou hoje?"**: uma pergunta de uma linha dentro das ferramentas ("Faltou alguma coisa? Conte em uma frase"), com as respostas guardadas para alimentar este arquivo todo mês. Origem: Claude.
+  Base: Continuous Discovery Habits, Inspired. Para quem: todo mundo. Por que importa: o Sauim passa a ser feito com os criadores, não só para eles. Precisa de aviso na política de privacidade. Esforço: baixo a médio.
 
 ## Voz e áudio
 

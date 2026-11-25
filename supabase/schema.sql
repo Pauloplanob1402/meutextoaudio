@@ -16,6 +16,11 @@ alter table public.subscriptions add column if not exists welcome_sent_at timest
 -- Se JÁ existirem assinantes ativos que não devem receber o e-mail de boas-vindas, rode UMA vez, à parte:
 --   update public.subscriptions set welcome_sent_at = now() where status = 'authorized' and welcome_sent_at is null;
 
+-- 1c) Plano anual: período da assinatura e, no anual cancelado, até quando o ano pago vale.
+--     RODE ISTO ANTES de publicar a versão com plano anual (o webhook passa a gravar essas colunas).
+alter table public.subscriptions add column if not exists period text not null default 'monthly';   -- monthly | annual
+alter table public.subscriptions add column if not exists access_until timestamptz;
+
 -- 2) Regras de acesso (RLS): cada pessoa só enxerga a PRÓPRIA assinatura
 alter table public.subscriptions enable row level security;
 

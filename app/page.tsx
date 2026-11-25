@@ -1,11 +1,20 @@
-import { FreeCardCta, ProCardCta } from "@/components/PlanCtas";
+import { FreeCardCta, ProAnnualCta, ProCardCta } from "@/components/PlanCtas";
 import Link from "next/link";
 import Tool from "@/components/Tool";
 import Arsenal from "@/components/Arsenal";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { EXTRAS, PRICE, STAGES, TOTAL, brl, stageCount } from "@/lib/brand";
+import { ANNUAL, EXTRAS, PRICE, STAGES, TOTAL, brl, stageCount } from "@/lib/brand";
 import { VOICES, voiceNames } from "@/lib/voices";
+
+// Por que o anual vale mais para quem produz com constância. Os números vêm de lib/brand.ts.
+const ANNUAL_WHY = [
+  { title: "Dinheiro que volta para o seu canal", text: `É o mesmo plano Criador, com ${brl(ANNUAL.saving)} a menos no ano. Esse valor pode virar um microfone melhor, um editor por uma tarde ou o próximo vídeo.` },
+  { title: "Quem se compromete, aparece", text: "Canal cresce por constância, não por motivação. Um ano pago é um compromisso que te puxa de volta para o calendário, semana após semana, mesmo quando a empolgação do começo passa." },
+  { title: "Pare de pagar a taxa de adiar", text: `No mensal, você paga ${brl(ANNUAL.extraPerMonth)} a mais por mês só por não decidir. Em doze meses, isso soma ${brl(ANNUAL.saving)}: dinheiro que você perde sem ganhar nada em troca.` },
+  { title: "Uma decisão, zero atrito", text: "Sem renovar o Pix a cada 30 dias, sem cobrança todo mês. Você decide uma vez e sai da frente do que importa: o próximo vídeo." },
+  { title: "O valor do seu ano fica combinado", text: "O preço que você pagou vale pelo ano inteiro, mesmo que o valor do plano mude depois. E cada ferramenta nova do Criador entra no seu plano sem custo extra." },
+];
 
 const BIO = [
   { big: "01", title: "Leve", text: "Cada ferramenta abre rápido no navegador, sem painéis pesados nem menus infinitos." },
@@ -112,7 +121,7 @@ export default function Home() {
         <div className="wrap">
           <p className="sa-eyebrow">Planos</p>
           <h2>Escolha o seu plano.</h2>
-          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas.</p>
+          <p className="sa-lead">A narração é gerada no seu navegador, sem créditos de áudio. O plano Criador libera as demais vozes e todas as ferramentas{billing && ANNUAL.freeLabel ? `, e no anual você ganha ${ANNUAL.freeLabel}` : ""}.</p>
           <div className="plans sa-plans">
             <div className="plan free">
               <span className="sa-chip">Para começar</span>
@@ -135,6 +144,9 @@ export default function Home() {
                 <li>As demais vozes: {voiceNames("pro")}</li>
                 <li>Todas as {EXTRAS} ferramentas extras</li>
               </ul>
+              {billing && ANNUAL.saving > 0 && (
+                <p className="sa-annual-tease">Ou {brl(ANNUAL.price)} por ano: <a href="#anual">economize {brl(ANNUAL.saving)}</a></p>
+              )}
               {billing ? <ProCardCta /> : <span className="soon">Assinatura em breve</span>}
             </div>
             <div className="plan studio">
@@ -154,6 +166,32 @@ export default function Home() {
         </div>
       </section>
 
+      {billing && ANNUAL.saving > 0 && (
+        <section id="anual" className="sa-sec sa-alt" aria-labelledby="anual-h2">
+          <div className="wrap">
+            <p className="sa-eyebrow">Plano anual</p>
+            <h2 id="anual-h2">{ANNUAL.freeLabel ? `Pague 10 meses. Use 12.` : "Mais barato no ano."}</h2>
+            <p className="sa-lead">Quem publica toda semana não precisa pensar em mensalidade. Escolha o anual e fique com {ANNUAL.freeLabel ?? "o desconto"}, as mesmas vozes e as mesmas {EXTRAS} ferramentas.</p>
+            <div className="sa-annual">
+              <div className="sa-annual-card">
+                <span className="sa-chip dark">Economize {brl(ANNUAL.saving)}{ANNUAL.percent ? ` (${ANNUAL.percent}%)` : ""}</span>
+                <h3>Criador anual</h3>
+                <s>12 × {brl(PRICE.criador)} = {brl(ANNUAL.full)}</s>
+                <div className="price">{brl(ANNUAL.price)} <small>/ano</small></div>
+                <p className="sa-plan-sub">Equivale a {brl(ANNUAL.perMonth)} por mês.</p>
+                <ProAnnualCta label={`Assinar o anual e economizar ${brl(ANNUAL.saving)}`} />
+                <p className="fine">Pague no Pix (1 ano) ou no cartão (uma cobrança por ano).</p>
+              </div>
+              <ul className="sa-annual-why">
+                {ANNUAL_WHY.map((w) => (
+                  <li key={w.title}><b>{w.title}</b><span>{w.text}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section id="perguntas" className="sa-sec sa-alt">
         <div className="wrap">
           <h2>Perguntas frequentes</h2>
@@ -162,6 +200,9 @@ export default function Home() {
             <details><summary>Por que a primeira geração demora mais?</summary><p>Na primeira vez que você usa uma voz, o navegador baixa o modelo dela (cerca de 60 MB nas vozes rápidas e 90 MB nas vozes naturais) e o mantém salvo. Depois disso, o carregamento é imediato.</p></details>
             <details><summary>Como coloco pausas na narração?</summary><p>Escreva [PAUSA 0.5s] (ou [PAUSA - 3 segundos]) onde quiser o silêncio. O botão “Inserir pausa de 2 segundos” faz isso por você.</p></details>
             <details><summary>Quais vozes estão disponíveis?</summary><p>Há {VOICES.length} vozes em português. {voiceNames("free")} são gratuitas e {voiceNames("pro")} fazem parte do plano Criador. Dora, Alex e Santa são vozes naturais, com geração mais lenta.</p></details>
+            {billing && ANNUAL.saving > 0 && (
+              <details><summary>Posso cancelar o plano anual?</summary><p>Pode. Ao cancelar a renovação, você continua com o plano Criador até o fim do período que já pagou e não é cobrado de novo. O plano anual no Pix não renova sozinho: ele termina na data indicada na sua conta.</p></details>
+            )}
             <details><summary>Funciona no celular?</summary><p>Funciona, mas pode ser mais lento, principalmente com as vozes naturais. Para textos longos, prefira o computador, com Chrome ou Edge.</p></details>
           </div>
         </div>
@@ -170,7 +211,7 @@ export default function Home() {
       <section className="sa-final">
         <div className="wrap">
           <h2>Seu próximo vídeo começa aqui.</h2>
-          <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês.</p>
+          <p>Comece grátis agora ou libere todas as vozes e ferramentas por {brl(price)}/mês{billing && ANNUAL.saving > 0 ? `, ou ${brl(ANNUAL.price)} no ano (${ANNUAL.freeLabel ?? "com desconto"})` : ""}.</p>
           <a className="btn go" href="#texto-audio">Gerar narração grátis</a>
         </div>
       </section>

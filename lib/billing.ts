@@ -1,5 +1,6 @@
 import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { ANNUAL } from "@/lib/brand";
 
 const API = "https://api.mercadopago.com";
 
@@ -14,7 +15,16 @@ export type Preapproval = {
   external_reference?: string;
   next_payment_date?: string;
   init_point?: string;
+  auto_recurring?: { frequency?: number; frequency_type?: string; transaction_amount?: number };
 };
+
+// Períodos do plano Criador: mensal ou anual (com desconto).
+export type Period = "monthly" | "annual";
+export const parsePeriod = (v: unknown): Period => (v === "annual" ? "annual" : "monthly");
+export const priceFor = (p: Period) => (p === "annual" ? ANNUAL.price : Number(process.env.PRO_PRICE_BRL));
+// Uma assinatura de cartão é anual quando o Mercado Pago a cobra a cada 12 meses.
+export const isAnnualPreapproval = (pre: Preapproval) =>
+  pre.auto_recurring?.frequency === 12 && pre.auto_recurring?.frequency_type === "months";
 
 async function mp(path: string, init: RequestInit & { idempotency?: string } = {}): Promise<Preapproval> {
   const { idempotency, ...rest } = init;
@@ -28,18 +38,18 @@ async function mp(path: string, init: RequestInit & { idempotency?: string } = {
   return body as Preapproval;
 }
 
-// Cria a assinatura mensal (sem plano) e devolve o link do checkout (init_point).
-export function createPreapproval(p: { userId: string; email: string; backUrl: string; amount: number; key: string }) {
+// Cria a assinatura (mensal ou anual, sem plano) e devolve o link do checkout (init_point).
+export function createPreapproval(p: { userId: string; email: string; backUrl: string; amount: number; key: string; period: Period }) {
   return mp("/preapproval", {
     method: "POST",
     idempotency: p.key,
     body: JSON.stringify({
-      reason: "Sauim Criador (mensal)",
+      reason: p.period === "annual" ? "Sauim Criador (anual)" : "Sauim Criador (mensal)",
       external_reference: p.userId,
       payer_email: p.email,
       back_url: p.backUrl,
       status: "pending",
-      auto_recurring: { frequency: 1, frequency_type: "months", transaction_amount: p.amount, currency_id: "BRL" },
+      auto_recurring: { frequency: p.period === "annual" ? 12 : 1, frequency_type: "months", transaction_amount: p.amount, currency_id: "BRL" },
     }),
   });
 }
@@ -75,6 +85,10 @@ export function verifySignature(headers: Headers, dataId: string): boolean {
 // ---------- Pix de 30 dias (pago uma vez por mês, sem renovação automática) ----------
 
 export const PIX_DAYS = 30;
+export const PIX_DAYS_ANNUAL = 365;
+export const pixDays = (p: Period) => (p === "annual" ? PIX_DAYS_ANNUAL : PIX_DAYS);
+// external_reference do Pix: "pix:" (30 dias) ou "pixa:" (1 ano), seguido do id do usuário.
+export const PIX_REF = { monthly: "pix:", annual: "pixa:" } as const;
 export const PIX_PREFIX = "pix_"; // marca na assinatura: "pix_" + número do pagamento
 
 export type MpPayment = {
@@ -99,18 +113,18 @@ async function mpPayment(path: string, init: RequestInit & { idempotency?: strin
   return body as MpPayment;
 }
 
-// Cria um Pix de 30 dias. O pagamento vale por 30 minutos para ser feito.
-export function createPixPayment(p: { userId: string; email: string; amount: number; notificationUrl: string; key: string }) {
+// Cria um Pix de 30 dias ou de 1 ano. O pagamento vale por 30 minutos para ser feito.
+export function createPixPayment(p: { userId: string; email: string; amount: number; notificationUrl: string; key: string; period: Period }) {
   const expires = new Date(Date.now() + 30 * 60_000 - 3 * 3_600_000).toISOString().replace("Z", "-03:00");
   return mpPayment("/v1/payments", {
     method: "POST",
     idempotency: p.key,
     body: JSON.stringify({
       transaction_amount: p.amount,
-      description: "Sauim Criador (30 dias)",
+      description: p.period === "annual" ? "Sauim Criador (1 ano)" : "Sauim Criador (30 dias)",
       payment_method_id: "pix",
       payer: { email: p.email },
-      external_reference: `pix:${p.userId}`,
+      external_reference: `${PIX_REF[p.period]}${p.userId}`,
       notification_url: p.notificationUrl,
       date_of_expiration: expires,
     }),

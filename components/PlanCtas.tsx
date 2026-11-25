@@ -22,3 +22,10 @@ export function ProCardCta() {
   if (plan === "pro") return <Link className="btn" href="/conta">Você está no plano Criador ✓</Link>;
   return <Link className="btn" href="/conta">Assinar o plano Criador</Link>;
 }
+
+// Botão do plano anual: abre a conta já com o anual escolhido.
+export function ProAnnualCta({ label }: { label: string }) {
+  const plan = usePlan();
+  if (plan === "pro") return <Link className="btn" href="/conta">Você está no plano Criador ✓</Link>;
+  return <Link className="btn" href="/conta?plano=anual">{label}</Link>;
+}

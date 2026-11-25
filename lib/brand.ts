@@ -12,6 +12,25 @@ export const PRICE = {
 };
 export const brl = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+// Plano anual do Criador. Por padrão: 10 meses pelo preço de 12 (2 meses grátis).
+// Para outro valor, defina PRO_ANNUAL_PRICE_BRL (entra no site durante o build, como o preço mensal).
+export const annualFor = (monthly: number) => Math.round(monthly * 10 * 100) / 100;
+const annualEnv = Number(process.env.PRO_ANNUAL_PRICE_BRL);
+const annualPrice = annualEnv > 0 ? annualEnv : annualFor(PRICE.criador);
+const annualFull = Math.round(PRICE.criador * 12 * 100) / 100; // o que a pessoa pagaria em 12 meses no mensal
+const annualSaving = Math.max(0, Math.round((annualFull - annualPrice) * 100) / 100);
+const freeMonths = Math.round((annualSaving / PRICE.criador) * 10) / 10;
+export const ANNUAL = {
+  price: annualPrice,
+  full: annualFull,
+  saving: annualSaving,
+  perMonth: Math.round((annualPrice / 12) * 100) / 100,
+  extraPerMonth: Math.max(0, Math.round((PRICE.criador - annualPrice / 12) * 100) / 100), // quanto o mensal custa a mais, por mês
+  freeMonths,
+  freeLabel: freeMonths >= 1 ? `${String(freeMonths).replace(".", ",")} ${freeMonths === 1 ? "mês" : "meses"} grátis` : null,
+  percent: annualFull > 0 ? Math.round((annualSaving / annualFull) * 100) : 0,
+};
+
 export const GROUP_LABEL: Record<GroupId, string> = {
   ideias: "Ideias",
   roteiro: "Roteiro e Áudio",

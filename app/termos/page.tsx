@@ -34,7 +34,7 @@ export default function Termos() {
       <Resumo>
         <ul>
           <li>O texto para áudio com as vozes gratuitas é grátis e não precisa de conta.</li>
-          <li>O plano Criador é uma assinatura mensal, que libera as demais vozes e todas as ferramentas extras, e é renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta.</li>
+          <li>O plano Criador é uma assinatura mensal ou anual, que libera as demais vozes e todas as ferramentas extras, e é renovada sozinha até você cancelar. Você cancela quando quiser, na sua conta. No plano anual, cancelar a renovação mantém o acesso até o fim do período já pago.</li>
           <li>Você é responsável pelo texto que usa e pelo uso que faz do áudio.</li>
           <li>Não use o site para enganar, ofender ou violar direitos de outras pessoas.</li>
         </ul>
@@ -58,7 +58,7 @@ export default function Termos() {
       <Sec id="planos" n={++n} title="Planos e pagamento">
         <ul>
           <li><b>Grátis:</b> texto para áudio com as vozes {voiceNames("free")}, sem custo.</li>
-          <li><b>Criador:</b> assinatura mensal, no cartão (renova sozinha) ou em Pix de 30 dias (não renova sozinho), que libera as demais vozes ({voiceNames("pro")}) e todas as ferramentas extras. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
+          <li><b>Criador:</b> assinatura mensal, no cartão (renova sozinha) ou em Pix de 30 dias (não renova sozinho), ou assinatura anual com desconto, no cartão (uma cobrança por ano, renova sozinha) ou em Pix de 1 ano (não renova sozinho), que libera as demais vozes ({voiceNames("pro")}) e todas as ferramentas extras. O valor aparece na página da sua conta e no pagamento, antes de você confirmar.</li>
         </ul>
         <p>O pagamento é processado pelo Mercado Pago. A assinatura se renova todo mês, na mesma forma de pagamento, até você cancelar.</p>
         <p>Os recursos do plano Criador podem ser acrescentados ao longo do tempo. O que estiver marcado como “em breve” ainda não está disponível e não tem data prometida. Se mudarmos o preço, avisaremos antes, e o novo valor só vale para renovações futuras. Você poderá cancelar antes disso.</p>

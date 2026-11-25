@@ -7,7 +7,7 @@ type Admin = ReturnType<typeof createAdminClient>;
 
 // Manda o e-mail de boas-vindas UMA vez por pessoa, na primeira vez que o plano Criador é liberado.
 // Nunca derruba o webhook: se der erro, só registra no log (o pagamento já foi gravado).
-export async function sendWelcomeOnce(admin: Admin, userId: string, o: { kind: "card" | "pix"; until: string | null }) {
+export async function sendWelcomeOnce(admin: Admin, userId: string, o: { kind: "card" | "pix"; until: string | null; period?: "monthly" | "annual" }) {
   const soltar = () => admin.from("subscriptions").update({ welcome_sent_at: null }).eq("user_id", userId);
   try {
     // "Reserva" o envio antes de mandar, para dois avisos seguidos do Mercado Pago não gerarem dois e-mails.
@@ -32,7 +32,7 @@ export async function sendWelcomeOnce(admin: Admin, userId: string, o: { kind: "
     }
     const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
     const nome = firstName(String(meta.full_name ?? meta.name ?? ""));
-    const msg = buildWelcomeEmail({ name: nome, kind: o.kind, until: o.until, site: process.env.SITE_URL });
+    const msg = buildWelcomeEmail({ name: nome, kind: o.kind, until: o.until, period: o.period, site: process.env.SITE_URL });
     const ok = await sendEmail({ to: email, toName: nome ?? undefined, subject: msg.subject, html: msg.html, text: msg.text });
     if (!ok) await soltar(); // libera para tentar de novo no próximo aviso de pagamento
   } catch (e) {

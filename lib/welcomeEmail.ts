@@ -6,6 +6,7 @@ import { LEGAL } from "@/lib/legal";
 export type WelcomeInput = {
   name?: string | null; // primeiro nome, se houver (login com Google costuma ter)
   kind: "card" | "pix"; // cartão renova sozinho; Pix vale por 30 dias
+  period?: "monthly" | "annual"; // padrão: mensal
   until?: string | null; // próxima cobrança (cartão) ou fim do período pago (Pix)
   site?: string; // endereço do site, sem barra no fim
 };
@@ -49,10 +50,13 @@ export function buildWelcomeEmail(i: WelcomeInput) {
     botao: "Texto em áudio",
   });
 
+  const anual = i.period === "annual";
   const assinatura =
     i.kind === "pix"
-      ? `Você pagou por Pix. O plano Criador fica ativo${fim ? ` até ${fim}` : " por 30 dias"} e não renova sozinho: para continuar, é só pagar de novo.`
-      : `A cobrança é mensal e automática${fim ? `, e a próxima será em ${fim}` : ""}. Você pode cancelar quando quiser, na página Minha conta.`;
+      ? `Você pagou por Pix. O plano Criador fica ativo${fim ? ` até ${fim}` : anual ? " por 1 ano" : " por 30 dias"} e não renova sozinho: para continuar, é só pagar de novo.`
+      : anual
+        ? `A cobrança é anual e automática${fim ? `, e a próxima será em ${fim}` : ""}. Se cancelar a renovação, você segue com o plano até o fim do período pago, na página Minha conta.`
+        : `A cobrança é mensal e automática${fim ? `, e a próxima será em ${fim}` : ""}. Você pode cancelar quando quiser, na página Minha conta.`;
 
   const subject = nome ? `${nome}, o seu plano Criador está ativo` : "O seu plano Criador está ativo";
   const pre = "Suas vozes e ferramentas já estão liberadas. Veja por onde começar.";

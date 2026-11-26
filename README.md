@@ -2,6 +2,8 @@
 
 # Sauim — Feito. Subiu. Postado.
 
+> Guia para testar o Pacote do vídeo: `docs/TESTAR-PACOTE.md`. Plano do Mentor de Autores: `docs/MENTOR-DE-EBOOKS.md`.
+
 Ferramentas para criadores de YouTube, com foco em **Texto em Áudio** em português do Brasil, direto no navegador (vozes Piper em português: Faber, Cadu, Jeff e Tugão, e as vozes naturais Dora, Alex e Santa; a lista fica em `lib/voices.ts`).
 
 Identidade: `lib/brand.ts` (nome, etapas Feito/Subiu/Postado, preços) e `app/sauim.css` (visual). Os números de ferramentas no texto do site são calculados a partir de `lib/tools.ts`.

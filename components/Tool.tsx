@@ -5,6 +5,8 @@ import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
 import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
+import { PACOTE_ON, createMeter, type Cue } from "@/lib/pacote";
+import PacoteDoVideo from "@/components/PacoteDoVideo";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -42,6 +44,7 @@ export default function Tool() {
   const [wpmMap, setWpmMap] = useState<Record<string, number>>({});
   const [realDur, setRealDur] = useState(0); // duração real do áudio gerado, na velocidade original
   const genInfo = useRef<{ words: number; pauses: number; voice: string } | null>(null);
+  const [pacote, setPacote] = useState<{ cues: Cue[]; raw: string } | null>(null); // legenda e capítulos do último áudio
   const est = useMemo(() => estimateSeconds(text, speed, wpmMap[voiceId]), [text, speed, wpmMap, voiceId]);
 
   // rascunho salvo só no navegador
@@ -116,6 +119,7 @@ export default function Tool() {
     setBusy(true);
     setUrl(null);
     setStatus("Preparando a voz… A primeira geração leva um pouco mais. As próximas são imediatas.");
+    setPacote(null);
     try {
       const parts = parseScript(text);
       const total = parts.filter((p) => p.kind === "text").length;
@@ -152,15 +156,29 @@ export default function Tool() {
       const out: (Blob | number)[] = [];
       const skipped: string[] = [];
       let done = 0;
+      // Pacote do vídeo: anota quando cada trecho começa e termina. Se algo falhar aqui, o áudio sai normal.
+      const cues: Cue[] = [];
+      let clock = 0;
+      let cuesOk = PACOTE_ON;
+      let meter: ReturnType<typeof createMeter> | null = null;
+      if (PACOTE_ON) { try { meter = createMeter(); } catch { cuesOk = false; } }
       for (const p of parts) {
-        if (p.kind === "pause") { out.push(p.seconds); continue; }
+        if (p.kind === "pause") { out.push(p.seconds); clock += p.seconds; continue; }
         done++;
         setStatus(`Gerando o áudio… (${done} de ${total})`);
+        const before = out.length;
         try {
           out.push(await session.predict(p.text));
         } catch {
           try { out.push(await session.predict(p.text)); }
           catch (e) { console.error("Trecho pulado:", p.text, e); skipped.push(p.text); }
+        }
+        if (meter && cuesOk && out.length > before) {
+          try {
+            const d = await meter.measure(out[out.length - 1] as Blob);
+            cues.push({ idx: done - 1, text: p.text, start: clock, end: clock + d });
+            clock += d;
+          } catch { cuesOk = false; }
         }
         await new Promise((r) => setTimeout(r, 0)); // deixa a tela respirar
       }
@@ -169,6 +187,8 @@ export default function Tool() {
 
       setStatus("Montando o áudio final…");
       const merged = await mergeParts(out);
+      meter?.close();
+      setPacote(PACOTE_ON && cuesOk && cues.length ? { cues, raw: text } : null);
       original.current = merged;
       genInfo.current = { ...scriptStats(text), voice: voiceId };
       setUrl(URL.createObjectURL(merged));
@@ -361,6 +381,7 @@ export default function Tool() {
             <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. O MP3 é bem menor e abre em qualquer editor de vídeo. O WAV mantém a qualidade máxima, mas o arquivo é bem maior. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again}>Gerar outro texto</button>
+            {pacote && <PacoteDoVideo cues={pacote.cues} raw={pacote.raw} speed={speed} />}
             <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
               <p style={{ fontWeight: 600 }}>Gostou? Indique o Sauim a outro criador.</p>
               <div className="rrow" style={{ marginTop: 10 }}>

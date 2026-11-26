@@ -5,6 +5,17 @@
 Este arquivo deve ser LIDO sempre, antes de propor ou fazer qualquer mudança no site.
 Quem trabalha no projeto (o Paulo, o Claude ou qualquer pessoa da equipe) acrescenta ideias aqui e atualiza o estado delas.
 
+## Regra de ouro
+
+**Nenhuma ferramenta ou melhoria nova pode quebrar a engenharia do que já existe.**
+Isso vale para o Texto em áudio, o login, a cobrança (cartão e Pix, mensal e anual), o webhook do Mercado Pago, os e-mails, as vozes e os limites do plano grátis.
+Toda ideia nova deve:
+- entrar como camada nova (arquivos e rotas novas), sem mudar o que as rotas e as tabelas atuais fazem;
+- usar no banco só colunas ou tabelas novas e opcionais, e dizer qual SQL rodar ANTES de publicar;
+- ter um jeito simples de desfazer (poder desligar sem afetar o resto);
+- ser conferida (TypeScript e build) antes da entrega;
+- ser entregue em um zip, e dizer exatamente o que mudou e o que não foi tocado.
+
 ## Como usar
 
 1. Antes de começar um trabalho, leia a lista e veja se alguma ideia ajuda no que será feito.
@@ -26,7 +37,8 @@ Uma ideia sobe na fila quando:
 - ajuda o criador a publicar mais, melhor ou com menos esforço;
 - é honesta (sem promessa falsa, sem pegadinha) e cabe na nossa política de privacidade;
 - aproveita o que já temos (tudo roda no navegador, sem enviar arquivos do criador);
-- dá uma razão clara para a pessoa voltar e, mais tarde, assinar.
+- dá uma razão clara para a pessoa voltar e, mais tarde, assinar;
+- **entrega utilidade real**, como o Texto em áudio: um resultado concreto (arquivo, texto pronto, número) em poucos segundos. Ideia que só enfeita fica para depois das que resolvem uma tarefa.
 
 ## Rotina: 3 sugestões a cada sessão
 
@@ -40,6 +52,31 @@ Em toda sessão de trabalho no Sauim, a IA pode sugerir **3 melhorias ou ferrame
   Base: Salve o Gato!, Story, A Fórmula do YouTube (retenção). Para quem: quem roteiriza. Por que importa: completa o Validador de gancho e o Roteiro em blocos, que hoje não cobrem o roteiro inteiro. Esforço: médio.
 - [nova] **Caixa "o que faltou hoje?"**: uma pergunta de uma linha dentro das ferramentas ("Faltou alguma coisa? Conte em uma frase"), com as respostas guardadas para alimentar este arquivo todo mês. Origem: Claude.
   Base: Continuous Discovery Habits, Inspired. Para quem: todo mundo. Por que importa: o Sauim passa a ser feito com os criadores, não só para eles. Precisa de aviso na política de privacidade. Esforço: baixo a médio.
+
+### Ordem sugerida para as 3 de novembro (em 25/11/2026)
+
+Nenhuma das três é tão útil quanto o Texto em áudio. Por isso, a ordem mistura importância e facilidade:
+1. **Caixa "o que faltou hoje?"**: é a mais fácil e isolada, e é ela que vai mostrar qual é a próxima ferramenta de verdade.
+2. **"Saiu um!"**: fácil, e é a que mais combina com quem está começando, porque conta o que o criador controla (vídeos publicados), não as visualizações.
+3. **Roteiro em 4 batidas**: só vale se for feito como ferramenta de verdade, analisando o roteiro de quem usa (tempo, tamanho do gancho). Se for só um modelo para preencher, vira enfeite.
+
+### Candidata a "tão útil quanto o Texto em áudio"
+
+- [feita, fase 1, em 25/11/2026] **Pacote do vídeo**: com um clique, o roteiro vira o áudio, a legenda .srt sincronizada e os capítulos com o tempo real. Origem: Claude.
+  Base: Product-Led Growth (chegar ao "Aha!" rápido), Hooked (recompensa imediata), A Fórmula do YouTube. Para quem: todo criador que narra. Por que importa: entrega três arquivos prontos que hoje o criador faz à mão. Observação técnica: o motor de áudio já monta o áudio trecho por trecho (frases e pausas), então a duração real de cada trecho pode ser medida. Fase 1 entregue: legenda .srt com tempos reais e capítulos pelo marcador `[CAPÍTULO: Título]`, tudo no navegador, com interruptor `NEXT_PUBLIC_PACOTE=0`. Guia de testes em `docs/TESTAR-PACOTE.md`. Esforço da fase 1: médio.
+  - [nova] **Pacote, fase 2**: ajuste fino achando os silêncios na onda do áudio, para a divisão de frases dentro de um trecho ficar ainda mais exata. Origem: Claude.
+  - [nova] **Pacote, fase 2**: zip com áudio, legenda e capítulos (precisa de uma biblioteca pequena de zip). Origem: Claude.
+
+### Ferramenta grande: Mentor de Autores (e-books para criadores)
+
+- [planejada] **Mentor de Autores: do canal ao livro** (nome provisório). Algoritmo que gera a ideia do e-book, dá nota às ideias, sugere títulos, valida promessas e monta o plano de escrita e o calendário de lançamento, com um Kit pronto para baixar. Origem: Paulo.
+  Documentação completa em `docs/MENTOR-DE-EBOOKS.md`. Base: StoryBrand, Palavras Mágicas, Sugarman, Ray Edwards, Mostre Seu Trabalho!, Superfans, Hooked, Product-Led Growth. Esforço: alto, em 4 fases (a fase 1 cabe em um zip).
+
+### Fase do canal (para depois)
+
+- [planejada] **Separar quem está começando de quem já tem canal grande**, perguntando na conta e adaptando o que o site mostra. Origem: Paulo.
+  Pauta de quem está começando: não desanimar com poucas ou nenhuma visualização até criar a própria fórmula. O site deve celebrar o que o criador controla (vídeos publicados, constância, aprendizado) e mostrar o caminho, sem comparar com canais gigantes.
+  Base: Mostre Seu Trabalho! (Kleon), Superfans (Flynn), Never Split the Difference (Voss, rótulos emocionais). Esforço: médio a alto.
 
 ## Voz e áudio
 

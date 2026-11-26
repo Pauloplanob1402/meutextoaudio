@@ -7,6 +7,7 @@ Antes de qualquer mudança:
 
 Regras:
 - Não mude as medidas padrão sem o Paulo pedir.
+- Nenhuma ferramenta nova pode quebrar a engenharia do que já existe (regra de ouro no `IDEIAS.md`): camada nova, SQL opcional rodado antes do deploy, fácil de desfazer, conferida antes de entregar.
 - Ao escrever textos, siga livros de copywriting e persuasão (categoria B). Ao construir a plataforma, siga livros de produto, UX, crescimento e comunidade (categoria C).
 - Em toda sessão, sugira 3 melhorias ou ferramentas novas com base na biblioteca ou em lançamentos recentes (pesquisando na internet e confirmando que o livro existe).
 - Textos em português do Brasil, tom profissional e humano.

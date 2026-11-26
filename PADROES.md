@@ -35,6 +35,8 @@ Os livros estão em `BIBLIOTECA.md`, em 3 categorias:
 
 ## 3. Outras decisões já tomadas
 
+- **Nenhuma ferramenta ou melhoria nova pode quebrar a engenharia do que já existe** (regra de ouro, detalhada no `IDEIAS.md`).
+
 - A marca é **Sauim** (sauim.com.br). O contato oficial é **contato@sauim.com.br**.
 - Todo texto do site é em português do Brasil, com tom humano, claro e profissional. Evite frases informais que pareçam amadoras.
 - O plano grátis deixa baixar o áudio (MP3 e WAV), sem marca d'água e sem pegadinha. O que limita é só o volume de uso, e o contador deve aparecer na tela. Limite grátis escolhido: 10.000 caracteres por mês.

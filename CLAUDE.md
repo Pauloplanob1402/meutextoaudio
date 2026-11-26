@@ -8,6 +8,7 @@ Antes de qualquer mudança:
 3. Leia `BIBLIOTECA.md` (os livros-guia, em 3 categorias).
 
 Regras:
+- Toda ferramenta nova entra em `lib/tools.ts` e `components/tools/ToolView.tsx`, e o número de ferramentas mostrado no site tem que subir (35 vira 36, depois 37...). O número é calculado de `lib/tools.ts`: nunca escreva à mão. Veja "Regra do contador de ferramentas" no `IDEIAS.md` e confira o número depois do build.
 - Não mude as medidas padrão sem o Paulo pedir.
 - Nenhuma ferramenta nova pode quebrar a engenharia do que já existe (regra de ouro no `IDEIAS.md`): camada nova, SQL opcional rodado antes do deploy, fácil de desfazer, conferida antes de entregar.
 - Ao escrever textos, siga livros de copywriting e persuasão (categoria B). Ao construir a plataforma, siga livros de produto, UX, crescimento e comunidade (categoria C).

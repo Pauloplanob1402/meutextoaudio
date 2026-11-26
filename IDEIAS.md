@@ -13,7 +13,7 @@ Quem constrói as ferramentas (a IA ou uma pessoa) deve, no começo de toda sess
 3. Ao terminar um trabalho, atualizar esta seção: marcar o que foi feito (com a data), acrescentar o que apareceu e reordenar a fila.
 4. Entregar em um zip e dizer o que mudou, o que não foi tocado e como testar.
 
-Fila atual (atualizada em 26/11/2026), em ordem:
+Fila atual (atualizada em 26/11/2026, depois do Juntar áudios), em ordem:
 1. [aguardando teste do Paulo] Geração em segundo plano e Pacote de publicação, entregues em 26/11/2026. Guia: `docs/TESTAR-NOVIDADES.md`.
 2. [a conferir] Limite do plano grátis (10.000 caracteres por mês, com contador visível): confirmar se já está no código e como se comporta.
 3. [aguardando medição do Paulo] Protótipo da Legenda automática, entregue em 26/11/2026: página escondida `/prototipos/legenda` para medir tempo e qualidade em português. Guia: `docs/TESTAR-LEGENDA-AUTOMATICA.md`. Depois das medições, decidir o modelo, os limites e se vira ferramenta pública.
@@ -24,6 +24,7 @@ Fila atual (atualizada em 26/11/2026), em ordem:
 8. Pacote do vídeo, fase 2 (ajuste por silêncios e zip).
 
 Histórico do que já foi feito:
+- 26/11/2026: **Juntar áudios e músicas** (a 34ª ferramenta extra, a 35ª contando o Texto em áudio; grupo "Do roteiro ao áudio"): junta vários arquivos na ordem da lista, com silêncio ou transição suave, e baixa em MP3 ou WAV. Testada em navegador com tons de 440, 660 e 880 Hz (duração e ordem conferidas). Aguardando o teste do Paulo com músicas reais. Guia: `docs/TESTAR-JUNTAR-AUDIOS.md`.
 - 25/11/2026: Pacote do vídeo, fase 1 (legenda .srt e capítulos com tempo real), testado e aprovado pelo Paulo.
 
 ## Regra de ouro
@@ -36,6 +37,14 @@ Toda ideia nova deve:
 - ter um jeito simples de desfazer (poder desligar sem afetar o resto);
 - ser conferida (TypeScript e build) antes da entrega;
 - ser entregue em um zip, e dizer exatamente o que mudou e o que não foi tocado.
+
+## Regra do contador de ferramentas (vale para TODA ferramenta nova)
+
+**Toda vez que uma ferramenta for adicionada, o número que o site mostra tem que subir junto** (de 35 para 36, depois 37, e assim por diante). Os números "N ferramentas" e "todas as N ferramentas extras" aparecem na home, na página de ferramentas, no rodapé e nos planos. Eles são **calculados sozinhos** a partir da lista em `lib/tools.ts`, por isso:
+1. Registre a ferramenta SEMPRE em `lib/tools.ts` (nome, frase, grupo) e em `components/tools/ToolView.tsx`. Sem isso o número não sobe e a página não existe.
+2. Nunca escreva o número à mão em nenhum texto do site. Se precisar do número, importe `EXTRAS` ou `TOTAL` de `lib/brand.ts`.
+3. Depois do build, confira se o número mudou na home, em `/ferramentas`, no rodapé e no cartão do plano Criador, e diga ao Paulo qual é o novo número.
+4. Textos fora do site (e-mail de boas-vindas, README, planos no Mercado Pago, redes sociais) podem ter o número escrito à mão: procure por ele e atualize. Neste momento (depois do Juntar áudios) o site mostra **35 ferramentas** (1 principal + 34 extras). Na próxima ferramenta, vira 36 e 35.
 
 ## Como usar
 

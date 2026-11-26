@@ -36,6 +36,7 @@ export const TOOLS: ToolInfo[] = [
   { slug: "roteiro-em-blocos", group: "roteiro", start: true, title: "Roteiro em blocos com tempo", short: "Gancho, contexto, corpo, clímax e chamada final, com o tempo de cada um.", intro: "Escreva cada parte do roteiro e veja quanto tempo ela dura falada." },
   { slug: "tempo-de-fala", group: "roteiro", title: "Calculadora de tempo de fala", short: "Cole o roteiro e veja quanto tempo ele dura falado.", intro: "Cole o roteiro e descubra a duração do vídeo antes de gravar." },
   { slug: "dividir-texto", group: "roteiro", title: "Divisor de texto", short: "Quebre um texto longo em blocos, sem cortar frases.", intro: "Cole um texto longo e copie os blocos, um de cada vez." },
+  { slug: "juntar-audios", group: "roteiro", title: "Juntar áudios e músicas", short: "Una vários áudios ou músicas em um arquivo só, na ordem que você escolher.", intro: "Adicione os arquivos, ajuste a ordem e baixe tudo em um áudio só. Os arquivos não saem do seu aparelho." },
   { slug: "remover-silencio", group: "roteiro", title: "Removedor de silêncio de áudio", short: "Tire as pausas longas da sua gravação.", intro: "Envie a gravação e corte os silêncios longos. O arquivo não sai do seu aparelho." },
 
   { slug: "titulo-e-descricao", group: "publicar", start: true, title: "Contador de título e descrição", short: "Veja se o título cabe e como ele aparece.", intro: "Escreva o título e a descrição e confira se cabem antes de publicar." },

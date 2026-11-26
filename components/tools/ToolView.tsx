@@ -10,6 +10,7 @@ const VIEWS: Record<string, ComponentType> = {
   "descricao-do-roteiro": dynamic(() => import("./ScriptDescription"), { loading }),
   "tempo-de-fala": dynamic(() => import("./SpeechTime"), { loading }),
   "dividir-texto": dynamic(() => import("./SplitBlocks"), { loading }),
+  "juntar-audios": dynamic(() => import("./AudioJoin"), { loading }),
   "remover-silencio": dynamic(() => import("./Silence"), { loading }),
   "titulo-e-descricao": dynamic(() => import("./TitleCounter"), { loading }),
   "hashtags-e-tags": dynamic(() => import("./Hashtags"), { loading }),

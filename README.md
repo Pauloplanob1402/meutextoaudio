@@ -153,7 +153,7 @@ Não confie em nenhuma checagem feita só no navegador.
 
 Ficam em `/ferramentas`, com um link discreto no menu, abaixo da caixa de texto e no rodapé da página inicial. Todas rodam no navegador, sem servidor e sem custo por uso:
 
-ideias de vídeo por assunto, tempo de fala, dividir texto em blocos, remover silêncio do áudio, título e descrição, hashtags e tags, capítulos, legendas (.srt), checklist de publicação, redimensionar imagem, criar miniatura, calendário de conteúdo (do mês) e calculadora de ganhos.
+ideias de vídeo por assunto, juntar áudios e músicas, tempo de fala, dividir texto em blocos, remover silêncio do áudio, título e descrição, hashtags e tags, capítulos, legendas (.srt), checklist de publicação, redimensionar imagem, criar miniatura, calendário de conteúdo (do mês) e calculadora de ganhos.
 
 Para adicionar uma ferramenta nova:
 

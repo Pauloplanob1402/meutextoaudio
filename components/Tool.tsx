@@ -7,6 +7,7 @@ import { wavToMp3 } from "@/lib/mp3";
 import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
 import { PACOTE_ON, createMeter, type Cue } from "@/lib/pacote";
 import PacoteDoVideo from "@/components/PacoteDoVideo";
+import { publishToolState, useToolHost } from "@/lib/toolHost";
 
 const HINT = "Dica: Ctrl + Enter também gera.";
 const SPEEDS = [
@@ -45,6 +46,20 @@ export default function Tool() {
   const [realDur, setRealDur] = useState(0); // duração real do áudio gerado, na velocidade original
   const genInfo = useRef<{ words: number; pauses: number; voice: string } | null>(null);
   const [pacote, setPacote] = useState<{ cues: Cue[]; raw: string } | null>(null); // legenda e capítulos do último áudio
+  const host = useToolHost();
+
+  // Avisa a barra global (geração em segundo plano) o que está acontecendo
+  useEffect(() => {
+    publishToolState({ busy, ready: !!url, status: typeof status === "string" ? status : "" });
+  }, [busy, url, status]);
+  // Ao voltar para a página inicial, confere de novo o plano (a pessoa pode ter entrado ou assinado enquanto isso)
+  useEffect(() => {
+    if (host.tick < 2) return;
+    fetch("/api/plano", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
+      .catch(() => {});
+  }, [host.tick]);
   const est = useMemo(() => estimateSeconds(text, speed, wpmMap[voiceId]), [text, speed, wpmMap, voiceId]);
 
   // rascunho salvo só no navegador
@@ -380,7 +395,7 @@ export default function Tool() {
             </div>
             <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. O MP3 é bem menor e abre em qualquer editor de vídeo. O WAV mantém a qualidade máxima, mas o arquivo é bem maior. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
-            <button className="link" type="button" onClick={again}>Gerar outro texto</button>
+            <button className="link" type="button" onClick={again} style={{ marginLeft: speed !== 1 ? 16 : 0 }}>Gerar outro texto</button>
             {pacote && <PacoteDoVideo cues={pacote.cues} raw={pacote.raw} speed={speed} />}
             <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
               <p style={{ fontWeight: 600 }}>Gostou? Indique o Sauim a outro criador.</p>

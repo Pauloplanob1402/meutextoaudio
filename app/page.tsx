@@ -1,6 +1,6 @@
 import { FreeCardCta, ProAnnualCta, ProCardCta } from "@/components/PlanCtas";
 import Link from "next/link";
-import Tool from "@/components/Tool";
+import ToolSlot from "@/components/ToolSlot";
 import Arsenal from "@/components/Arsenal";
 import Mascote from "@/components/Mascote";
 import SiteHeader from "@/components/SiteHeader";
@@ -44,7 +44,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="wrap" id="texto-audio"><Tool /></div>
+      <div className="wrap" id="texto-audio"><ToolSlot /></div>
 
       <section id="fluxo" className="sa-sec">
         <div className="wrap">

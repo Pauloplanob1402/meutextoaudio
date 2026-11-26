@@ -236,3 +236,10 @@ html{scroll-behavior:smooth}
 .period button[aria-pressed="true"]{border-color:var(--blue);background:var(--lilac)}
 .period small{display:block;font:400 14px var(--body);color:var(--mute);margin-top:2px}
 .period em{font:700 12px var(--body);font-style:normal;background:var(--blue);color:#fff;border-radius:999px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+
+/* barra de geração em segundo plano (aparece em todas as páginas, menos na do Texto em áudio) */
+.sa-geracao{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,560px);padding:10px 18px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;font-weight:600;box-shadow:0 10px 30px -10px rgba(18,18,43,.5)}
+.sa-geracao a,.sa-geracao button{color:#fff;text-decoration:underline;background:none;border:0;font:inherit;cursor:pointer;white-space:nowrap;padding:0}
+.sa-geracao-dot{width:10px;height:10px;border-radius:50%;background:#8C8CFF;flex:none;animation:sa-pulse 1.2s ease-in-out infinite}
+@keyframes sa-pulse{50%{opacity:.35;transform:scale(.8)}}
+@media (prefers-reduced-motion:reduce){.sa-geracao-dot{animation:none}}

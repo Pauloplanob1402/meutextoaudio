@@ -1,5 +1,7 @@
 # Instruções para quem trabalha neste projeto (inclui o Claude)
 
+No começo de TODA sessão, leia a seção "O que falta fazer" do `IDEIAS.md`, diga ao Paulo o que falta e atualize a seção no fim.
+
 Antes de qualquer mudança:
 1. Leia `PADROES.md` (medidas e decisões que valem sempre, como o tamanho padrão do mascote).
 2. Leia `IDEIAS.md` (a lista de ideias para o Sauim ser a melhor plataforma do mundo para criadores).

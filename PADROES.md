@@ -35,6 +35,9 @@ Os livros estão em `BIBLIOTECA.md`, em 3 categorias:
 
 ## 3. Outras decisões já tomadas
 
+- A IA que constrói as ferramentas sempre lê a seção "O que falta fazer" do `IDEIAS.md` no começo da sessão e a atualiza no fim.
+
+- **A geração de áudio (e qualquer tarefa longa) continua enquanto a pessoa navega por outras páginas do site.** Trocar de ferramenta não pode perder a tarefa em andamento. Quando uma tarefa pesada terminar, o site avisa em qualquer página.
 - **Nenhuma ferramenta ou melhoria nova pode quebrar a engenharia do que já existe** (regra de ouro, detalhada no `IDEIAS.md`).
 
 - A marca é **Sauim** (sauim.com.br). O contato oficial é **contato@sauim.com.br**.

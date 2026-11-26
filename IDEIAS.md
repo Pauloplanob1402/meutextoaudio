@@ -5,6 +5,27 @@
 Este arquivo deve ser LIDO sempre, antes de propor ou fazer qualquer mudança no site.
 Quem trabalha no projeto (o Paulo, o Claude ou qualquer pessoa da equipe) acrescenta ideias aqui e atualiza o estado delas.
 
+## O que falta fazer (LEIA SEMPRE, TODA SESSÃO)
+
+Quem constrói as ferramentas (a IA ou uma pessoa) deve, no começo de toda sessão:
+1. Ler esta seção inteira e dizer ao Paulo o que falta e qual é o próximo passo que recomenda.
+2. Conferir a "Regra de ouro" abaixo e o `PADROES.md` antes de mexer em qualquer coisa.
+3. Ao terminar um trabalho, atualizar esta seção: marcar o que foi feito (com a data), acrescentar o que apareceu e reordenar a fila.
+4. Entregar em um zip e dizer o que mudou, o que não foi tocado e como testar.
+
+Fila atual (atualizada em 26/11/2026), em ordem:
+1. [aguardando teste do Paulo] Geração em segundo plano e Pacote de publicação, entregues em 26/11/2026. Guia: `docs/TESTAR-NOVIDADES.md`.
+2. [a conferir] Limite do plano grátis (10.000 caracteres por mês, com contador visível): confirmar se já está no código e como se comporta.
+3. [próxima] Protótipo da Legenda automática, só para medir tempo e qualidade em português nos aparelhos dos criadores.
+4. Estúdio de voz.
+5. Audiolivro e podcast em lote.
+6. Mentor de Autores, fase 1 (`docs/MENTOR-DE-EBOOKS.md`).
+7. "Saiu um!", Caixa "o que faltou hoje?" e Roteiro em 4 batidas.
+8. Pacote do vídeo, fase 2 (ajuste por silêncios e zip).
+
+Histórico do que já foi feito:
+- 25/11/2026: Pacote do vídeo, fase 1 (legenda .srt e capítulos com tempo real), testado e aprovado pelo Paulo.
+
 ## Regra de ouro
 
 **Nenhuma ferramenta ou melhoria nova pode quebrar a engenharia do que já existe.**
@@ -66,6 +87,36 @@ Nenhuma das três é tão útil quanto o Texto em áudio. Por isso, a ordem mist
   Base: Product-Led Growth (chegar ao "Aha!" rápido), Hooked (recompensa imediata), A Fórmula do YouTube. Para quem: todo criador que narra. Por que importa: entrega três arquivos prontos que hoje o criador faz à mão. Observação técnica: o motor de áudio já monta o áudio trecho por trecho (frases e pausas), então a duração real de cada trecho pode ser medida. Fase 1 entregue: legenda .srt com tempos reais e capítulos pelo marcador `[CAPÍTULO: Título]`, tudo no navegador, com interruptor `NEXT_PUBLIC_PACOTE=0`. Guia de testes em `docs/TESTAR-PACOTE.md`. Esforço da fase 1: médio.
   - [nova] **Pacote, fase 2**: ajuste fino achando os silêncios na onda do áudio, para a divisão de frases dentro de um trecho ficar ainda mais exata. Origem: Claude.
   - [nova] **Pacote, fase 2**: zip com áudio, legenda e capítulos (precisa de uma biblioteca pequena de zip). Origem: Claude.
+
+### Base de tudo: geração em segundo plano
+
+- [feita em 26/11/2026, aguardando teste do Paulo] **Tarefas que continuam enquanto a pessoa navega**: o Texto em áudio (e depois transcrição, vídeo e outras tarefas pesadas) segue rodando quando a pessoa abre outra ferramenta, com uma barra de progresso visível em todas as páginas e um aviso quando termina. Tarefas pesadas entram numa fila, uma por vez, para não travar o computador. Origem: Paulo.
+  Como fazer sem mexer no motor de voz: manter o componente do Texto em áudio sempre montado na estrutura do site (fora da página) e só "encaixá-lo" na página inicial; ler o estado dele numa barra global. Limite honesto: fechar a aba ou recarregar a página encerra a tarefa, e celulares podem pausar quando o aplicativo vai para o fundo. Esforço: médio. Risco: médio (mexe na vida do componente), por isso exige teste com áudio real.
+
+### Ferramentas candidatas de alto valor (nível Texto em áudio)
+
+Critério: entregar um arquivo pronto, servir em todo vídeo, rodar no navegador e não prender o criador atrás de uma barreira.
+
+- [nova] **Legenda automática (áudio ou vídeo para texto e .srt)**, com reconhecimento de voz rodando no navegador. Origem: Claude.
+  Para quem: todo criador que fala no vídeo. Alimenta capítulos, cortes e o Mentor de Autores. Esforço: alto (modelo de dezenas a centenas de MB; velocidade e qualidade em português precisam ser medidas no aparelho do criador antes de prometer).
+- [nova] **Estúdio de voz**: gravar no navegador, tirar ruído e silêncios, normalizar o volume para o YouTube e baixar. Origem: Claude.
+  Para quem: quem grava a própria voz. Esforço: médio a alto.
+- [nova] **Roteiro para vídeo narrado com legenda** (canais sem rosto e Shorts): voz do Sauim + legenda do Pacote do vídeo + imagem de fundo, exportando um arquivo de vídeo. Origem: Claude.
+  Para quem: canais "dark" e quem faz Shorts. Esforço: alto (a gravação do vídeo no navegador costuma levar o tempo do próprio vídeo).
+- [nova] **Audiolivro e podcast em lote**: texto longo vira capítulos, cada um em um arquivo, com zip e nomes organizados. Origem: Claude.
+  Liga com o Mentor de Autores. Rever a licença da voz antes de oferecer como produto. Esforço: médio.
+- [feita em 26/11/2026, aguardando teste do Paulo] **Pacote de publicação**: título A/B, descrição já com os capítulos, hashtags e comentário fixado, a partir do roteiro, dentro do cartão do Pacote do vídeo. Origem: Claude.
+  Esforço: baixo a médio (reaproveita ferramentas que já existem).
+- [nova] **Cortes para Shorts**: a partir da transcrição, sugerir os melhores trechos de 30 a 60 segundos com horários e legenda. Origem: Claude.
+  Depende da Legenda automática. Esforço: médio.
+- [nova] **Medidor e ajuste de volume (LUFS)** para o áudio ficar no nível comum do YouTube. Origem: Claude.
+  Esforço: baixo a médio. Pode virar parte do Estúdio de voz.
+- [nova] **Extrair áudio, cortar e converter vídeo** no navegador. Origem: Claude.
+  Muita gente oferece; só vale pela integração com o resto. Esforço: médio a alto.
+- [nova] **Dublagem**: roteiro em português vira legenda e voz em inglês ou espanhol. Origem: Claude.
+  Alto valor, mas tradução no navegador é pesada e a qualidade precisa ser testada. Esforço: alto.
+- [nova] **Pesquisa do que as pessoas procuram** para gerar ideias e títulos, pela API oficial do YouTube (exige chave e tem limite diário, e os dados passam pelo servidor). Origem: Claude.
+  Esforço: médio.
 
 ### Ferramenta grande: Mentor de Autores (e-books para criadores)
 

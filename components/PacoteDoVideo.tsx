@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { buildPackage, type Cue } from "@/lib/pacote";
 import { fmtTime } from "@/lib/toolkit";
 import { CopyButton, downloadText } from "@/components/tools/ui";
+import PacotePublicacao from "@/components/PacotePublicacao";
 
 // Aparece abaixo do player depois que o áudio fica pronto. Só lê o que o áudio já mediu; não mexe no áudio.
 export default function PacoteDoVideo({ cues, raw, speed }: { cues: Cue[]; raw: string; speed: number }) {
@@ -51,6 +52,8 @@ export default function PacoteDoVideo({ cues, raw, speed }: { cues: Cue[]; raw: 
           Quer capítulos prontos? No roteiro, escreva em uma linha sozinha <b>[CAPÍTULO: Título]</b> antes de cada parte. A marca não é lida em voz alta. Exemplo: <b>[CAPÍTULO: Introdução]</b>.
         </p>
       )}
+
+      <PacotePublicacao raw={raw} chapters={p.chapters.problems.length ? "" : p.chapters.output} chaptersBlocked={temCap && p.chapters.problems.length > 0} />
 
       <p className="note" style={{ marginTop: 16 }}>
         Confira no vídeo antes de publicar: em trechos com várias frases, a legenda pode sair adiantada ou atrasada por frações de segundo. No YouTube Studio, procure a opção de legendas e carregue o arquivo .srt (com tempo).

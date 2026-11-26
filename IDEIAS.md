@@ -16,7 +16,7 @@ Quem constrói as ferramentas (a IA ou uma pessoa) deve, no começo de toda sess
 Fila atual (atualizada em 26/11/2026), em ordem:
 1. [aguardando teste do Paulo] Geração em segundo plano e Pacote de publicação, entregues em 26/11/2026. Guia: `docs/TESTAR-NOVIDADES.md`.
 2. [a conferir] Limite do plano grátis (10.000 caracteres por mês, com contador visível): confirmar se já está no código e como se comporta.
-3. [próxima] Protótipo da Legenda automática, só para medir tempo e qualidade em português nos aparelhos dos criadores.
+3. [aguardando medição do Paulo] Protótipo da Legenda automática, entregue em 26/11/2026: página escondida `/prototipos/legenda` para medir tempo e qualidade em português. Guia: `docs/TESTAR-LEGENDA-AUTOMATICA.md`. Depois das medições, decidir o modelo, os limites e se vira ferramenta pública.
 4. Estúdio de voz.
 5. Audiolivro e podcast em lote.
 6. Mentor de Autores, fase 1 (`docs/MENTOR-DE-EBOOKS.md`).
@@ -97,7 +97,7 @@ Nenhuma das três é tão útil quanto o Texto em áudio. Por isso, a ordem mist
 
 Critério: entregar um arquivo pronto, servir em todo vídeo, rodar no navegador e não prender o criador atrás de uma barreira.
 
-- [nova] **Legenda automática (áudio ou vídeo para texto e .srt)**, com reconhecimento de voz rodando no navegador. Origem: Claude.
+- [protótipo entregue em 26/11/2026, aguardando medição] **Legenda automática (áudio ou vídeo para texto e .srt)**, com reconhecimento de voz rodando no navegador. Origem: Claude.
   Para quem: todo criador que fala no vídeo. Alimenta capítulos, cortes e o Mentor de Autores. Esforço: alto (modelo de dezenas a centenas de MB; velocidade e qualidade em português precisam ser medidas no aparelho do criador antes de prometer).
 - [nova] **Estúdio de voz**: gravar no navegador, tirar ruído e silêncios, normalizar o volume para o YouTube e baixar. Origem: Claude.
   Para quem: quem grava a própria voz. Esforço: médio a alto.

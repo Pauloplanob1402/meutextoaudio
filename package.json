@@ -11,6 +11,7 @@
   "dependencies": {
     "@breezystack/lamejs": "^1.2.7",
     "@diffusionstudio/piper-wasm": "^1.0.0",
+    "@huggingface/transformers": "3.8.1",
     "@mintplex-labs/piper-tts-web": "^1.0.5",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",

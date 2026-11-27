@@ -182,3 +182,13 @@ export function savedNarrationWpm(): number {
     return WORDS_PER_MINUTE;
   }
 }
+
+// Primeiras palavras do texto da pessoa, cortadas no fim de uma frase ou palavra, para dar uns 5 segundos de fala
+export function sampleLine(t: string): string {
+  const one = t.replace(/\s+/g, " ").trim();
+  if (one.length <= 110) return one;
+  const cut = one.slice(0, 110);
+  const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "));
+  if (stop > 50) return cut.slice(0, stop + 1);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:\s]+$/, "") + ".";
+}

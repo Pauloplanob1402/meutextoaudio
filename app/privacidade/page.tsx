@@ -11,6 +11,7 @@ const TOC = [
   { id: "quem", title: "Quem somos e quem cuida dos seus dados" },
   { id: "texto", title: "O que acontece com o seu texto" },
   { id: "conta", title: "Quais dados guardamos na sua conta" },
+  { id: "voz", title: "Minha voz (beta)" },
   { id: "caixa", title: "A caixa “o que faltou hoje?”" },
   { id: "pagamento", title: "Pagamentos" },
   { id: "bases", title: "Para que usamos os dados" },
@@ -63,6 +64,10 @@ export default function Privacidade() {
           <li><b>Dados técnicos de acesso.</b> Endereço IP, tipo de navegador e horários de acesso podem ser registrados pelos serviços que usamos (login e hospedagem), por segurança e para o site funcionar.</li>
         </ul>
         <p>O Sauim não pede CPF, telefone nem endereço para criar a conta. O Mercado Pago pode pedir dados no momento do pagamento.</p>
+      </Sec>
+
+      <Sec id="voz" n={++n} title="Minha voz (beta)">
+        <p>Na ferramenta Minha voz (beta), a gravação da sua voz e os textos são processados <b>no seu aparelho</b>. Nós não recebemos a gravação nem o áudio gerado. Para você não precisar gravar de novo, uma cópia da gravação fica guardada no navegador do seu aparelho, e você pode apagá-la a qualquer momento no botão “Apagar a gravação” ou limpando os dados do navegador. Na primeira vez, o navegador baixa o modelo de voz do Hugging Face e o motor de execução do jsDelivr, que podem registrar o seu endereço IP, como já acontece com as demais vozes.</p>
       </Sec>
 
       <Sec id="caixa" n={++n} title="A caixa “o que faltou hoje?”">

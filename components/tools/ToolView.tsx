@@ -16,6 +16,7 @@ const VIEWS: Record<string, ComponentType> = {
   "audiolivro-em-lote": dynamic(() => import("./BatchAudio"), { loading }),
   "extrair-e-cortar-audio": dynamic(() => import("./AudioCut"), { loading }),
   "video-narrado": dynamic(() => import("./NarratedVideo"), { loading }),
+  "minha-voz-beta": dynamic(() => import("./MyVoice"), { loading }),
   "remover-silencio": dynamic(() => import("./Silence"), { loading }),
   "titulo-e-descricao": dynamic(() => import("./TitleCounter"), { loading }),
   "hashtags-e-tags": dynamic(() => import("./Hashtags"), { loading }),

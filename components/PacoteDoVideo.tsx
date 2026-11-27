@@ -1,23 +1,50 @@
 "use client";
 import { useMemo, useState } from "react";
+import { makeZip } from "@/lib/zipStore";
 import { buildPackage, type Cue } from "@/lib/pacote";
 import { fmtTime } from "@/lib/toolkit";
-import { CopyButton, downloadText } from "@/components/tools/ui";
+import { CopyButton, downloadBlob, downloadText } from "@/components/tools/ui";
 import PacotePublicacao from "@/components/PacotePublicacao";
 
 // Aparece abaixo do player depois que o áudio fica pronto. Só lê o que o áudio já mediu; não mexe no áudio.
-export default function PacoteDoVideo({ cues, raw, speed }: { cues: Cue[]; raw: string; speed: number }) {
+type Audio = { blob: Blob; name: string; warn: string } | null;
+export default function PacoteDoVideo({ cues, raw, speed, getAudio }: { cues: Cue[]; raw: string; speed: number; getAudio?: (originalSpeed: boolean) => Promise<Audio> }) {
   const [original, setOriginal] = useState(false);
+  const [zipBusy, setZipBusy] = useState(false);
+  const [zipMsg, setZipMsg] = useState("");
   const factor = original ? 1 : speed;
   const p = useMemo(() => buildPackage(cues, raw, factor), [cues, raw, factor]);
   const velo = factor === 1 ? "velocidade normal" : `velocidade ${String(factor).replace(".", ",")}×`;
   const temCap = p.chapters.marks > 0;
+  const chaptersOk = temCap && p.chapters.output && p.chapters.problems.length === 0;
+
+  // Zip com o áudio, a legenda e os capítulos, todos com os mesmos tempos
+  async function zip() {
+    if (!getAudio || zipBusy) return;
+    setZipBusy(true); setZipMsg("Montando o zip…");
+    try {
+      const a = await getAudio(original);
+      if (!a) { setZipMsg("Não foi possível montar o áudio."); return; }
+      const files: { name: string; data: Blob | Uint8Array }[] = [
+        { name: a.name, data: a.blob },
+        { name: "legenda-sauim.srt", data: new TextEncoder().encode("\ufeff" + p.srt) },
+      ];
+      if (chaptersOk) files.push({ name: "capitulos-youtube.txt", data: new TextEncoder().encode("\ufeff" + p.chapters.output.replace(/\n/g, "\r\n") + "\r\n") });
+      downloadBlob(await makeZip(files), "pacote-do-video-sauim.zip");
+      setZipMsg((a.warn.trim() || "Zip baixado.") + (temCap && !chaptersOk ? " Os capítulos ficaram de fora porque têm problemas (veja acima)." : ""));
+    } catch (e) {
+      console.error(e);
+      setZipMsg("Não foi possível montar o zip. Baixe os arquivos um a um.");
+    } finally {
+      setZipBusy(false);
+    }
+  }
 
   return (
     <div className="pacote" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
       <h3 style={{ margin: "0 0 4px" }}>Pacote do vídeo</h3>
       <p className="note" style={{ marginTop: 0 }}>
-        Legenda e capítulos com os tempos reais deste áudio, sem você digitar nada. Os tempos valem para o áudio baixado na {velo}.
+        Legenda e capítulos com os tempos reais deste áudio, ajustados pelos silêncios da fala, sem você digitar nada. Os tempos valem para o áudio baixado na {velo}.
       </p>
       {speed !== 1 && (
         <label className="note" style={{ display: "block", margin: "8px 0" }}>
@@ -33,6 +60,12 @@ export default function PacoteDoVideo({ cues, raw, speed }: { cues: Cue[]; raw: 
         <button className="btn ghost" type="button" onClick={() => downloadText(p.srt, "legenda-sauim.srt", "application/x-subrip")}>Baixar legenda (.srt)</button>
         <CopyButton text={p.srt} label="Copiar legenda" />
       </div>
+      {getAudio && (
+        <div className="rrow" style={{ marginTop: 12 }}>
+          <button className="btn go" type="button" onClick={zip} disabled={zipBusy}>{zipBusy ? "Montando…" : "Baixar tudo em um zip"}</button>
+          <span className="count" role="status" aria-live="polite">{zipMsg || `Áudio, legenda${chaptersOk ? " e capítulos" : ""} com os mesmos tempos.`}</span>
+        </div>
+      )}
 
       <p className="count" style={{ marginTop: 20 }}><b>Capítulos para o YouTube</b></p>
       {temCap ? (

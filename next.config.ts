@@ -18,8 +18,9 @@ try {
 const supabaseWs = supabaseHost.replace(/^https:/, "wss:");
 
 // A voz (Piper) baixa o motor do cdnjs/jsDelivr e a voz do Hugging Face, a menos que você use `npm run self-host`.
-const voiceCdn = selfHost ? [] : ["https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"];
-const voiceData = selfHost ? [] : ["https://huggingface.co", "https://*.huggingface.co", "https://*.hf.co"];
+// A ferramenta "Minha voz (beta)" sempre baixa o motor (jsDelivr) e o modelo (Hugging Face), mesmo com a hospedagem própria ligada.
+const voiceCdn = selfHost ? ["https://cdn.jsdelivr.net"] : ["https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"];
+const voiceData = ["https://huggingface.co", "https://*.huggingface.co", "https://*.hf.co"];
 
 const csp = [
   "default-src 'self'",
@@ -49,7 +50,7 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   // fullscreen=(self): o teleprompter usa tela cheia. O resto do que o site não usa fica desligado.
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), fullscreen=(self)" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), fullscreen=(self)" },
 ];
 
 // O Piper (WebAssembly) tem um trecho de código para Node que usa fs e path.

@@ -2,12 +2,14 @@
 // Nada aqui altera o áudio nem o motor de voz: só mede e calcula, tudo no navegador.
 import { cleanForTTS, hasSpeakable, splitText } from "@/lib/tts";
 import { fmtTime, parseChapters } from "@/lib/toolkit";
+import { analyzeSilence, type Silences } from "@/lib/silencios";
 
 // Para desligar: NEXT_PUBLIC_PACOTE=0 na Vercel e publicar de novo.
 export const PACOTE_ON = process.env.NEXT_PUBLIC_PACOTE !== "0";
 
 // Um trecho falado: idx é a posição do trecho de texto no roteiro; start/end em segundos, na velocidade original.
-export type Cue = { idx: number; text: string; start: number; end: number };
+// lead/trail/gaps (opcionais): silêncios medidos dentro do trecho, em segundos a partir do começo dele. Servem para ajustar o tempo fino.
+export type Cue = { idx: number; text: string; start: number; end: number; lead?: number; trail?: number; gaps?: { start: number; end: number }[] };
 
 // Mede a duração de cada trecho de áudio (do mesmo jeito que a montagem final decodifica).
 export function createMeter() {
@@ -17,10 +19,22 @@ export function createMeter() {
       const buf = await ctx.decodeAudioData(await b.arrayBuffer());
       return buf.duration;
     },
+    // Mede a duração e os silêncios (antes, depois e no meio da fala) de um trecho.
+    async analyze(b: Blob): Promise<Silences> {
+      const buf = await ctx.decodeAudioData(await b.arrayBuffer());
+      return analyzeSilence(buf.getChannelData(0), buf.sampleRate);
+    },
     close() {
       ctx.close().catch(() => {});
     },
   };
+}
+
+// Onde a fala de verdade começa e termina dentro do trecho (ignora o silêncio das pontas)
+export function speechSpan(c: Cue): { a: number; b: number } {
+  const a = c.start + (c.lead ?? 0);
+  const b = c.end - (c.trail ?? 0);
+  return b - a >= 0.2 ? { a, b } : { a: c.start, b: c.end };
 }
 
 /* ---------- texto original de cada trecho (com $, %, etc., que a voz não recebe) ---------- */
@@ -174,15 +188,37 @@ export function cuesToBlocks(cues: Cue[], texts: string[], factor = 1): Block[] 
     if (!ps.length) return;
     const ws = ps.map(weight);
     const sum = ws.reduce((a, b) => a + b, 0);
-    const s0 = c.start / f;
-    const span = (c.end - c.start) / f;
-    let cursor = s0;
+    const { a: s0, b: s1 } = speechSpan(c);
+    const span = s1 - s0;
+    // gaps (pausas no meio da fala) em tempo absoluto
+    const gaps = (c.gaps ?? []).map((g) => ({ start: c.start + g.start, end: c.start + g.end })).filter((g) => g.start > s0 && g.end < s1);
+    let from = s0; // começo do bloco atual
+    let cum = 0;
+    let gi = 0;
     ps.forEach((p, k) => {
-      const d = (span * ws[k]) / sum;
-      blocks.push({ start: cursor, end: cursor + d, text: p });
-      cursor += d;
+      cum += ws[k];
+      if (k === ps.length - 1) { blocks.push({ start: from, end: s1, text: p }); return; }
+      const target = s0 + (span * cum) / sum;
+      const tol = Math.max(0.5, span * 0.2);
+      // a pausa mais perto do ponto previsto (só para a frente, e sem passar do que já foi usado)
+      let best = -1, bestD = Infinity;
+      for (let q = gi; q < gaps.length; q++) {
+        const mid = (gaps[q].start + gaps[q].end) / 2;
+        const d = Math.abs(mid - target);
+        if (mid > from + 0.2 && d < bestD && d <= tol) { best = q; bestD = d; }
+      }
+      if (best >= 0) {
+        blocks.push({ start: from, end: gaps[best].start, text: p });
+        from = gaps[best].end;
+        gi = best + 1;
+      } else {
+        const t = Math.max(target, from + 0.1);
+        blocks.push({ start: from, end: t, text: p });
+        from = t;
+      }
     });
   });
+  blocks.forEach((b) => { b.start /= f; b.end /= f; });
   // legenda curta demais fica ilegível: estica até 1 s quando há espaço (nunca invade a próxima)
   blocks.forEach((b, i) => {
     const next = i + 1 < blocks.length ? blocks[i + 1].start : Infinity;
@@ -254,7 +290,8 @@ export function buildPackage(cues: Cue[], raw: string, factor = 1): Pacote {
       for (let i = 0; i + mk.anchor.length <= ws.length; i++) {
         if (mk.anchor.every((a, k) => ws[i + k].w === a)) {
           const frac = i === 0 ? 0 : weight(texts[j].slice(0, ws[i].at)) / weight(texts[j]);
-          hit = cues[j].start + (cues[j].end - cues[j].start) * Math.min(1, frac);
+          const sp = speechSpan(cues[j]);
+          hit = sp.a + (sp.b - sp.a) * Math.min(1, frac);
           from = j;
           break;
         }

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { SAMPLE_TEXT, estimateSeconds, formatDuration, mergeParts, parseScript, scriptStats } from "@/lib/tts";
+import { SAMPLE_TEXT, sampleLine, estimateSeconds, formatDuration, mergeParts, parseScript, scriptStats } from "@/lib/tts";
 import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
@@ -20,12 +20,15 @@ const GROUPS = [
   { label: "Vozes rápidas · Português de Portugal", test: (v: (typeof VOICES)[number]) => v.engine === "piper" && v.lang === "pt-PT" },
   { label: "Vozes naturais (mais lentas) · Português do Brasil", test: (v: (typeof VOICES)[number]) => v.engine === "kokoro" },
 ];
+const SAMPLE_LINE = "Olá! Esta é a minha voz. Veja se ela combina com o seu vídeo.";
 const HEIGHTS = [30,55,40,75,50,90,35,65,85,45,70,30,95,55,40,80,60,35,75,50,90,40,65,30,85,55,45,70,35,60,80,40,95,50,65,30,75,45,55,85];
 
 export default function Tool() {
   const [text, setText] = useState("");
   const [status, setStatus] = useState<ReactNode>(HINT);
   const [busy, setBusy] = useState(false);
+  const [sampling, setSampling] = useState(false);
+  const sampleUrl = useRef<string | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [speed, setSpeed] = useState(0.85);
   const [dlBusy, setDlBusy] = useState(false);
@@ -119,6 +122,66 @@ export default function Tool() {
   }
   useEffect(applySpeed, [speed, url]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
+  useEffect(() => () => { if (sampleUrl.current) URL.revokeObjectURL(sampleUrl.current); }, []);
+
+  // Abre a sessão de voz (baixa a voz na primeira vez). Usada pela geração e pela amostra.
+  async function openSession(): Promise<{ predict: (t: string) => Promise<Blob> }> {
+    const tts = await import("@mintplex-labs/piper-tts-web");
+    const voice = getVoice(voiceId);
+    if (voice.engine === "kokoro") {
+      const { createKokoro } = await import("@/lib/kokoro");
+      return createKokoro({
+        voice: voice.kokoro!,
+        bits: {
+          piperWasm: wasmPaths?.piperWasm ?? `${tts.WASM_BASE}.wasm`,
+          piperData: wasmPaths?.piperData ?? `${tts.WASM_BASE}.data`,
+          onnxWasm: wasmPaths?.onnxWasm ?? tts.ONNX_BASE,
+        },
+        onProgress: (l, t) => setStatus(`Baixando a voz natural (só na primeira vez): ${Math.round((l * 100) / t)}%`),
+      });
+    }
+    redirectVoiceDownloads(tts.PATH_MAP as Record<string, string>);
+    // A biblioteca guarda uma sessão só. Para trocar de voz, descartamos a anterior.
+    if (loadedVoice.current && loadedVoice.current !== voiceId) (tts.TtsSession as any)._instance = undefined;
+    return tts.TtsSession.create({
+      voiceId: voiceId as any,
+      wasmPaths,
+      progress: (p: any) => {
+        if (p?.total && p.url !== "tts://inference-progress")
+          setStatus(`Baixando a voz (só na primeira vez): ${Math.round((p.loaded * 100) / p.total)}%`);
+      },
+    });
+  }
+
+  // Amostra de uns 5 segundos com a voz e a velocidade escolhidas, antes de gerar o áudio inteiro
+  async function sample() {
+    if (busy || sampling) return;
+    setSampling(true);
+    setStatus("Preparando a amostra… A primeira vez baixa a voz e leva um pouco mais.");
+    try {
+      const first = parseScript(text).find((p) => p.kind === "text");
+      const line = first && first.kind === "text" ? sampleLine(first.text) : SAMPLE_LINE;
+      const session = await openSession();
+      const blob = await session.predict(line);
+      if (voice.engine === "piper") loadedVoice.current = voiceId;
+      if (sampleUrl.current) URL.revokeObjectURL(sampleUrl.current);
+      const u = URL.createObjectURL(blob);
+      sampleUrl.current = u;
+      const a = new Audio(u);
+      a.playbackRate = speed;
+      (a as HTMLAudioElement & { preservesPitch?: boolean }).preservesPitch = true;
+      a.onended = () => setStatus(HINT);
+      await a.play();
+      setStatus(`Ouvindo a amostra da voz ${voice.name}${speed !== 1 ? ` (velocidade ${speed.toString().replace(".", ",")}x)` : ""}.`);
+    } catch (e) {
+      console.error(e);
+      try { (((await import("@mintplex-labs/piper-tts-web")).TtsSession) as any)._instance = undefined; } catch {}
+      loadedVoice.current = null;
+      setStatus(`Não foi possível gerar a amostra com a voz ${voice.name}. Tente outra voz ou recarregue a página (F5).`);
+    } finally {
+      setSampling(false);
+    }
+  }
 
   async function generate() {
     if (busy) return;
@@ -140,33 +203,8 @@ export default function Tool() {
       const total = parts.filter((p) => p.kind === "text").length;
       if (!total) throw new Error("sem texto");
 
-      const tts = await import("@mintplex-labs/piper-tts-web");
       const voice = getVoice(voiceId);
-      let session: { predict: (t: string) => Promise<Blob> };
-      if (voice.engine === "kokoro") {
-        const { createKokoro } = await import("@/lib/kokoro");
-        session = await createKokoro({
-          voice: voice.kokoro!,
-          bits: {
-            piperWasm: wasmPaths?.piperWasm ?? `${tts.WASM_BASE}.wasm`,
-            piperData: wasmPaths?.piperData ?? `${tts.WASM_BASE}.data`,
-            onnxWasm: wasmPaths?.onnxWasm ?? tts.ONNX_BASE,
-          },
-          onProgress: (l, t) => setStatus(`Baixando a voz natural (só na primeira vez): ${Math.round((l * 100) / t)}%`),
-        });
-      } else {
-        redirectVoiceDownloads(tts.PATH_MAP as Record<string, string>);
-        // A biblioteca guarda uma sessão só. Para trocar de voz, descartamos a anterior.
-        if (loadedVoice.current && loadedVoice.current !== voiceId) (tts.TtsSession as any)._instance = undefined;
-        session = await tts.TtsSession.create({
-          voiceId: voiceId as any,
-          wasmPaths,
-          progress: (p: any) => {
-            if (p?.total && p.url !== "tts://inference-progress")
-              setStatus(`Baixando a voz (só na primeira vez): ${Math.round((p.loaded * 100) / p.total)}%`);
-          },
-        });
-      }
+      const session = await openSession();
 
       const out: (Blob | number)[] = [];
       const skipped: string[] = [];
@@ -190,8 +228,9 @@ export default function Tool() {
         }
         if (meter && cuesOk && out.length > before) {
           try {
-            const d = await meter.measure(out[out.length - 1] as Blob);
-            cues.push({ idx: done - 1, text: p.text, start: clock, end: clock + d });
+            const sil = await meter.analyze(out[out.length - 1] as Blob);
+            const d = sil.duration;
+            cues.push({ idx: done - 1, text: p.text, start: clock, end: clock + d, lead: sil.lead, trail: sil.trail, gaps: sil.gaps });
             clock += d;
           } catch { cuesOk = false; }
         }
@@ -224,46 +263,52 @@ export default function Tool() {
   }
 
   // Baixa na velocidade escolhida (ajuste feito no navegador, sem mudar o tom), em MP3 ou WAV
-  async function download(originalSpeed = false) {
+  // Monta o arquivo final (velocidade e formato escolhidos). Usada pelo botão de baixar e pelo zip do Pacote do vídeo.
+  async function buildAudio(originalSpeed = false): Promise<{ blob: Blob; name: string; warn: string } | null> {
     const src = original.current;
-    if (!src || dlBusy) return;
+    if (!src) return null;
     const sp = originalSpeed ? 1 : speed;
-    setDlBusy(true);
     let out = src;
     let stretched = false;
     let warn = "";
+    if (sp !== 1) {
+      try {
+        setStatus("Ajustando a velocidade…");
+        out = await stretchWav(src, sp);
+        stretched = true;
+      } catch (e) {
+        console.error(e);
+        warn = "Não foi possível ajustar a velocidade. O arquivo foi baixado na velocidade original. ";
+        out = src;
+      }
+    }
+    let ext = "wav";
+    if (fmt === "mp3") {
+      try {
+        setStatus("Convertendo para MP3…");
+        out = await wavToMp3(out);
+        ext = "mp3";
+      } catch (e) {
+        console.error(e);
+        warn += "Não foi possível converter para MP3. O arquivo foi baixado em WAV.";
+      }
+    }
+    return { blob: out, name: stretched ? `narracao-sauim-${sp}x.${ext}` : `narracao-sauim.${ext}`, warn };
+  }
+
+  async function download(originalSpeed = false) {
+    if (!original.current || dlBusy) return;
+    setDlBusy(true);
     try {
-      if (sp !== 1) {
-        try {
-          setStatus("Ajustando a velocidade…");
-          out = await stretchWav(src, sp);
-          stretched = true;
-        } catch (e) {
-          console.error(e);
-          warn = "Não foi possível ajustar a velocidade. O arquivo foi baixado na velocidade original. ";
-          out = src;
-        }
-      }
-
-      let ext = "wav";
-      if (fmt === "mp3") {
-        try {
-          setStatus("Convertendo para MP3…");
-          out = await wavToMp3(out);
-          ext = "mp3";
-        } catch (e) {
-          console.error(e);
-          warn += "Não foi possível converter para MP3. O arquivo foi baixado em WAV.";
-        }
-      }
-
+      const r = await buildAudio(originalSpeed);
+      if (!r) return;
       const a = document.createElement("a");
-      const u = URL.createObjectURL(out);
+      const u = URL.createObjectURL(r.blob);
       a.href = u;
-      a.download = stretched ? `narracao-sauim-${sp}x.${ext}` : `narracao-sauim.${ext}`;
+      a.download = r.name;
       a.click();
       setTimeout(() => URL.revokeObjectURL(u), 10000);
-      setStatus(warn.trim() || "Download iniciado.");
+      setStatus(r.warn.trim() || "Download iniciado.");
     } finally {
       setDlBusy(false);
     }
@@ -365,7 +410,8 @@ export default function Tool() {
           )}
         </div>
         <div className="row">
-          <button className="btn go" type="button" onClick={generate} disabled={busy || locked}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
+          <button className="btn go" type="button" onClick={generate} disabled={busy || sampling || locked}>{busy ? "Gerando…" : "Gerar meu áudio"}</button>
+          <button className="btn ghost" type="button" onClick={sample} disabled={busy || sampling}>{sampling ? "Preparando…" : "Ouvir amostra de 5 s"}</button>
           <p className="status" role="status" aria-live="polite">{status}</p>
         </div>
 
@@ -396,7 +442,7 @@ export default function Tool() {
             <p className="note">O arquivo baixado sai na velocidade escolhida, já com as pausas. O MP3 é bem menor e abre em qualquer editor de vídeo. O WAV mantém a qualidade máxima, mas o arquivo é bem maior. Ajustes grandes de velocidade podem deixar a voz um pouco menos natural.</p>
             {speed !== 1 && <button className="link" type="button" onClick={() => download(true)} disabled={dlBusy}>Baixar na velocidade original</button>}
             <button className="link" type="button" onClick={again} style={{ marginLeft: speed !== 1 ? 16 : 0 }}>Gerar outro texto</button>
-            {pacote && <PacoteDoVideo cues={pacote.cues} raw={pacote.raw} speed={speed} />}
+            {pacote && <PacoteDoVideo cues={pacote.cues} raw={pacote.raw} speed={speed} getAudio={buildAudio} />}
             <div className="invite" style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
               <p style={{ fontWeight: 600 }}>Gostou? Indique o Sauim a outro criador.</p>
               <div className="rrow" style={{ marginTop: 10 }}>

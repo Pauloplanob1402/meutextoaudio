@@ -34,3 +34,17 @@ ANTES: rode o bloco 6 de `supabase/schema.sql` no Supabase (SQL Editor > New que
 Velocidade: o site agora manda os cabeçalhos COOP/COEP na página inicial, na Minha voz e em `/_next/static`, para o motor usar vários núcleos. Confira no Chrome (F12 > Console): `crossOriginIsolated` deve dar `true`. Compare o "gerado Nx mais rápido/lento que a fala" com o de antes.
 Confira também que NADA quebrou: login com Google, o botão de assinar, as fontes e as vozes comuns (Faber, Cadu) na página inicial.
 Se algo quebrar: crie a variável `ISOLAMENTO_THREADS=off` na Vercel e publique de novo (desliga os cabeçalhos; a voz clonada volta a ser lenta, mas o resto fica como era).
+
+
+## Novidade de 27/11/2026 (2): qualidade, volume e eco
+
+O que mudou:
+- Gravação "pura": por padrão a gravação NÃO usa mais os filtros automáticos do navegador (cancelamento de eco, supressão de ruído e ganho automático). Há uma caixinha para voltar ao modo antigo. TESTE OS DOIS e fique com o que soar melhor: em lugar silencioso o puro costuma ser melhor; em lugar barulhento o antigo pode ser.
+- Verificador da gravação: avisa se estourou, se está baixa, se tem muito ruído e se parece ter eco. O aviso de eco é uma ESTIMATIVA e só pega eco forte; o eco leve passa. O melhor remédio continua sendo regravar perto de cortinas, sofá ou num armário aberto.
+- Acabamento do áudio gerado (Minha voz e voz clonada do Texto em áudio): filtro de graves (80 Hz) + volume em -16 LUFS com limitador suave. Resolve o volume baixo e irregular entre trechos. NÃO tira eco que já está na voz clonada.
+- Motor: 2 passos de refinamento (antes 1) e temperatura 0,55 (antes 0,7), e frases de até 180 caracteres (antes 250). Os números ficam no topo de `lib/cloneEngine.ts` (`LSD_STEPS`, `TEMPERATURE`, `CHUNK_CHARS`). Se ficar lento demais, volte `LSD_STEPS` para 1.
+
+Como comparar (faça com o MESMO texto):
+1. Grave com a caixinha "pura" marcada; gere. Depois grave de novo com ela desmarcada; gere. Qual tem menos chiado metálico e menos eco?
+2. "Rápida" x "Melhor qualidade".
+3. Compare o volume: o áudio deve sair em torno de -16 LUFS (confira na ferramenta Ajuste de volume).

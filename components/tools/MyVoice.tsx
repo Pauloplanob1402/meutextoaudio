@@ -5,6 +5,8 @@ import { parseScript, splitText } from "@/lib/tts";
 import { wavToMp3 } from "@/lib/mp3";
 import { fmtDur } from "@/lib/audioJoin";
 import { downloadBlob, useStored } from "./ui";
+import { checkReference, finishVoice } from "@/lib/voiceFinish";
+import { LSD_STEPS, TEMPERATURE } from "@/lib/cloneEngine";
 import { clearLocal, deleteRemote, hasRemote, loadRemote, readLocal, saveRemote, writeLocal } from "@/lib/minhaVoz";
 
 const MAX_REF = 10; // segundos de referência
@@ -20,13 +22,7 @@ type Ref = { samples: Float32Array; rate: number; seconds: number; warn: string 
 function toRef(ch: Float32Array, rate: number): Ref {
   const n = Math.min(ch.length, Math.round(MAX_REF * rate));
   const samples = ch.slice(0, n);
-  let peak = 0, acc = 0;
-  for (let i = 0; i < n; i++) { const a = Math.abs(samples[i]); if (a > peak) peak = a; acc += samples[i] * samples[i]; }
-  const rmsDb = 20 * Math.log10(Math.sqrt(acc / Math.max(n, 1)) || 1e-9);
-  let warn = "";
-  if (n / rate < 3) warn = "A gravação ficou muito curta. Use de 5 a 10 segundos.";
-  else if (rmsDb < -50) warn = "A gravação está quase sem som. Aproxime-se do microfone e grave de novo.";
-  else if (peak > 0.99) warn = "A gravação estourou (som muito alto). Afaste-se um pouco do microfone e grave de novo.";
+  const warn = checkReference(samples, rate).join(" ");
   return { samples, rate, seconds: n / rate, warn };
 }
 
@@ -39,6 +35,7 @@ function restore(): Ref | null {
 
 export default function MyVoice() {
   const [consent, setConsent] = useStored<boolean>("minha-voz-consentimento", false);
+  const [pure, setPure] = useStored<boolean>("minha-voz-pura", true); // gravar sem os filtros automáticos do navegador
   const [ref, setRef] = useState<Ref | null>(null);
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -119,7 +116,7 @@ export default function MyVoice() {
     setMsg(""); setOut(null);
     let stream: MediaStream;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      stream = await navigator.mediaDevices.getUserMedia({ audio: pure ? { channelCount: 1, echoCancellation: false, noiseSuppression: false, autoGainControl: false } : { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
     } catch {
       setMsg("Não consegui usar o microfone. Permita o acesso no navegador (ícone de cadeado ao lado do endereço) ou envie um arquivo de áudio.");
       return;
@@ -177,7 +174,7 @@ export default function MyVoice() {
       const key = quality;
       if (!tts.current || loadedKey.current !== `q:${key}`) {
         tts.current?.destroy();
-        const t = new PocketTTS({ language: quality, quantized: true, voiceCloning: true });
+        const t = new PocketTTS({ language: quality, quantized: true, voiceCloning: true, lsdSteps: LSD_STEPS, temperature: TEMPERATURE });
         await t.load((p) => {
           if (p.total) setMsg(`Baixando ${p.label ?? "o modelo"}: ${Math.round(((p.loaded ?? 0) * 100) / p.total)}%${p.fromCache ? " (já estava salvo)" : ""}`);
           else if (p.status) setMsg(p.status);
@@ -203,7 +200,7 @@ export default function MyVoice() {
     try {
       const chunks: Float32Array[] = [];
       const parts = parseScript(text);
-      const pieces: ({ pause: number } | { text: string })[] = parts.flatMap((p): ({ pause: number } | { text: string })[] => (p.kind === "pause" ? [{ pause: p.seconds }] : splitText(p.text, 250).map((s) => ({ text: s }))));
+      const pieces: ({ pause: number } | { text: string })[] = parts.flatMap((p): ({ pause: number } | { text: string })[] => (p.kind === "pause" ? [{ pause: p.seconds }] : splitText(p.text, 180).map((s) => ({ text: s }))));
       const total = pieces.filter((p) => "text" in p).length;
       let n = 0, genTime = 0, audio = 0;
       for (const p of pieces) {
@@ -215,7 +212,7 @@ export default function MyVoice() {
       }
       if (!chunks.length) throw new Error("sem áudio");
       const { chunksToWavBlob } = await import("@/lib/pocketTts");
-      const blob = chunksToWavBlob(chunks, t.sampleRate) as Blob;
+      const blob = await finishVoice(chunksToWavBlob(chunks, t.sampleRate) as Blob); // graves limpos + volume em -16 LUFS
       if (lastUrl.current) URL.revokeObjectURL(lastUrl.current);
       const url = URL.createObjectURL(blob);
       lastUrl.current = url;
@@ -267,6 +264,10 @@ export default function MyVoice() {
             : <button className="btn go" type="button" onClick={() => stopRec.current?.()}>Parar ({elapsed.toFixed(1).replace(".", ",")} s)</button>}
           <button className="btn ghost" type="button" onClick={() => file.current?.click()} disabled={!consent || recording || busy}>Enviar um arquivo</button>
           <input ref={file} type="file" accept="audio/*,.mp3,.wav,.m4a" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+          <label className="check" style={{ flexBasis: "100%" }}>
+            <input type="checkbox" checked={pure} onChange={(e) => setPure(e.target.checked)} disabled={recording} />{" "}
+            <span>Gravação pura (sem os filtros automáticos do navegador). Recomendado em lugar silencioso; desmarque se a gravação sair com muito ruído.</span>
+          </label>
           {ref && cloud === "local" && <button className="chip" type="button" onClick={saveToAccount} disabled={busy || recording}>Salvar na minha conta</button>}
           {ref && <button className="chip" type="button" onClick={forget} disabled={busy || recording}>Apagar a gravação</button>}
         </div>

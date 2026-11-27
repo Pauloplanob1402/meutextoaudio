@@ -48,3 +48,14 @@ Como comparar (faça com o MESMO texto):
 1. Grave com a caixinha "pura" marcada; gere. Depois grave de novo com ela desmarcada; gere. Qual tem menos chiado metálico e menos eco?
 2. "Rápida" x "Melhor qualidade".
 3. Compare o volume: o áudio deve sair em torno de -16 LUFS (confira na ferramenta Ajuste de volume).
+
+
+## Correção de 27/11/2026 (3): "Worker error" e modo leve automático
+
+Sintoma visto no site publicado: "Não foi possível preparar a sua voz ... Detalhe técnico: Worker error" (o motor de voz não iniciava), mesmo na nova tentativa com 1 núcleo. Causa provável: a página isolada (COOP/COEP) só carrega o worker se o arquivo dele em `/_next/static/chunks/` também vier com o cabeçalho, e a hospedagem pode não estar mandando.
+Agora, se o motor falhar na página isolada, o site recarrega a MESMA página com `?leve=1` (sem os cabeçalhos, como era antes, 1 núcleo) e guarda essa escolha neste navegador (`localStorage` chave `sauim-sem-nucleos`).
+Como conferir:
+1. Abra a Minha voz e prepare a voz. Se funcionar sem recarregar, e no Console `crossOriginIsolated` for `true`, os vários núcleos estão valendo.
+2. Se a página recarregar sozinha com `?leve=1` na barra de endereço e a voz funcionar, a hospedagem não aceitou o worker isolado: fica no modo compatível (mais lento). Aí vale investigar o cabeçalho de `/_next/static/chunks/turbopack-worker-*.js` na aba Network (F12).
+3. Para tentar de novo os vários núcleos: no Console, `localStorage.removeItem("sauim-sem-nucleos")` e abra a página sem `?leve=1`.
+Desligar tudo de vez: variável `ISOLAMENTO_THREADS=off` na Vercel.

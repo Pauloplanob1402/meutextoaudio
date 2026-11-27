@@ -7,6 +7,7 @@ import { fmtDur } from "@/lib/audioJoin";
 import { downloadBlob, useStored } from "./ui";
 import { checkReference, finishVoice } from "@/lib/voiceFinish";
 import { errText, loadPocket } from "@/lib/cloneEngine";
+import { isLeve, maybeGoLeve } from "@/lib/isolamento";
 import { clearLocal, deleteRemote, hasRemote, loadRemote, readLocal, saveRemote, writeLocal } from "@/lib/minhaVoz";
 
 const MAX_REF = 10; // segundos de referência
@@ -60,8 +61,9 @@ export default function MyVoice() {
     setMobile(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent));
     // Sem "isolamento" o motor usa 1 núcleo só e a geração fica lenta. Se chegamos aqui por um link interno do site,
     // o navegador não recebeu os cabeçalhos: recarrega UMA vez para recebê-los.
+    if (maybeGoLeve()) return; // já falhou antes neste navegador: vai direto para o modo compatível
     try {
-      if (!window.crossOriginIsolated && !sessionStorage.getItem("minha-voz-iso")) {
+      if (!window.crossOriginIsolated && !isLeve() && !sessionStorage.getItem("minha-voz-iso")) {
         sessionStorage.setItem("minha-voz-iso", "1");
         window.location.reload();
         return;
@@ -241,7 +243,7 @@ export default function MyVoice() {
         {mobile && <p style={{ margin: "8px 0 0" }}><b>Você parece estar no celular.</b> Recomendamos abrir esta página no computador.</p>}
       </div>
 
-      {threads === false && (
+      {threads === false && !isLeve() && (
         <p className="note" role="status" style={{ marginBottom: 12 }}>
           Este navegador não liberou o uso de vários núcleos do processador, então a geração será bem mais lenta. Use o Chrome ou o Edge atualizado, no computador, e recarregue a página (Ctrl + F5).
         </p>

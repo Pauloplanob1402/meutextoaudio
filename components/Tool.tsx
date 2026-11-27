@@ -6,6 +6,7 @@ import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
 import { DEFAULT_FREE_VOICE_ID, MY_VOICE, MY_VOICE_ID, VOICES, getVoice as getBuiltinVoice } from "@/lib/voices";
 import { getMyVoice, readLocal } from "@/lib/minhaVoz";
+import { maybeGoLeve } from "@/lib/isolamento";
 
 // "Minha voz" (clonada) entra ao lado das vozes da lista
 const getVoice = (id: string) => (id === MY_VOICE_ID ? MY_VOICE : getBuiltinVoice(id));
@@ -76,6 +77,7 @@ export default function Tool() {
     try { localStorage.setItem("draft", v); } catch {}
   }
   useEffect(() => {
+    if (maybeGoLeve()) return; // já falhou antes neste navegador: vai direto para o modo compatível
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
     try { const m = JSON.parse(localStorage.getItem("wpm") || "{}"); if (m && typeof m === "object") setWpmMap(m); } catch {}

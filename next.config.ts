@@ -73,8 +73,9 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
       ...(isolamento
         ? [
-            { source: "/", headers: isolationHeaders },
-            { source: "/ferramentas/minha-voz-beta", headers: isolationHeaders },
+            // ?leve=1 (modo de segurança, ver lib/isolamento.ts) não recebe os cabeçalhos
+            { source: "/", missing: [{ type: "query" as const, key: "leve" }], headers: isolationHeaders },
+            { source: "/ferramentas/minha-voz-beta", missing: [{ type: "query" as const, key: "leve" }], headers: isolationHeaders },
             { source: "/_next/static/:path*", headers: isolationHeaders },
           ]
         : []),

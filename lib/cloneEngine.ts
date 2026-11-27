@@ -6,6 +6,7 @@ import type { PocketTTS } from "@/lib/pocketTts";
 import { splitText } from "@/lib/tts";
 import type { SavedRef } from "@/lib/minhaVoz";
 import { finishVoice } from "@/lib/voiceFinish";
+import { goLeve } from "@/lib/isolamento";
 
 // Ajustes de qualidade (mexa aqui): mais passos = voz mais limpa e mais lenta; temperatura menor = mais estável.
 export const LSD_STEPS = 2;
@@ -35,8 +36,14 @@ export async function loadPocket(lib: typeof import("@/lib/pocketTts"), language
     if (!isolated()) throw e;
     console.warn("Falhou com vários núcleos; tentando com 1:", e);
     t = make(1);
-    await t.load(onProgress);
-    return t;
+    try { await t.load(onProgress); return t; }
+    catch (e2) {
+      // nem com 1 núcleo: o problema é a página isolada. Recarrega em modo leve (sem os cabeçalhos), como era antes.
+      t.destroy();
+      console.warn("Falhou também com 1 núcleo; recarregando em modo leve:", e2);
+      goLeve();
+      throw new Error("Recarregando em modo compatível… tente de novo em alguns segundos.");
+    }
   }
 }
 

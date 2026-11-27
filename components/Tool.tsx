@@ -4,7 +4,11 @@ import { SAMPLE_TEXT, sampleLine, estimateSeconds, formatDuration, mergeParts, p
 import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
-import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice } from "@/lib/voices";
+import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice as getBuiltInVoice } from "@/lib/voices";
+import { CLONE_ID, CLONE_INFO, createCloneSession, hasRef } from "@/lib/cloneVoice";
+
+// as vozes da lista + a "Minha voz (beta)", que não entra em VOICES (a gravação mora só neste aparelho)
+const getVoice = (id: string) => (id === CLONE_ID ? CLONE_INFO : getBuiltInVoice(id));
 import { PACOTE_ON, createMeter, type Cue } from "@/lib/pacote";
 import PacoteDoVideo from "@/components/PacoteDoVideo";
 import { publishToolState, useToolHost } from "@/lib/toolHost";
@@ -37,6 +41,7 @@ export default function Tool() {
   const [copied, setCopied] = useState(false);
   const [voiceId, setVoiceId] = useState(DEFAULT_FREE_VOICE_ID);
   const [plan, setPlan] = useState<"loading" | "free" | "pro">("loading");
+  const [hasClone, setHasClone] = useState(false);
   const savedVoice = useRef(false);
   const loadedVoice = useRef<string | null>(null);
   const original = useRef<Blob | null>(null);
@@ -58,6 +63,7 @@ export default function Tool() {
   // Ao voltar para a página inicial, confere de novo o plano (a pessoa pode ter entrado ou assinado enquanto isso)
   useEffect(() => {
     if (host.tick < 2) return;
+    setHasClone(hasRef());
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
       .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
@@ -74,7 +80,8 @@ export default function Tool() {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
     try { const m = JSON.parse(localStorage.getItem("wpm") || "{}"); if (m && typeof m === "object") setWpmMap(m); } catch {}
-    try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(getVoice(v).id); savedVoice.current = true; } } catch {}
+    setHasClone(hasRef());
+    try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(v === CLONE_ID ? (hasRef() ? CLONE_ID : DEFAULT_FREE_VOICE_ID) : getVoice(v).id); savedVoice.current = true; } } catch {}
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
       .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
@@ -126,6 +133,7 @@ export default function Tool() {
 
   // Abre a sessão de voz (baixa a voz na primeira vez). Usada pela geração e pela amostra.
   async function openSession(): Promise<{ predict: (t: string) => Promise<Blob> }> {
+    if (voiceId === CLONE_ID) return createCloneSession(setStatus);
     const tts = await import("@mintplex-labs/piper-tts-web");
     const voice = getVoice(voiceId);
     if (voice.engine === "kokoro") {
@@ -397,10 +405,20 @@ export default function Tool() {
                 </optgroup>
               );
             })}
+            {hasClone && !SELF_HOST && (
+              <optgroup label="Minha voz (beta)">
+                <option value={CLONE_ID}>Minha voz · Beta, só no computador · Plano Criador</option>
+              </optgroup>
+            )}
           </select>
           {locked && plan !== "loading" && (
             <p className="note" role="status" style={{ flexBasis: "100%", margin: 0 }}>
               A voz {voice.name} faz parte do plano Criador. <a href="/conta">Assine para usar</a> ou escolha uma voz gratuita.
+            </p>
+          )}
+          {!locked && voice.engine === "clone" && (
+            <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
+              <b>Beta.</b> Use no computador (Chrome ou Edge). É bem mais lenta que as outras vozes e pode errar a pronúncia de algumas palavras. A gravação da sua voz fica só neste aparelho; para trocá-la, use a ferramenta <a href="/ferramentas/minha-voz-beta">Minha voz (beta)</a>.
             </p>
           )}
           {!locked && voice.engine === "kokoro" && (

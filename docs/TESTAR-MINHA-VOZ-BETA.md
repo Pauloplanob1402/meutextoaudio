@@ -19,3 +19,9 @@ Se der erro "Não foi possível preparar a sua voz": confira a internet, desligu
 Limites do beta: texto de até 3.000 caracteres; só no plano Criador; só no computador por enquanto.
 
 Para desligar: apague a linha `minha-voz-beta` em `lib/tools.ts` e em `components/tools/ToolView.tsx`.
+
+## Correções e ligação com o Texto em áudio (nova versão)
+1. **Parar**: gere um texto longo, clique em Parar. Deve aparecer "Parando…" e depois "Parado. Ficou o áudio que já estava pronto." com o que já foi gerado (o trecho pela metade é descartado).
+2. **Vozes misturadas**: grave uma voz, gere; grave outra, prepare e gere. O áudio deve ter só a voz nova. Agora há uma fila (uma geração por vez) e cada gravação tem identificador próprio.
+3. **No Texto em áudio** (página inicial, plano Criador, com gravação feita neste aparelho): aparece o grupo "Minha voz (beta)" na lista de vozes. Escolha, gere. A primeira vez baixa o modelo. A qualidade (Rápida/Melhor) é a escolhida na ferramenta Minha voz.
+4. A gravação fica só neste aparelho; em outro computador é preciso gravar de novo.

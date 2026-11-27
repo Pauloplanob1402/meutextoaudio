@@ -10,7 +10,7 @@ export type VoiceInfo = {
   name: string; // nome mostrado no seletor
   lang: "pt-BR" | "pt-PT";
   note: string; // frase curta ao lado do nome
-  engine: "piper" | "kokoro";
+  engine: "piper" | "kokoro" | "clone"; // "clone" é só a Minha voz (beta), que não entra na lista VOICES
   plan: "free" | "pro"; // free: qualquer pessoa; pro: só quem tem o plano Criador ativo
   path?: string; // Piper: caminho do arquivo .onnx dentro do repositório de vozes
   official?: boolean; // Piper: voz que o espelho não tem; baixamos do repositório oficial

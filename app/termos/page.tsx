@@ -86,7 +86,7 @@ export default function Termos() {
 
       <Sec id="conteudo" n={++n} title="O seu texto e o áudio gerado">
         <p>O texto é seu, e você é responsável por ter o direito de usá-lo. O áudio é gerado no seu navegador e você pode baixá-lo. Nós não revisamos o que você escreve nem o que você gera.</p>
-        <p>Na ferramenta <b>Minha voz (beta)</b>, que está em teste, você grava a sua própria voz e o áudio é gerado no seu aparelho com ela. Você declara que a voz é a sua ou que tem autorização de quem fala, e responde pelo uso que fizer. A gravação fica no seu aparelho e não é enviada a nós. O modelo usado é o Pocket TTS, © Kyutai, licença CC BY 4.0. Por ser um teste, o resultado pode variar e o recurso pode mudar ou sair do ar.</p>
+        <p>Na ferramenta <b>Minha voz (beta)</b>, que está em teste, você grava a sua própria voz e o áudio é gerado no seu aparelho com ela. Você declara que a voz é a sua ou que tem autorização de quem fala, e responde pelo uso que fizer. A gravação da sua voz fica no seu aparelho e na sua conta (privada, só você acessa) e você pode apagá-la quando quiser; o áudio gerado e os textos não são enviados a nós. O modelo usado é o Pocket TTS, © Kyutai, licença CC BY 4.0. Por ser um teste, o resultado pode variar e o recurso pode mudar ou sair do ar.</p>
         <p>O áudio é criado por uma voz sintética de código aberto, à sua escolha (hoje: <b>{VOZ}</b>). A licença da voz usada também vale para o uso que você fizer do áudio, então, se pretende usá-lo em um projeto comercial, confira a licença da voz antes.</p>
       </Sec>
 

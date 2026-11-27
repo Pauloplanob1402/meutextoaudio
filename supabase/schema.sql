@@ -39,3 +39,17 @@ grant select, insert, update, delete on public.subscriptions to service_role;  -
 --    (anon e authenticated) NUNCA grava nessa tabela. Quem grava é só o servidor (service_role).
 revoke all on public.subscriptions from anon;
 revoke insert, update, delete, truncate, references, trigger on public.subscriptions from authenticated;
+
+-- 5) Caixa "o que faltou hoje?": mensagens curtas e ANÔNIMAS enviadas dentro das ferramentas.
+--    Não guarda e-mail, usuário nem IP. Só você (pelo painel do Supabase) lê; o navegador nunca lê nem grava direto.
+create table if not exists public.feedback (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  tool text not null default 'geral',      -- slug da ferramenta onde a pessoa estava
+  message text not null check (char_length(message) between 3 and 500)
+);
+alter table public.feedback enable row level security;   -- sem nenhuma regra: ninguém lê pela API pública
+grant select, insert, update, delete on public.feedback to service_role;
+revoke all on public.feedback from anon, authenticated;
+-- Para ler as respostas do mês: Table Editor > feedback, ou
+--   select created_at, tool, message from public.feedback order by created_at desc;

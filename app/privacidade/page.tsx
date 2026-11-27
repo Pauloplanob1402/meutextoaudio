@@ -11,6 +11,7 @@ const TOC = [
   { id: "quem", title: "Quem somos e quem cuida dos seus dados" },
   { id: "texto", title: "O que acontece com o seu texto" },
   { id: "conta", title: "Quais dados guardamos na sua conta" },
+  { id: "caixa", title: "A caixa “o que faltou hoje?”" },
   { id: "pagamento", title: "Pagamentos" },
   { id: "bases", title: "Para que usamos os dados" },
   { id: "terceiros", title: "Com quem compartilhamos" },
@@ -62,6 +63,10 @@ export default function Privacidade() {
           <li><b>Dados técnicos de acesso.</b> Endereço IP, tipo de navegador e horários de acesso podem ser registrados pelos serviços que usamos (login e hospedagem), por segurança e para o site funcionar.</li>
         </ul>
         <p>O Sauim não pede CPF, telefone nem endereço para criar a conta. O Mercado Pago pode pedir dados no momento do pagamento.</p>
+      </Sec>
+
+      <Sec id="caixa" n={++n} title="A caixa “o que faltou hoje?”">
+        <p>No pé de cada ferramenta há uma caixa para você contar, em uma frase, o que faltou. A mensagem é <b>anônima</b>: guardamos apenas o texto, a ferramenta em que você estava e a data. Não guardamos o seu e-mail, o seu usuário nem o seu endereço IP junto com ela. Usamos as mensagens para decidir quais ferramentas criar e melhorar. Por isso, <b>não escreva dados pessoais</b> (e-mail, telefone, senha, documentos). Como a mensagem é anônima, não conseguimos achar a sua para apagá-la depois; se escrever algo por engano, avise em <Email /> informando o trecho e a data aproximada, e removemos.</p>
       </Sec>
 
       <Sec id="pagamento" n={++n} title="Pagamentos">

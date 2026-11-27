@@ -20,8 +20,17 @@ Limites do beta: texto de até 3.000 caracteres; só no plano Criador; só no co
 
 Para desligar: apague a linha `minha-voz-beta` em `lib/tools.ts` e em `components/tools/ToolView.tsx`.
 
-## Correções e ligação com o Texto em áudio (nova versão)
-1. **Parar**: gere um texto longo, clique em Parar. Deve aparecer "Parando…" e depois "Parado. Ficou o áudio que já estava pronto." com o que já foi gerado (o trecho pela metade é descartado).
-2. **Vozes misturadas**: grave uma voz, gere; grave outra, prepare e gere. O áudio deve ter só a voz nova. Agora há uma fila (uma geração por vez) e cada gravação tem identificador próprio.
-3. **No Texto em áudio** (página inicial, plano Criador, com gravação feita neste aparelho): aparece o grupo "Minha voz (beta)" na lista de vozes. Escolha, gere. A primeira vez baixa o modelo. A qualidade (Rápida/Melhor) é a escolhida na ferramenta Minha voz.
-4. A gravação fica só neste aparelho; em outro computador é preciso gravar de novo.
+
+## Novidade de 27/11/2026: voz salva na conta, na lista de vozes e mais rápida
+
+ANTES: rode o bloco 6 de `supabase/schema.sql` no Supabase (SQL Editor > New query > cole > Run). Sem isso a voz não salva na conta (continua funcionando só no aparelho).
+
+1. Logado no plano Criador, grave a voz em `/ferramentas/minha-voz-beta`. Embaixo do player deve aparecer "Salva na sua conta". No Supabase, Table Editor > `minha_voz` deve ter 1 linha sua.
+2. Abra a página inicial (Texto em áudio). Na lista "Voz" deve aparecer "Sua voz · Plano Criador > Minha voz". Escolha, clique em "Gerar meu áudio". Na primeira vez baixa o modelo (uns 150 MB) e "aprende a sua voz"; depois é bem mais rápido.
+3. Teste em outro aparelho ou navegador (ou limpe os dados do site): entre na conta e a "Minha voz" deve aparecer na lista sozinha.
+4. "Apagar a gravação" apaga do aparelho e da conta (a linha some do Supabase) e "Minha voz" some da lista.
+5. Gravação antiga (feita antes desta versão) NÃO sobe sozinha: aparece o botão "Salvar na minha conta".
+
+Velocidade: o site agora manda os cabeçalhos COOP/COEP na página inicial, na Minha voz e em `/_next/static`, para o motor usar vários núcleos. Confira no Chrome (F12 > Console): `crossOriginIsolated` deve dar `true`. Compare o "gerado Nx mais rápido/lento que a fala" com o de antes.
+Confira também que NADA quebrou: login com Google, o botão de assinar, as fontes e as vozes comuns (Faber, Cadu) na página inicial.
+Se algo quebrar: crie a variável `ISOLAMENTO_THREADS=off` na Vercel e publique de novo (desliga os cabeçalhos; a voz clonada volta a ser lenta, mas o resto fica como era).

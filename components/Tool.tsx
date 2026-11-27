@@ -4,11 +4,11 @@ import { SAMPLE_TEXT, sampleLine, estimateSeconds, formatDuration, mergeParts, p
 import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
-import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice as getBuiltInVoice } from "@/lib/voices";
-import { CLONE_ID, CLONE_INFO, QUALITY, createCloneSession, getQuality, hasRef, setQuality as storeCloneQuality } from "@/lib/cloneVoice";
+import { DEFAULT_FREE_VOICE_ID, MY_VOICE, MY_VOICE_ID, VOICES, getVoice as getBuiltinVoice } from "@/lib/voices";
+import { getMyVoice, readLocal } from "@/lib/minhaVoz";
 
-// as vozes da lista + a "Minha voz (beta)", que não entra em VOICES (a gravação mora só neste aparelho)
-const getVoice = (id: string) => (id === CLONE_ID ? CLONE_INFO : getBuiltInVoice(id));
+// "Minha voz" (clonada) entra ao lado das vozes da lista
+const getVoice = (id: string) => (id === MY_VOICE_ID ? MY_VOICE : getBuiltinVoice(id));
 import { PACOTE_ON, createMeter, type Cue } from "@/lib/pacote";
 import PacoteDoVideo from "@/components/PacoteDoVideo";
 import { publishToolState, useToolHost } from "@/lib/toolHost";
@@ -41,8 +41,7 @@ export default function Tool() {
   const [copied, setCopied] = useState(false);
   const [voiceId, setVoiceId] = useState(DEFAULT_FREE_VOICE_ID);
   const [plan, setPlan] = useState<"loading" | "free" | "pro">("loading");
-  const [hasClone, setHasClone] = useState(false);
-  const [cloneQ, setCloneQ] = useState("portuguese");
+  const [myVoice, setMyVoice] = useState<"checking" | "yes" | "no">("checking"); // a pessoa já gravou a própria voz?
   const savedVoice = useRef(false);
   const loadedVoice = useRef<string | null>(null);
   const original = useRef<Blob | null>(null);
@@ -64,7 +63,6 @@ export default function Tool() {
   // Ao voltar para a página inicial, confere de novo o plano (a pessoa pode ter entrado ou assinado enquanto isso)
   useEffect(() => {
     if (host.tick < 2) return;
-    setHasClone(hasRef());
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
       .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
@@ -81,8 +79,7 @@ export default function Tool() {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
     try { const m = JSON.parse(localStorage.getItem("wpm") || "{}"); if (m && typeof m === "object") setWpmMap(m); } catch {}
-    setHasClone(hasRef()); setCloneQ(getQuality());
-    try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(v === CLONE_ID ? (hasRef() ? CLONE_ID : DEFAULT_FREE_VOICE_ID) : getVoice(v).id); savedVoice.current = true; } } catch {}
+    try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(getVoice(v).id); savedVoice.current = true; } } catch {}
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
       .then((j) => setPlan(j.plan === "pro" ? "pro" : "free"))
@@ -94,6 +91,20 @@ export default function Tool() {
   useEffect(() => {
     if (plan === "pro" && !savedVoice.current) setVoiceId("pt_BR-faber-medium");
   }, [plan]);
+
+  // Plano Criador: confere se existe uma voz clonada (neste aparelho ou na conta). Quem não é Criador nem consulta.
+  useEffect(() => {
+    if (plan === "loading") return;
+    if (plan !== "pro") { setMyVoice("no"); return; }
+    if (readLocal()) { setMyVoice("yes"); return; }
+    let alive = true;
+    getMyVoice().then((r) => { if (alive) setMyVoice(r ? "yes" : "no"); }).catch(() => { if (alive) setMyVoice("no"); });
+    return () => { alive = false; };
+  }, [plan]);
+  // se a voz salva era "Minha voz" mas ela não existe mais (apagada, outra conta), volta para a voz padrão
+  useEffect(() => {
+    if (voiceId === MY_VOICE_ID && myVoice === "no") setVoiceId(plan === "pro" ? "pt_BR-faber-medium" : DEFAULT_FREE_VOICE_ID);
+  }, [voiceId, myVoice, plan]);
 
   const voice = getVoice(voiceId);
   const locked = voice.plan === "pro" && plan !== "pro";
@@ -134,7 +145,12 @@ export default function Tool() {
 
   // Abre a sessão de voz (baixa a voz na primeira vez). Usada pela geração e pela amostra.
   async function openSession(): Promise<{ predict: (t: string) => Promise<Blob> }> {
-    if (voiceId === CLONE_ID) return createCloneSession(setStatus);
+    if (voiceId === MY_VOICE_ID) {
+      const ref = await getMyVoice();
+      if (!ref) throw new Error("sem voz clonada");
+      const { openCloneSession } = await import("@/lib/cloneEngine");
+      return openCloneSession(ref, (m) => setStatus(m));
+    }
     const tts = await import("@mintplex-labs/piper-tts-web");
     const voice = getVoice(voiceId);
     if (voice.engine === "kokoro") {
@@ -406,24 +422,25 @@ export default function Tool() {
                 </optgroup>
               );
             })}
-            {hasClone && !SELF_HOST && (
-              <optgroup label="Minha voz (beta)">
-                <option value={CLONE_ID}>Minha voz · Beta, só no computador · Plano Criador</option>
-              </optgroup>
-            )}
+              {(myVoice === "yes" || voiceId === MY_VOICE_ID) && (
+                <optgroup label="Sua voz · Plano Criador">
+                  <option value={MY_VOICE_ID}>{MY_VOICE.name} · {MY_VOICE.note}</option>
+                </optgroup>
+              )}
           </select>
-          {locked && plan !== "loading" && (
-            <p className="note" role="status" style={{ flexBasis: "100%", margin: 0 }}>
-              A voz {voice.name} faz parte do plano Criador. <a href="/conta">Assine para usar</a> ou escolha uma voz gratuita.
+          {plan === "pro" && myVoice === "no" && (
+            <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
+              Quer ler os seus textos com a sua própria voz? <a href="/ferramentas/minha-voz-beta">Grave 10 segundos em Minha voz</a>. Ela fica salva na sua conta e aparece aqui nesta lista.
             </p>
           )}
           {!locked && voice.engine === "clone" && (
             <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
-              <b>Beta.</b> Use no computador (Chrome ou Edge). É bem mais lenta que as outras vozes e pode errar a pronúncia de algumas palavras. A gravação da sua voz fica só neste aparelho; para trocá-la, use a ferramenta <a href="/ferramentas/minha-voz-beta">Minha voz (beta)</a>.
-              <span style={{ display: "block", marginTop: 6 }}>Qualidade:{" "}
-                {QUALITY.map((q) => <button key={q.id} type="button" className="chip" aria-pressed={cloneQ === q.id} style={{ marginRight: 6, ...(cloneQ === q.id ? { borderColor: "var(--blue)", color: "var(--blue)", background: "rgba(0,0,0,0.04)" } : {}) }} disabled={busy} onClick={() => { setCloneQ(q.id); storeCloneQuality(q.id); }}>{q.label}</button>)}
-                {" "}“Melhor qualidade” soa melhor e demora mais.
-              </span>
+              Sua voz clonada: a primeira vez baixa o modelo (uns 150 MB) e prepara a voz; depois fica salva neste navegador. É mais lenta que as vozes rápidas, então use o computador (Chrome ou Edge) e, para textos longos, divida em partes.
+            </p>
+          )}
+          {locked && plan !== "loading" && (
+            <p className="note" role="status" style={{ flexBasis: "100%", margin: 0 }}>
+              A voz {voice.name} faz parte do plano Criador. <a href="/conta">Assine para usar</a> ou escolha uma voz gratuita.
             </p>
           )}
           {!locked && voice.engine === "kokoro" && (

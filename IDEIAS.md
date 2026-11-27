@@ -13,17 +13,18 @@ Quem constrói as ferramentas (a IA ou uma pessoa) deve, no começo de toda sess
 3. Ao terminar um trabalho, atualizar esta seção: marcar o que foi feito (com a data), acrescentar o que apareceu e reordenar a fila.
 4. Entregar em um zip e dizer o que mudou, o que não foi tocado e como testar.
 
-Fila atual (atualizada em 26/11/2026, depois do Juntar áudios), em ordem:
+Fila atual (atualizada em 26/11/2026, depois do Ajuste de volume e do Roteiro em 4 batidas), em ordem:
 1. [aguardando teste do Paulo] Geração em segundo plano e Pacote de publicação, entregues em 26/11/2026. Guia: `docs/TESTAR-NOVIDADES.md`.
 2. [a conferir] Limite do plano grátis (10.000 caracteres por mês, com contador visível): confirmar se já está no código e como se comporta.
 3. [aguardando medição do Paulo] Protótipo da Legenda automática, entregue em 26/11/2026: página escondida `/prototipos/legenda` para medir tempo e qualidade em português. Guia: `docs/TESTAR-LEGENDA-AUTOMATICA.md`. Depois das medições, decidir o modelo, os limites e se vira ferramenta pública.
 4. Estúdio de voz.
 5. Audiolivro e podcast em lote.
 6. Mentor de Autores, fase 1 (`docs/MENTOR-DE-EBOOKS.md`).
-7. "Saiu um!", Caixa "o que faltou hoje?" e Roteiro em 4 batidas.
+7. "Saiu um!" e Caixa "o que faltou hoje?".
 8. Pacote do vídeo, fase 2 (ajuste por silêncios e zip).
 
 Histórico do que já foi feito:
+- 26/11/2026: **Ajuste de volume para o YouTube (LUFS)** (a 36ª ferramenta extra, grupo "Do roteiro ao áudio") e **Roteiro em 4 batidas** (a 35ª extra, grupo "Do roteiro ao áudio", marcada como "bom para começar"). O ajuste mede o volume pelo padrão ITU-R BS.1770 e normaliza para -14, -16 ou -18 LUFS, com limitador suave de picos e saída em MP3 ou WAV; testado com um tom de 1 kHz a -23 dBFS, que mediu -23,0 LUFS e, depois de ajustado para -14, mediu -14,0. As 4 batidas analisam o roteiro (gancho, conflito, virada e resolução) por posição e por frases-chave, ou por partes separadas com `---`, mostrando tempo, proporção e o que ajustar. Aguardando o teste do Paulo com áudio e roteiro reais. Guia: `docs/TESTAR-VOLUME-E-BATIDAS.md`.
 - 26/11/2026: **Juntar áudios e músicas** (a 34ª ferramenta extra, a 35ª contando o Texto em áudio; grupo "Do roteiro ao áudio"): junta vários arquivos na ordem da lista, com silêncio ou transição suave, e baixa em MP3 ou WAV. Testada em navegador com tons de 440, 660 e 880 Hz (duração e ordem conferidas). Aguardando o teste do Paulo com músicas reais. Guia: `docs/TESTAR-JUNTAR-AUDIOS.md`.
 - 25/11/2026: Pacote do vídeo, fase 1 (legenda .srt e capítulos com tempo real), testado e aprovado pelo Paulo.
 
@@ -44,7 +45,7 @@ Toda ideia nova deve:
 1. Registre a ferramenta SEMPRE em `lib/tools.ts` (nome, frase, grupo) e em `components/tools/ToolView.tsx`. Sem isso o número não sobe e a página não existe.
 2. Nunca escreva o número à mão em nenhum texto do site. Se precisar do número, importe `EXTRAS` ou `TOTAL` de `lib/brand.ts`.
 3. Depois do build, confira se o número mudou na home, em `/ferramentas`, no rodapé e no cartão do plano Criador, e diga ao Paulo qual é o novo número.
-4. Textos fora do site (e-mail de boas-vindas, README, planos no Mercado Pago, redes sociais) podem ter o número escrito à mão: procure por ele e atualize. Neste momento (depois do Juntar áudios) o site mostra **35 ferramentas** (1 principal + 34 extras). Na próxima ferramenta, vira 36 e 35.
+4. Textos fora do site (e-mail de boas-vindas, README, planos no Mercado Pago, redes sociais) podem ter o número escrito à mão: procure por ele e atualize. Neste momento (depois do Ajuste de volume e do Roteiro em 4 batidas) o site mostra **37 ferramentas** (1 principal + 36 extras). Na próxima ferramenta, vira 38 e 37.
 
 ## Como usar
 
@@ -78,8 +79,6 @@ Em toda sessão de trabalho no Sauim, a IA pode sugerir **3 melhorias ou ferrame
 
 - [nova] **"Saiu um!"**: um contador e uma sequência de vídeos publicados pelo criador, com um botão simples para marcar "saiu um". Origem: Claude.
   Base: Primal Branding (vocabulário e ritual próprios), Hooked (investimento), Detonando! (constância). Para quem: todo criador. Por que importa: transforma o nome do Sauim em hábito e dá um motivo para voltar toda semana. Esforço: baixo a médio.
-- [nova] **Roteiro em 4 batidas**: ferramenta que guia o criador por gancho, conflito, virada e resolução, e mostra onde o roteiro está fraco. Origem: Claude.
-  Base: Salve o Gato!, Story, A Fórmula do YouTube (retenção). Para quem: quem roteiriza. Por que importa: completa o Validador de gancho e o Roteiro em blocos, que hoje não cobrem o roteiro inteiro. Esforço: médio.
 - [nova] **Caixa "o que faltou hoje?"**: uma pergunta de uma linha dentro das ferramentas ("Faltou alguma coisa? Conte em uma frase"), com as respostas guardadas para alimentar este arquivo todo mês. Origem: Claude.
   Base: Continuous Discovery Habits, Inspired. Para quem: todo mundo. Por que importa: o Sauim passa a ser feito com os criadores, não só para eles. Precisa de aviso na política de privacidade. Esforço: baixo a médio.
 
@@ -88,7 +87,6 @@ Em toda sessão de trabalho no Sauim, a IA pode sugerir **3 melhorias ou ferrame
 Nenhuma das três é tão útil quanto o Texto em áudio. Por isso, a ordem mistura importância e facilidade:
 1. **Caixa "o que faltou hoje?"**: é a mais fácil e isolada, e é ela que vai mostrar qual é a próxima ferramenta de verdade.
 2. **"Saiu um!"**: fácil, e é a que mais combina com quem está começando, porque conta o que o criador controla (vídeos publicados), não as visualizações.
-3. **Roteiro em 4 batidas**: só vale se for feito como ferramenta de verdade, analisando o roteiro de quem usa (tempo, tamanho do gancho). Se for só um modelo para preencher, vira enfeite.
 
 ### Candidata a "tão útil quanto o Texto em áudio"
 
@@ -118,8 +116,6 @@ Critério: entregar um arquivo pronto, servir em todo vídeo, rodar no navegador
   Esforço: baixo a médio (reaproveita ferramentas que já existem).
 - [nova] **Cortes para Shorts**: a partir da transcrição, sugerir os melhores trechos de 30 a 60 segundos com horários e legenda. Origem: Claude.
   Depende da Legenda automática. Esforço: médio.
-- [nova] **Medidor e ajuste de volume (LUFS)** para o áudio ficar no nível comum do YouTube. Origem: Claude.
-  Esforço: baixo a médio. Pode virar parte do Estúdio de voz.
 - [nova] **Extrair áudio, cortar e converter vídeo** no navegador. Origem: Claude.
   Muita gente oferece; só vale pela integração com o resto. Esforço: médio a alto.
 - [nova] **Dublagem**: roteiro em português vira legenda e voz em inglês ou espanhol. Origem: Claude.

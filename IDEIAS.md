@@ -13,16 +13,17 @@ Quem constrói as ferramentas (a IA ou uma pessoa) deve, no começo de toda sess
 3. Ao terminar um trabalho, atualizar esta seção: marcar o que foi feito (com a data), acrescentar o que apareceu e reordenar a fila.
 4. Entregar em um zip e dizer o que mudou, o que não foi tocado e como testar.
 
-Fila atual (atualizada em 26/11/2026, depois da Caixa "o que faltou hoje?"), em ordem:
+Fila atual (atualizada em 26/11/2026, depois do Extrair e cortar áudio de vídeo), em ordem:
 1. [aguardando teste do Paulo] Geração em segundo plano e Pacote de publicação, entregues em 26/11/2026. Guia: `docs/TESTAR-NOVIDADES.md`.
 2. [a conferir] Limite do plano grátis (10.000 caracteres por mês, com contador visível): confirmar se já está no código e como se comporta.
 3. [aguardando medição do Paulo] Protótipo da Legenda automática, entregue em 26/11/2026: página escondida `/prototipos/legenda` para medir tempo e qualidade em português. Guia: `docs/TESTAR-LEGENDA-AUTOMATICA.md`. Depois das medições, decidir o modelo, os limites e se vira ferramenta pública.
 4. Estúdio de voz.
-5. Audiolivro e podcast em lote.
-6. Mentor de Autores, fase 1 (`docs/MENTOR-DE-EBOOKS.md`).
-7. Pacote do vídeo, fase 2 (ajuste por silêncios e zip).
+5. Mentor de Autores, fase 1 (`docs/MENTOR-DE-EBOOKS.md`).
+6. Pacote do vídeo, fase 2 (ajuste por silêncios e zip).
 
 Histórico do que já foi feito:
+- 26/11/2026: **Extrair e cortar áudio de vídeo** (a 40ª ferramenta extra, grupo "Do roteiro ao áudio"): escolhe um vídeo (MP4, MOV, WEBM) ou áudio de até 400 MB e 40 minutos, mostra a forma da onda, marca começo e fim (barras ou digitando 1:23,5), suaviza as pontas, e baixa o trecho em MP3 (128/192 kbps, estéreo ou mono) ou WAV. Testada no navegador com um MP4 de 12 s com 3 tons: o corte de 4 a 8 s deu 4,05 s a 880 Hz, o tom certo. NÃO corta nem converte o vídeo em si (isso exigiria ffmpeg no navegador; ficou como ideia). Guia: `docs/TESTAR-EXTRAIR-E-CORTAR-AUDIO.md`.
+- 26/11/2026: **Audiolivro e podcast em lote** (a 39ª ferramenta extra, grupo "Do roteiro ao áudio"): texto longo vira capítulos (achados por títulos como "Capítulo 1" ou "# Título", por linhas `---` ou por tamanho de 5 a 20 min, sempre no fim de um parágrafo), cada um gerado com a voz e a velocidade escolhidas, em MP3 ou WAV, com títulos editáveis, botão de parar e continuar, e zip com arquivos numerados e um `sumario.txt` com as durações. Zip próprio sem biblioteca (testado com `unzip -t` e Python). Divisão testada; a geração de voz NÃO foi testada de ponta a ponta no desenvolvimento, porque o ambiente não alcança o Hugging Face (usa o mesmo caminho do Texto em áudio). Aguardando o teste do Paulo com uma voz de verdade. Guia: `docs/TESTAR-AUDIOLIVRO-EM-LOTE.md`.
 - 26/11/2026: **Caixa "o que faltou hoje?"** (não é uma ferramenta, então o contador continua em 39): campo de uma frase no pé de cada ferramenta (500 caracteres), anônimo, gravado na tabela `feedback` do Supabase por `/api/feedback` (só o servidor grava; sem e-mail, usuário nem IP; freio de 5 por minuto e campo-isca contra robôs). A política de privacidade ganhou a seção "A caixa o que faltou hoje?". PRECISA rodar o bloco 5 de `supabase/schema.sql` no Supabase antes de funcionar. Todo mês, ler a tabela e alimentar este arquivo. Guia: `docs/TESTAR-CAIXA.md`.
 - 26/11/2026: **Plano da semana** (a 38ª ferramenta extra, grupo "Planejar"; marcada como "bom para começar"): o criador marca os dias em que sai um vídeo e recebe a lista de tarefas de cada vídeo (ideia e título, roteiro e começo, narração e volume, miniatura e descrição, publicar), distribuída nos dias anteriores, com caixinhas e atalhos para as ferramentas. Dados só no navegador; as marcas valem para a semana atual. Aguardando o teste do Paulo. Guia: `docs/TESTAR-PLANO-DA-SEMANA.md`.
 - 26/11/2026: **Saiu um!** (a 37ª ferramenta extra, grupo "Planejar"; marcada como "bom para começar"): botão para marcar cada vídeo publicado, com total, mês, semana, sequência de semanas seguidas que bateram a meta (1 a 5 por semana) e gráfico das últimas 8 semanas. Dados só no navegador. Lógica da sequência testada com datas. Aguardando o teste do Paulo. Guia: `docs/TESTAR-SAIU-UM.md`.
@@ -47,7 +48,7 @@ Toda ideia nova deve:
 1. Registre a ferramenta SEMPRE em `lib/tools.ts` (nome, frase, grupo) e em `components/tools/ToolView.tsx`. Sem isso o número não sobe e a página não existe.
 2. Nunca escreva o número à mão em nenhum texto do site. Se precisar do número, importe `EXTRAS` ou `TOTAL` de `lib/brand.ts`.
 3. Depois do build, confira se o número mudou na home, em `/ferramentas`, no rodapé e no cartão do plano Criador, e diga ao Paulo qual é o novo número.
-4. Textos fora do site (e-mail de boas-vindas, README, planos no Mercado Pago, redes sociais) podem ter o número escrito à mão: procure por ele e atualize. Neste momento (depois do Plano da semana) o site mostra **39 ferramentas** (1 principal + 38 extras). Na próxima ferramenta, vira 40 e 39.
+4. Textos fora do site (e-mail de boas-vindas, README, planos no Mercado Pago, redes sociais) podem ter o número escrito à mão: procure por ele e atualize. Neste momento (depois do Plano da semana) o site mostra **41 ferramentas** (1 principal + 40 extras). Na próxima ferramenta, vira 42 e 41.
 
 ## Como usar
 
@@ -106,14 +107,12 @@ Critério: entregar um arquivo pronto, servir em todo vídeo, rodar no navegador
   Para quem: quem grava a própria voz. Esforço: médio a alto.
 - [nova] **Roteiro para vídeo narrado com legenda** (canais sem rosto e Shorts): voz do Sauim + legenda do Pacote do vídeo + imagem de fundo, exportando um arquivo de vídeo. Origem: Claude.
   Para quem: canais "dark" e quem faz Shorts. Esforço: alto (a gravação do vídeo no navegador costuma levar o tempo do próprio vídeo).
-- [nova] **Audiolivro e podcast em lote**: texto longo vira capítulos, cada um em um arquivo, com zip e nomes organizados. Origem: Claude.
-  Liga com o Mentor de Autores. Rever a licença da voz antes de oferecer como produto. Esforço: médio.
 - [feita em 26/11/2026, aguardando teste do Paulo] **Pacote de publicação**: título A/B, descrição já com os capítulos, hashtags e comentário fixado, a partir do roteiro, dentro do cartão do Pacote do vídeo. Origem: Claude.
   Esforço: baixo a médio (reaproveita ferramentas que já existem).
 - [nova] **Cortes para Shorts**: a partir da transcrição, sugerir os melhores trechos de 30 a 60 segundos com horários e legenda. Origem: Claude.
   Depende da Legenda automática. Esforço: médio.
-- [nova] **Extrair áudio, cortar e converter vídeo** no navegador. Origem: Claude.
-  Muita gente oferece; só vale pela integração com o resto. Esforço: médio a alto.
+- [nova] **Cortar e converter o vídeo em si** no navegador (a parte de áudio já foi feita em 26/11/2026). Origem: Claude.
+  Exige ffmpeg no navegador (ffmpeg.wasm, uns 30 MB que o visitante baixa na primeira vez) e é lento em celular. Só vale se os criadores pedirem na Caixa "o que faltou hoje?". Esforço: alto.
 - [nova] **Dublagem**: roteiro em português vira legenda e voz em inglês ou espanhol. Origem: Claude.
   Alto valor, mas tradução no navegador é pesada e a qualidade precisa ser testada. Esforço: alto.
 - [nova] **Pesquisa do que as pessoas procuram** para gerar ideias e títulos, pela API oficial do YouTube (exige chave e tem limite diário, e os dados passam pelo servidor). Origem: Claude.

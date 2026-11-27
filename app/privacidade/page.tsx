@@ -67,7 +67,7 @@ export default function Privacidade() {
       </Sec>
 
       <Sec id="voz" n={++n} title="Minha voz (beta)">
-        <p>Na ferramenta Minha voz (beta), os <b>textos e o áudio gerado</b> são processados no seu aparelho: nós não os recebemos. Já a <b>gravação de 5 a 10 segundos da sua voz</b> (a sua voz é um dado pessoal) fica salva na <b>sua conta</b> do plano Criador, em área privada que só você consegue ler, para você não precisar gravar de novo e para a sua voz aparecer na lista de vozes do Texto em áudio em qualquer aparelho. Usamos a gravação apenas para isso, não a ouvimos nem a compartilhamos. Uma cópia também fica no navegador do seu aparelho. Você pode apagar a gravação a qualquer momento no botão “Apagar a gravação” (apaga do aparelho e da conta); ao excluir a conta, ela também é apagada. Uma gravação feita antes dessa novidade só vai para a conta se você clicar em “Salvar na minha conta”. Na primeira vez, o navegador baixa o modelo de voz do Hugging Face e o motor de execução do jsDelivr, que podem registrar o seu endereço IP, como já acontece com as demais vozes.</p>
+        <p>Na ferramenta Minha voz (beta), a gravação da sua voz e os textos são processados <b>no seu aparelho</b>. Nós não recebemos a gravação nem o áudio gerado. Para você não precisar gravar de novo, uma cópia da gravação fica guardada no navegador do seu aparelho, e você pode apagá-la a qualquer momento no botão “Apagar a gravação” ou limpando os dados do navegador. Na primeira vez, o navegador baixa o modelo de voz do Hugging Face e o motor de execução do jsDelivr, que podem registrar o seu endereço IP, como já acontece com as demais vozes.</p>
       </Sec>
 
       <Sec id="caixa" n={++n} title="A caixa “o que faltou hoje?”">

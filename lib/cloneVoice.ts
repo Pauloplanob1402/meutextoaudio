@@ -17,8 +17,16 @@ const QSTORE = "minha-voz-qualidade";
 export type Ref = { samples: Float32Array; rate: number; seconds: number; warn: string; stamp: string };
 
 export function toRef(ch: Float32Array, rate: number, stamp = String(Date.now())): Ref {
-  const n = Math.min(ch.length, Math.round(MAX_REF * rate));
-  const samples = ch.slice(0, n);
+  // tira o silêncio do começo e do fim e deixa o volume num nível bom: a voz clonada copia tudo o que ouve na referência
+  let lo = 0, hi = ch.length;
+  const thr = 0.02;
+  while (lo < hi && Math.abs(ch[lo]) < thr) lo++;
+  while (hi > lo && Math.abs(ch[hi - 1]) < thr) hi--;
+  const pad = Math.round(0.1 * rate);
+  lo = Math.max(0, lo - pad); hi = Math.min(ch.length, hi + pad);
+  if (hi - lo < rate) { lo = 0; hi = ch.length; } // quase nada acima do limite: não corta
+  const n = Math.min(hi - lo, Math.round(MAX_REF * rate));
+  const samples = ch.slice(lo, lo + n);
   let peak = 0, acc = 0;
   for (let i = 0; i < n; i++) { const a = Math.abs(samples[i]); if (a > peak) peak = a; acc += samples[i] * samples[i]; }
   const rmsDb = 20 * Math.log10(Math.sqrt(acc / Math.max(n, 1)) || 1e-9);
@@ -26,6 +34,7 @@ export function toRef(ch: Float32Array, rate: number, stamp = String(Date.now())
   if (n / rate < 3) warn = "A gravação ficou muito curta. Use de 5 a 10 segundos.";
   else if (rmsDb < -50) warn = "A gravação está quase sem som. Aproxime-se do microfone e grave de novo.";
   else if (peak > 0.99) warn = "A gravação estourou (som muito alto). Afaste-se um pouco do microfone e grave de novo.";
+  if (!warn && peak > 0.05) { const g = 0.89 / peak; for (let i = 0; i < n; i++) samples[i] *= g; } // pico em cerca de -1 dB
   return { samples, rate, seconds: n / rate, warn, stamp };
 }
 

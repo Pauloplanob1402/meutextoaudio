@@ -73,7 +73,7 @@ export default function MyVoice() {
     setMsg(""); setOut(null);
     let stream: MediaStream;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 } });
     } catch {
       setMsg("Não consegui usar o microfone. Permita o acesso no navegador (ícone de cadeado ao lado do endereço) ou envie um arquivo de áudio.");
       return;
@@ -196,7 +196,7 @@ export default function MyVoice() {
 
       <div className="field" style={!consent ? { opacity: 0.5 } : undefined}>
         <span>1. Grave a sua voz (de 5 a 10 segundos)</span>
-        <p className="count" style={{ margin: 0 }}>Em lugar silencioso, perto do microfone, leia no seu tom normal: “{SENTENCE}”</p>
+        <p className="count" style={{ margin: 0 }}>Em lugar silencioso (sem ventilador, sem eco), a um palmo do microfone, leia no seu tom normal: “{SENTENCE}”</p>
         <div className="aux">
           {!recording
             ? <button className="btn go" type="button" onClick={record} disabled={!consent || busy}>{ref ? "Gravar de novo" : "Gravar"}</button>

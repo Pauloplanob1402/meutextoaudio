@@ -132,7 +132,12 @@ export async function createCloneSession(onStatus: (m: string) => void): Promise
   return {
     predict: async (text: string) => {
       const chunks: Float32Array[] = [];
-      await h.generate(text, (a) => chunks.push(a));
+      // a voz clonada piora em trechos longos: o Texto em áudio manda até 500 letras, aqui quebramos em até 250 (como na ferramenta Minha voz)
+      const { splitText } = await import("@/lib/tts");
+      for (const piece of splitText(text, 250)) {
+        if (h.isStopped()) break;
+        await h.generate(piece, (a) => chunks.push(a));
+      }
       if (!chunks.length) throw new Error("vazio");
       const { chunksToWavBlob } = await import("@/lib/pocketTts");
       return chunksToWavBlob(chunks, h.sampleRate) as Blob;

@@ -170,3 +170,4 @@ Critério: entregar um arquivo pronto, servir em todo vídeo, rodar no navegador
 -
 
 - Minha voz (beta), correções: Parar de verdade (flag no componente), fila única de geração (sem mistura de vozes), clone com nome único, e a voz aparece como "Minha voz (beta)" na lista do Texto em áudio (Criador, gravação local). Lib: lib/cloneVoice.ts. Contador segue 43.
+- Minha voz no Texto em áudio: trechos quebrados em 250 letras e seletor de qualidade (Rápida/Melhor) ao escolher a voz.

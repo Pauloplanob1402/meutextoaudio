@@ -5,7 +5,7 @@ import { SELF_HOST, redirectVoiceDownloads, wasmPaths } from "@/lib/selfhost";
 import { stretchWav } from "@/lib/stretch";
 import { wavToMp3 } from "@/lib/mp3";
 import { DEFAULT_FREE_VOICE_ID, VOICES, getVoice as getBuiltInVoice } from "@/lib/voices";
-import { CLONE_ID, CLONE_INFO, createCloneSession, hasRef } from "@/lib/cloneVoice";
+import { CLONE_ID, CLONE_INFO, QUALITY, createCloneSession, getQuality, hasRef, setQuality as storeCloneQuality } from "@/lib/cloneVoice";
 
 // as vozes da lista + a "Minha voz (beta)", que não entra em VOICES (a gravação mora só neste aparelho)
 const getVoice = (id: string) => (id === CLONE_ID ? CLONE_INFO : getBuiltInVoice(id));
@@ -42,6 +42,7 @@ export default function Tool() {
   const [voiceId, setVoiceId] = useState(DEFAULT_FREE_VOICE_ID);
   const [plan, setPlan] = useState<"loading" | "free" | "pro">("loading");
   const [hasClone, setHasClone] = useState(false);
+  const [cloneQ, setCloneQ] = useState("portuguese");
   const savedVoice = useRef(false);
   const loadedVoice = useRef<string | null>(null);
   const original = useRef<Blob | null>(null);
@@ -80,7 +81,7 @@ export default function Tool() {
     setSite(window.location.origin);
     try { const d = localStorage.getItem("draft"); if (d) setText(d); } catch {}
     try { const m = JSON.parse(localStorage.getItem("wpm") || "{}"); if (m && typeof m === "object") setWpmMap(m); } catch {}
-    setHasClone(hasRef());
+    setHasClone(hasRef()); setCloneQ(getQuality());
     try { const v = localStorage.getItem("voz"); if (v) { setVoiceId(v === CLONE_ID ? (hasRef() ? CLONE_ID : DEFAULT_FREE_VOICE_ID) : getVoice(v).id); savedVoice.current = true; } } catch {}
     fetch("/api/plano", { cache: "no-store" })
       .then((r) => r.json())
@@ -419,6 +420,10 @@ export default function Tool() {
           {!locked && voice.engine === "clone" && (
             <p className="note" style={{ flexBasis: "100%", margin: 0 }}>
               <b>Beta.</b> Use no computador (Chrome ou Edge). É bem mais lenta que as outras vozes e pode errar a pronúncia de algumas palavras. A gravação da sua voz fica só neste aparelho; para trocá-la, use a ferramenta <a href="/ferramentas/minha-voz-beta">Minha voz (beta)</a>.
+              <span style={{ display: "block", marginTop: 6 }}>Qualidade:{" "}
+                {QUALITY.map((q) => <button key={q.id} type="button" className="chip" aria-pressed={cloneQ === q.id} style={{ marginRight: 6, ...(cloneQ === q.id ? { borderColor: "var(--blue)", color: "var(--blue)", background: "rgba(0,0,0,0.04)" } : {}) }} disabled={busy} onClick={() => { setCloneQ(q.id); storeCloneQuality(q.id); }}>{q.label}</button>)}
+                {" "}“Melhor qualidade” soa melhor e demora mais.
+              </span>
             </p>
           )}
           {!locked && voice.engine === "kokoro" && (

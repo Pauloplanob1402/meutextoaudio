@@ -6,7 +6,7 @@ import { wavToMp3 } from "@/lib/mp3";
 import { fmtDur } from "@/lib/audioJoin";
 import { downloadBlob, useStored } from "./ui";
 import { checkReference, finishVoice } from "@/lib/voiceFinish";
-import { LSD_STEPS, TEMPERATURE } from "@/lib/cloneEngine";
+import { errText, loadPocket } from "@/lib/cloneEngine";
 import { clearLocal, deleteRemote, hasRemote, loadRemote, readLocal, saveRemote, writeLocal } from "@/lib/minhaVoz";
 
 const MAX_REF = 10; // segundos de referência
@@ -170,12 +170,11 @@ export default function MyVoice() {
     if (!ref || phase === "loading" || phase === "generating" || !consent) return;
     setPhase("loading"); setMsg("Preparando… Na primeira vez baixa o modelo de voz (uns 150 MB ou mais) e pode demorar.");
     try {
-      const { PocketTTS } = await import("@/lib/pocketTts");
+      const lib = await import("@/lib/pocketTts");
       const key = quality;
       if (!tts.current || loadedKey.current !== `q:${key}`) {
         tts.current?.destroy();
-        const t = new PocketTTS({ language: quality, quantized: true, voiceCloning: true, lsdSteps: LSD_STEPS, temperature: TEMPERATURE });
-        await t.load((p) => {
+        const t = await loadPocket(lib, quality, (p) => {
           if (p.total) setMsg(`Baixando ${p.label ?? "o modelo"}: ${Math.round(((p.loaded ?? 0) * 100) / p.total)}%${p.fromCache ? " (já estava salvo)" : ""}`);
           else if (p.status) setMsg(p.status);
         });
@@ -189,7 +188,7 @@ export default function MyVoice() {
       console.error(e);
       tts.current?.destroy(); tts.current = null; loadedKey.current = ""; voice.current = null;
       setPhase("idle");
-      setMsg("Não foi possível preparar a sua voz. Isto é um teste: use o Chrome ou o Edge no computador, com internet, e tente de novo. Se persistir, recarregue a página (F5).");
+      setMsg("Não foi possível preparar a sua voz. Isto é um teste: use o Chrome ou o Edge no computador, com internet, e tente de novo. Se persistir, recarregue a página (F5). Detalhe técnico: " + errText(e));
     }
   }
 

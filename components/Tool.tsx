@@ -281,7 +281,7 @@ export default function Tool() {
       console.error(e);
       try { (((await import("@mintplex-labs/piper-tts-web")).TtsSession) as any)._instance = undefined; } catch {}
       loadedVoice.current = null;
-      setStatus(`Não foi possível gerar o áudio com a voz ${getVoice(voiceId).name}. Escolha outra voz ou recarregue a página (F5) e tente novamente.`);
+      setStatus(`Não foi possível gerar o áudio com a voz ${getVoice(voiceId).name}. Escolha outra voz ou recarregue a página (F5) e tente novamente.${voiceId === MY_VOICE_ID ? ` Detalhe técnico: ${String((e as { message?: string })?.message ?? e).slice(0, 200)}` : ""}`);
     } finally {
       setBusy(false);
     }

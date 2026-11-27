@@ -24,6 +24,25 @@ export function isolated(): boolean {
   return typeof window !== "undefined" && window.crossOriginIsolated === true;
 }
 
+// Carrega o motor. Se falhar com vários núcleos (página isolada), tenta de novo com 1 núcleo: mais lento, mas funciona.
+type Progress = (p: { total?: number; loaded?: number; label?: string; fromCache?: boolean; status?: string }) => void;
+export async function loadPocket(lib: typeof import("@/lib/pocketTts"), language: string, onProgress: Progress): Promise<PocketTTS> {
+  const make = (maxThreads?: number) => new lib.PocketTTS({ language, quantized: true, voiceCloning: true, lsdSteps: LSD_STEPS, temperature: TEMPERATURE, ...(maxThreads ? { maxThreads } : {}) });
+  let t = make();
+  try { await t.load(onProgress); return t; }
+  catch (e) {
+    t.destroy();
+    if (!isolated()) throw e;
+    console.warn("Falhou com vários núcleos; tentando com 1:", e);
+    t = make(1);
+    await t.load(onProgress);
+    return t;
+  }
+}
+
+// texto curto do erro para mostrar na tela (ajuda a achar o problema)
+export const errText = (e: unknown) => String((e as { message?: string })?.message ?? e).slice(0, 200);
+
 export function resetClone() {
   tts?.destroy(); tts = null; loading = null; voiceRef = null; voiceSig = "";
 }
@@ -32,12 +51,10 @@ export async function openCloneSession(ref: SavedRef, onStatus: (s: string) => v
   const lib = await import("@/lib/pocketTts");
   if (!tts) {
     loading ??= (async () => {
-      const t = new lib.PocketTTS({ language: QUALITY, quantized: true, voiceCloning: true, lsdSteps: LSD_STEPS, temperature: TEMPERATURE });
-      await t.load((p: { total?: number; loaded?: number; label?: string; fromCache?: boolean; status?: string }) => {
+      return loadPocket(lib, QUALITY, (p) => {
         if (p.total) onStatus(`Baixando ${p.label ?? "o modelo da sua voz"}: ${Math.round(((p.loaded ?? 0) * 100) / p.total)}%${p.fromCache ? " (já estava salvo)" : ""}`);
         else if (p.status) onStatus("Preparando o motor da sua voz…");
       });
-      return t;
     })();
     try { tts = await loading; } catch (e) { loading = null; throw e; }
   }

@@ -53,33 +53,12 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), fullscreen=(self)" },
 ];
 
-// Vários núcleos para a voz clonada (Minha voz). O motor só usa mais de 1 núcleo quando a página está "isolada"
-// (crossOriginIsolated), o que exige estes dois cabeçalhos. Sem eles a geração roda com 1 núcleo e fica muito lenta.
-// Valem só onde a voz clonada roda: a página inicial (Texto em áudio) e a Minha voz. O worker é aberto por um worker "blob",
-// que herda as regras da página, então os arquivos do site NÃO precisam dos cabeçalhos (assim nada de /_next/static muda).
-// "credentialless" deixa as fontes do Google, o Hugging Face e o jsDelivr funcionarem sem mudança.
-// Para DESLIGAR tudo isto de uma vez: crie ISOLAMENTO_THREADS=off na Vercel e publique de novo.
-const isolamento = process.env.ISOLAMENTO_THREADS !== "off";
-const isolationHeaders = [
-  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-  { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-];
-
 // O Piper (WebAssembly) tem um trecho de código para Node que usa fs e path.
 // No navegador ele nunca roda, então trocamos por um arquivo vazio.
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async headers() {
-    return [
-      { source: "/:path*", headers: securityHeaders },
-      ...(isolamento
-        ? [
-            // ?leve=1 (modo de segurança, ver lib/isolamento.ts) não recebe os cabeçalhos
-            { source: "/", missing: [{ type: "query" as const, key: "leve" }], headers: isolationHeaders },
-            { source: "/ferramentas/minha-voz-beta", missing: [{ type: "query" as const, key: "leve" }], headers: isolationHeaders },
-          ]
-        : []),
-    ];
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
   // o calendário semanal virou calendário do mês: o endereço antigo continua funcionando
   async redirects() {

@@ -10,7 +10,7 @@ export type VoiceInfo = {
   name: string; // nome mostrado no seletor
   lang: "pt-BR" | "pt-PT";
   note: string; // frase curta ao lado do nome
-  engine: "piper" | "kokoro" | "clone";
+  engine: "piper" | "kokoro" | "clone"; // "clone" é só a Minha voz (beta), que não entra na lista VOICES
   plan: "free" | "pro"; // free: qualquer pessoa; pro: só quem tem o plano Criador ativo
   path?: string; // Piper: caminho do arquivo .onnx dentro do repositório de vozes
   official?: boolean; // Piper: voz que o espelho não tem; baixamos do repositório oficial
@@ -30,11 +30,6 @@ export const VOICES: VoiceInfo[] = [
   { id: "kokoro:pm_alex", name: "Alex", lang: "pt-BR", note: "Voz masculina", engine: "kokoro", plan: "pro", kokoro: "pm_alex" },
   { id: "kokoro:pm_santa", name: "Santa", lang: "pt-BR", note: "Voz masculina", engine: "kokoro", plan: "pro", kokoro: "pm_santa" },
 ];
-
-// A voz clonada do usuário (plano Criador). Fica FORA de VOICES de propósito: ela só existe para quem gravou a própria voz,
-// então o seletor do Texto em áudio a acrescenta à parte e as outras telas (lote, textos dos planos) não a enxergam.
-export const MY_VOICE_ID = "minha-voz";
-export const MY_VOICE: VoiceInfo = { id: MY_VOICE_ID, name: "Minha voz", lang: "pt-BR", note: "Sua própria voz, clonada", engine: "clone", plan: "pro" };
 
 export const getVoice = (id: string | null | undefined) =>
   VOICES.find((v) => v.id === id) ?? VOICES[0];

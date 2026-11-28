@@ -41,7 +41,7 @@ export default function Ferramentas() {
                   {TOOLS.filter((t) => t.group === g.id).map((t) => (
                     <Link className="tcard" href={`/ferramentas/${t.slug}`} key={t.slug}>
                       {t.start && <span className="badge">Bom para começar</span>}
-                      <h3>{t.title}</h3>
+                      <h3>{t.title}{t.beta && <span className="chip" style={{ marginLeft: 8, fontSize: 12, padding: "1px 8px" }}>beta</span>}</h3>
                       <p>{t.short}</p>
                     </Link>
                   ))}

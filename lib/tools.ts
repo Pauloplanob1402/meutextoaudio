@@ -15,6 +15,7 @@ export type ToolInfo = {
   intro: string; // frase no topo da página da ferramenta
   group: GroupId;
   start?: boolean; // "Bom para começar"
+  beta?: boolean; // em teste: mostra o convite "ajude a aperfeiçoar" no pé da página
 };
 
 export const GROUPS: { id: GroupId; title: string; hint: string }[] = [
@@ -39,10 +40,10 @@ export const TOOLS: ToolInfo[] = [
   { slug: "juntar-audios", group: "roteiro", title: "Juntar áudios e músicas", short: "Una vários áudios ou músicas em um arquivo só, na ordem que você escolher.", intro: "Adicione os arquivos, ajuste a ordem e baixe tudo em um áudio só. Os arquivos não saem do seu aparelho." },
   { slug: "roteiro-em-4-batidas", group: "roteiro", start: true, title: "Roteiro em 4 batidas", short: "Confira se o roteiro tem gancho, conflito, virada e resolução, e quanto tempo cada parte ocupa.", intro: "Cole o roteiro e veja se as 4 batidas estão lá, com tempo de cada uma e o que ajustar. Nada sai do seu aparelho." },
   { slug: "ajuste-de-volume", group: "roteiro", title: "Ajuste de volume para o YouTube", short: "Meça o volume em LUFS e ajuste o áudio para o padrão do YouTube, com limitador de picos.", intro: "Escolha o áudio, veja o volume real e baixe uma versão ajustada. O áudio não sai do seu aparelho." },
-  { slug: "audiolivro-em-lote", group: "roteiro", title: "Audiolivro e podcast em lote", short: "Um texto longo vira vários capítulos em áudio, com nomes organizados e tudo em um zip.", intro: "Cole o livro, o curso ou a série de episódios. O Sauim separa os capítulos, gera cada um e entrega tudo numerado em um zip. A voz roda no seu aparelho." },
-  { slug: "extrair-e-cortar-audio", group: "roteiro", title: "Extrair e cortar áudio de vídeo", short: "Tire o áudio de um vídeo, corte o trecho que quer e baixe em MP3 ou WAV.", intro: "Escolha um vídeo ou áudio, marque o começo e o fim e baixe só o trecho. Tudo acontece no seu aparelho." },
-  { slug: "video-narrado", group: "roteiro", title: "Vídeo narrado com legenda", short: "Transforme a narração e o texto em um vídeo com legenda, para Shorts ou YouTube.", intro: "Escolha o áudio, cole o texto e gere um vídeo com fundo, legenda e barra de progresso. Para canais sem rosto e Shorts. Tudo no seu aparelho." },
-  { slug: "minha-voz-beta", group: "roteiro", title: "Minha voz (beta)", short: "Grave 10 segundos da sua voz e use ela para ler os seus textos. Em teste, só no computador.", intro: "Recurso em teste: grave a sua própria voz e gere áudio com ela, sem enviar nada a servidor. Use por enquanto só no computador (Chrome ou Edge)." },
+  { slug: "audiolivro-em-lote", group: "roteiro", beta: true, title: "Audiolivro e podcast em lote", short: "Um texto longo vira vários capítulos em áudio, com nomes organizados e tudo em um zip.", intro: "Cole o livro, o curso ou a série de episódios. O Sauim separa os capítulos, gera cada um e entrega tudo numerado em um zip. A voz roda no seu aparelho." },
+  { slug: "extrair-e-cortar-audio", group: "roteiro", beta: true, title: "Extrair e cortar áudio de vídeo", short: "Tire o áudio de um vídeo, corte o trecho que quer e baixe em MP3 ou WAV.", intro: "Escolha um vídeo ou áudio, marque o começo e o fim e baixe só o trecho. Tudo acontece no seu aparelho." },
+  { slug: "video-narrado", group: "roteiro", beta: true, title: "Vídeo narrado com legenda", short: "Transforme a narração e o texto em um vídeo com legenda, para Shorts ou YouTube.", intro: "Escolha o áudio, cole o texto e gere um vídeo com fundo, legenda e barra de progresso. Para canais sem rosto e Shorts. Tudo no seu aparelho." },
+  { slug: "minha-voz-beta", group: "roteiro", beta: true, title: "Minha voz (beta)", short: "Grave 10 segundos da sua voz e use ela para ler os seus textos. Em teste, só no computador.", intro: "Recurso em teste: grave a sua própria voz e gere áudio com ela, sem enviar nada a servidor. Use por enquanto só no computador (Chrome ou Edge)." },
   { slug: "remover-silencio", group: "roteiro", title: "Removedor de silêncio de áudio", short: "Tire as pausas longas da sua gravação.", intro: "Envie a gravação e corte os silêncios longos. O arquivo não sai do seu aparelho." },
 
   { slug: "titulo-e-descricao", group: "publicar", start: true, title: "Contador de título e descrição", short: "Veja se o título cabe e como ele aparece.", intro: "Escreva o título e a descrição e confira se cabem antes de publicar." },

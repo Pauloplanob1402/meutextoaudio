@@ -23,7 +23,7 @@ export default function Arsenal() {
           <Link key={t.slug} className="sa-tool" href={`/ferramentas/${t.slug}`}>
             <div>
               <div className="sa-tool-top"><span className="sa-chip">{GROUP_LABEL[t.group]}</span><span className="sa-num">#{String(t.n).padStart(2, "0")}</span></div>
-              <h3>{t.title}</h3>
+              <h3>{t.title}{t.beta && <span className="chip" style={{ marginLeft: 8, fontSize: 12, padding: "1px 8px" }}>beta</span>}</h3>
               <p>{t.short}</p>
             </div>
             <div className="sa-tool-foot"><span>Ferramenta extra</span><b>Abrir →</b></div>

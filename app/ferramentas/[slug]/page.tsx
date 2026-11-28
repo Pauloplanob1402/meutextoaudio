@@ -5,6 +5,7 @@ import Shell from "@/components/Shell";
 import ToolView from "@/components/tools/ToolView";
 import PlanGate from "@/components/PlanGate";
 import FeedbackBox from "@/components/FeedbackBox";
+import HelpInvite from "@/components/HelpInvite";
 import { TOOLS, getTool } from "@/lib/tools";
 
 export const dynamicParams = false;
@@ -27,9 +28,10 @@ export default async function FerramentaPage({ params }: { params: Promise<{ slu
     <Shell>
       <div className="tp">
         <p className="crumb"><Link href="/ferramentas">← Todas as ferramentas</Link></p>
-        <h1>{tool.title}</h1>
+        <h1>{tool.title}{tool.beta && !/beta/i.test(tool.title) && <span className="chip" style={{ marginLeft: 10, fontSize: 14, padding: "2px 10px", verticalAlign: "middle" }}>beta</span>}</h1>
         <p className="lead">{tool.intro}</p>
         <PlanGate><ToolView slug={slug} /><FeedbackBox tool={slug} /></PlanGate>
+        {tool.beta && <HelpInvite toolTitle={tool.title} />}
         <p className="also">
           Veja também: {also.map((t, i) => (<span key={t.slug}>{i > 0 && " · "}<Link href={`/ferramentas/${t.slug}`}>{t.title}</Link></span>))}
         </p>

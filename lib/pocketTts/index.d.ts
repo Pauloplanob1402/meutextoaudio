@@ -13,12 +13,6 @@ export interface PocketTTSOptions {
   ortBaseUrl?: string;
   /** Explicit URL to a voices.bin for built-in voices. */
   voicesUrl?: string | null;
-  /** URL of the worker file (a plain module under public/). Default "/pocket-tts/worker.js?v=...". */
-  workerUrl?: string;
-  /** Refinement steps per frame (1 to 8). More = cleaner voice, slower. Default 1. */
-  lsdSteps?: number;
-  /** Sampling temperature. Lower = steadier. Default 0.7. */
-  temperature?: number;
   /** Max WASM threads (needs cross-origin isolation). Default 8. */
   maxThreads?: number;
   /** Persist downloaded assets in Cache Storage so later loads are instant/offline. Default true. */

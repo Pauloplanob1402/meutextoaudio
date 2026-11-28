@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/copiar-worker-voz.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/copiar-worker-voz.mjs",
     "build": "next build",
     "start": "next start",
     "self-host": "node scripts/self-host.mjs"

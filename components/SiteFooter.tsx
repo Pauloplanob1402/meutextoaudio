@@ -17,6 +17,8 @@ export default function SiteFooter() {
           <Link href="/#biologia">Sobre</Link>
           <Link href="/historia">Nossa história</Link>
           <Link href="/#planos">Planos</Link>
+          <Link href="/colorir">Livro de colorir</Link>
+          <Link href="/talentos">Faça parte</Link>
           <Link href="/privacidade">Privacidade</Link>
           <Link href="/termos">Termos</Link>
           <a href={`mailto:${LEGAL.email}`}>Contato</a>

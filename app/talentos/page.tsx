@@ -20,7 +20,7 @@ export default function Talentos() {
         <p>Gente que gosta de resolver problemas, tem autonomia e quer ver o próprio trabalho ao lado do nosso. Desenvolvimento de software, design, voz e áudio, redação, testes. Ainda estamos definindo o formato: pode ser um projeto pontual (freelancer) ou uma dedicação fixa em home office. Quando surgir a demanda certa para o seu perfil, entramos em contato.</p>
 
         <h2>Como ajudar uma ferramenta em teste</h2>
-        <p>Toda ferramenta marcada como <b>beta</b> tem, no pé da página, um botão &ldquo;Quero ajudar&rdquo;. Você escolhe a sua área e abre um e-mail que já sai com o nome da ferramenta no título. Ou escolha aqui:</p>
+        <p>Toda ferramenta marcada como <b>beta</b> tem, no pé da página, um botão &ldquo;Quero ajudar&rdquo;. Você escolhe a sua área e abre um e-mail que já sai com o nome da ferramenta no título, no seu programa de e-mail, no Gmail ou no Outlook, ou copia o texto. Ou escolha aqui:</p>
         <TalentForm />
 
         <h2>O que contar no e-mail</h2>

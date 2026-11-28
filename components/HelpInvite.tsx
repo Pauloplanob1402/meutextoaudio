@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { AREAS, helpMailto } from "@/lib/talentos";
+import { AREAS } from "@/lib/talentos";
+import HelpMailButtons from "@/components/HelpMailButtons";
 
 // Convite no pé de toda ferramenta em beta: quem sabe ajudar escolhe a área e abre um e-mail já com a ferramenta no título.
 export default function HelpInvite({ toolTitle }: { toolTitle: string }) {
@@ -17,9 +18,9 @@ export default function HelpInvite({ toolTitle }: { toolTitle: string }) {
         <select id="hi-area" value={area} onChange={(e) => setArea(e.target.value)}>
           {AREAS.map((a) => <option key={a}>{a}</option>)}
         </select>
-        <a className="btn go" href={helpMailto({ tool: toolTitle, area })}>Quero ajudar</a>
       </div>
-      <p className="count" style={{ marginTop: 8 }}>Abre o seu programa de e-mail. Nada é enviado por este site. <Link href="/talentos">Saiba mais</Link></p>
+      <div style={{ marginTop: 10 }}><HelpMailButtons tool={toolTitle} area={area} primaryLabel="Quero ajudar" /></div>
+      <p className="count" style={{ marginTop: 4 }}><Link href="/talentos">Saiba mais</Link></p>
     </aside>
   );
 }

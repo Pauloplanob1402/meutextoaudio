@@ -2,26 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Shell from "@/components/Shell";
 import ShareColor from "@/components/ShareColor";
+import { PAGES, TOTAL_PAGINAS } from "@/lib/colorir";
 import "./colorir.css";
 
 export const metadata: Metadata = {
   title: "Livro de colorir do Sauim · grátis para imprimir",
-  description: "Baixe grátis o livro de colorir do Sauim: 10 páginas para imprimir em casa ou na escola. Peça para seu filho pintar e compartilhe.",
-  openGraph: { title: "Livro de colorir do Sauim", description: "10 páginas grátis para imprimir e pintar.", images: ["/colorir/capa.webp"], locale: "pt_BR", type: "website" },
+  description: `Baixe grátis o livro de colorir do Sauim: ${TOTAL_PAGINAS} páginas para imprimir em casa ou na escola. Peça para seu filho pintar e compartilhe.`,
+  openGraph: { title: "Livro de colorir do Sauim", description: `${TOTAL_PAGINAS} páginas grátis para imprimir e pintar.`, images: ["/colorir/capa.webp"], locale: "pt_BR", type: "website" },
 };
-
-const PAGES: { file: string; title: string }[] = [
-  { file: "capa", title: "Meu Livro de Colorir" },
-  { file: "descobrindo", title: "Descobrindo novos mundos" },
-  { file: "aprender", title: "Aprender também é divertido!" },
-  { file: "piquenique", title: "Piquenique com os amigos" },
-  { file: "mao-na-massa", title: "Mão na massa!" },
-  { file: "hora-de-descansar", title: "Hora de descansar" },
-  { file: "compartilhando-ideias", title: "Compartilhando ideias" },
-  { file: "celebrando-conquistas", title: "Celebrando suas conquistas" },
-  { file: "no-ritmo-da-floresta", title: "No ritmo da floresta" },
-  { file: "voce-e-especial", title: "Você é especial!" },
-];
 
 export default function Colorir() {
   return (
@@ -29,7 +17,7 @@ export default function Colorir() {
       <div className="tp">
         <p className="crumb"><Link href="/">← Início</Link></p>
         <h1>Livro de colorir do Sauim</h1>
-        <p className="lead">10 páginas grátis para imprimir em casa ou na escola. Sem cadastro. É só baixar, imprimir e entregar os lápis de cor.</p>
+        <p className="lead">{TOTAL_PAGINAS} páginas grátis para imprimir em casa ou na escola. Sem cadastro. É só baixar, imprimir e entregar os lápis de cor.</p>
 
         <div className="co-actions">
           <a className="btn go" href="/colorir/livro-de-colorir-sauim.pdf" download>Baixar o livro completo (PDF)</a>

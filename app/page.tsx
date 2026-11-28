@@ -1,3 +1,4 @@
+import ColorirCta from "@/components/ColorirCta";
 import { FreeCardCta, ProAnnualCta, ProCardCta } from "@/components/PlanCtas";
 import Link from "next/link";
 import ToolSlot from "@/components/ToolSlot";
@@ -45,6 +46,8 @@ export default function Home() {
       </section>
 
       <div className="wrap" id="texto-audio"><ToolSlot /></div>
+
+      <div className="wrap"><ColorirCta /></div>
 
       <section id="fluxo" className="sa-sec">
         <div className="wrap">

@@ -17,7 +17,7 @@ header.sa-nav{display:block;position:sticky;top:0;z-index:50;padding:0;backgroun
 .sa-word small{font:500 12px var(--body);color:var(--mute)}
 .sa-cta{background:var(--blue);color:#fff;text-decoration:none;font:600 14px var(--body);padding:9px 18px;border-radius:999px;white-space:nowrap}
 .sa-cta:hover{background:var(--blue-dark)}
-@media (max-width:860px){.sa-nav nav a:not([href="/ferramentas"]):not([href="/conta"]){display:none}.sa-nav nav{gap:16px}.sa-word small{display:none}}
+@media (max-width:860px){.sa-nav nav a:not([href="/ferramentas"]):not([href="/conta"]):not(.sa-nav-hot){display:none}.sa-nav nav{gap:16px}.sa-word small{display:none}}
 @media (max-width:520px){.sa-nav nav{display:none}}
 
 /* hero */
@@ -243,3 +243,16 @@ html{scroll-behavior:smooth}
 .sa-geracao-dot{width:10px;height:10px;border-radius:50%;background:#8C8CFF;flex:none;animation:sa-pulse 1.2s ease-in-out infinite}
 @keyframes sa-pulse{50%{opacity:.35;transform:scale(.8)}}
 @media (prefers-reduced-motion:reduce){.sa-geracao-dot{animation:none}}
+
+/* promoção do livro de colorir */
+.sa-promo{background:var(--blue);color:#fff;text-align:center;font:600 15px/1.35 var(--body);padding:9px 16px}
+.sa-promo a{color:#fff;text-decoration:none}
+.sa-promo a:hover u{text-decoration-thickness:2px}
+.sa-nav nav a.sa-nav-hot{background:var(--lilac);color:var(--blue);padding:4px 12px;border-radius:99px;font-weight:700}
+.sa-colorir{display:flex;gap:28px;align-items:center;max-width:960px;margin:32px auto;padding:20px 24px;background:var(--white);border:2px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--blue)}
+.sa-colorir img{width:170px;height:auto;border:1.5px solid var(--line);border-radius:10px;flex:none;background:#fff}
+.sa-colorir h2{margin:4px 0 8px}
+.sa-colorir p{margin:0 0 12px}
+.sa-colorir.compact{margin:18px 0;box-shadow:5px 5px 0 var(--blue)}
+.sa-colorir.compact img{width:110px}
+@media (max-width:640px){.sa-colorir{flex-direction:column;text-align:center;align-items:center;margin:24px 16px}.sa-colorir .sa-actions{justify-content:center!important}}

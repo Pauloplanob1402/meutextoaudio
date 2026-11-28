@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import Shell from "@/components/Shell";
+import ColorirCta from "@/components/ColorirCta";
 import { GROUPS, TOOLS } from "@/lib/tools";
 import { STAGES, TOTAL, stageCount } from "@/lib/brand";
 
@@ -15,6 +16,7 @@ export default function Ferramentas() {
       <div className="tp">
         <h1>Todas as ferramentas para criadores</h1>
         <p className="lead">{TOTAL} ferramentas em 3 etapas: Feito, Subiu, Postado. Tudo roda no seu navegador, sem enviar seus arquivos. O Texto em áudio é gratuito; as demais fazem parte do plano Criador.</p>
+        <ColorirCta compact />
         <p className="sa-jump">
           {STAGES.map((s) => <a key={s.id} href={`#${s.id}`}>{s.n} • {s.tag}</a>)}
         </p>

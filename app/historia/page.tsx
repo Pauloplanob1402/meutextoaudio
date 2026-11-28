@@ -47,7 +47,7 @@ export default function Historia() {
           <div className="hi-col">
             <p className="hi-eyebrow">A nossa história</p>
             <h2>O erro que quase travou o lançamento.</h2>
-            <p>A gente achava que o nosso maior desafio no começo seria o algoritmo.</p>
+            <p>Nós achávamos que o maior desafio no começo seria o algoritmo.</p>
             <p><strong>Não foi. Foi o próprio nome.</strong></p>
             <p>Era para ser SAUIM, o macaquinho brasileiro rápido, curioso e ágil que dá nome ao projeto.</p>
             <p>Mas na hora de passar o bastão para colocar o site no ar, veio a dúvida: SAUIM ou SAIUM (de “sai mais um vídeo”)?</p>
@@ -56,7 +56,7 @@ export default function Historia() {
             <p className="hi-pull">Nada. O mundo não acabou.</p>
             <p>Todo canal que hoje parece grande já publicou um vídeo com áudio ruim, capa duvidosa ou título esquisito no começo.</p>
             <p className="hi-pull">A perfeição trava. O movimento destrava.</p>
-            <p>A gente corrigiu a rota, o Sauim assumiu o volante e criamos a plataforma para você errar menos do que a gente no primeiro dia.</p>
+            <p>Corrigimos a rota, o Sauim assumiu o volante e criamos a plataforma para você errar menos do que erramos no primeiro dia.</p>
             <p>O importante não é começar perfeito. É sair do zero, mesmo que no começo pareça que “saiu um” torto.</p>
           </div>
         </article>
